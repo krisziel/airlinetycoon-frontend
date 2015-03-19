@@ -1,6 +1,6 @@
 # User
 * post 'user/autologin' : check if user is logged in already
-* post 'user/' : create a user
+* post 'user/' (user:{email:string,username:string,name:string,name:string}) : create a user
 
 # Game
 * get 'game' : all games

@@ -1,0 +1,9 @@
+html, body {
+  min-width: 920px;
+  min-height: 600px;
+}
+.segment {
+  -webkit-transition: all 500ms;
+  -o-transition: all 500ms;
+  transition: all 500ms;
+}

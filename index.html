@@ -2,13 +2,59 @@
 <html>
   <head>
     <title>Backbone</title>
+    <link rel="stylesheet" href="css/semantic.min.css">
+    <link rel="stylesheet" href="css/home.css">
   </head>
   <body>
+    <script id="flightTemplate" type="text/template">
+      <li><%= airline %> <%= flightNumber %> (<%= origin %>-<%= destination %>) on <%= equipment %></li>
+    </script>
+    <div id="flightsList" style="display: none;">
+    </div>
+    <div class="shaded grid examples">
+      <div class="ui grid">
+        <div class="three column row">
+          <div class="ui column"></div>
+          <div class="ui raised segment column form">
+            <div class="ui header center aligned">Welcome to Air Tycoon</div>
+            <div class="ui two item blue menu" id="loginMenu">
+              <a class="active item" data-tab="sign-up">Sign Up</a>
+              <a class="item" data-tab="login">Login</a>
+            </div>
+            <form data-tab="sign-up" onsubmit="alert('submitted')">
+              <div class="field">
+                <input placeholder="Name" type="text">
+              </div>
+              <div class="field">
+                <input placeholder="Username" type="text">
+              </div>
+              <div class="field">
+                <input placeholder="Email" type="email">
+              </div>
+              <div class="field">
+                <input placeholder="Password" type="password">
+              </div>
+              <div class="button blue ui">Sign Up</div>
+            </form>
+            <div data-tab="login">
+              <div class="field">
+                <input placeholder="Username" type="text">
+              </div>
+              <div class="field">
+                <input placeholder="Password" type="password">
+              </div>
+              <div class="button blue ui">Login</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="js/json2.js"></script>
     <script src="js/jquery.js"></script>
     <script src="js/underscore.js"></script>
     <script src="js/backbone.js"></script>
     <script src="js/backbone.localStorage.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/semantic.min.js"></script>
   </body>
 </html>
