@@ -1,7 +1,7 @@
 <!DOCTYPE !html>
 <html>
   <head>
-    <title>Backbone</title>
+    <title>Air Tycoon</title>
     <link rel="stylesheet" href="css/semantic.min.css">
     <link rel="stylesheet" href="css/home.css">
   </head>
@@ -9,13 +9,16 @@
     <script id="flightTemplate" type="text/template">
       <li><%= airline %> <%= flightNumber %> (<%= origin %>-<%= destination %>) on <%= equipment %></li>
     </script>
+    <script id="airportTemplate" type="text/template">
+      <li><%= iata %> <%= name %> (<%= city %>-<%= country %>) on <%= id %></li>
+			</script>
     <div id="flightsList" style="display: none;">
     </div>
     <div class="shaded grid examples">
       <div class="ui grid">
         <div class="three column row">
           <div class="ui column"></div>
-          <div class="ui raised segment column form">
+          <div class="ui raised segment column form login-form">
             <div class="ui header center aligned">Welcome to Air Tycoon</div>
             <div class="ui two item blue menu" id="loginMenu">
               <a class="active item" data-tab="sign-up">Sign Up</a>
@@ -34,21 +37,22 @@
               <div class="field">
                 <input placeholder="Password" type="password">
               </div>
-              <div class="button blue ui">Sign Up</div>
+              <div class="button blue ui full">Sign Up</div>
             </form>
-            <div data-tab="login">
+            <div data-tab="login" style="display:none;">
               <div class="field">
                 <input placeholder="Username" type="text">
               </div>
               <div class="field">
                 <input placeholder="Password" type="password">
               </div>
-              <div class="button blue ui">Login</div>
+              <div class="button blue ui full">Login</div>
             </div>
           </div>
         </div>
       </div>
     </div>
+		<div id="airportList"></div>
     <script src="js/json2.js"></script>
     <script src="js/jquery.js"></script>
     <script src="js/underscore.js"></script>

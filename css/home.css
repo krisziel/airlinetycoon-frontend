@@ -2,8 +2,13 @@ html, body {
   min-width: 920px;
   min-height: 600px;
 }
-.segment {
-  -webkit-transition: all 500ms;
-  -o-transition: all 500ms;
-  transition: all 500ms;
+.segment.form.ui.raised.column.login-form {
+	margin-top: 125px;
+	padding: 14px;
+}
+form {
+	margin: 0;
+}
+.button.full {
+	width: 100%;
 }
