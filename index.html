@@ -10,10 +10,28 @@
       <li><%= airline %> <%= flightNumber %> (<%= origin %>-<%= destination %>) on <%= equipment %></li>
     </script>
     <script id="airportTemplate" type="text/template">
-      <li><%= iata %> <%= name %> (<%= city %>-<%= country %>) on <%= id %></li>
+			<div class="ui dividing header airport">
+			  <div class="content">
+					<div class="ui horizontal statistics mini">
+					  <div class="ui statistic iata">
+							<div class="value">
+								  <%= iata %>
+								</div>
+							</div>
+						</div>
+						<div class="airport data">
+							<span><%= name %><br/>
+							<%= city %>, <%= country %></span>
+						</div>
+					</div>
+			  </div>
+			</div>
 			</script>
     <div id="flightsList" style="display: none;">
     </div>
+	  <div class="column" id="airportList" style="width: 250px;">
+			
+		</div>
     <div class="shaded grid examples">
       <div class="ui grid">
         <div class="three column row">
@@ -52,12 +70,12 @@
         </div>
       </div>
     </div>
-		<div id="airportList"></div>
     <script src="js/json2.js"></script>
     <script src="js/jquery.js"></script>
     <script src="js/underscore.js"></script>
     <script src="js/backbone.js"></script>
     <script src="js/backbone.localStorage.js"></script>
+    <script src="js/airport.js"></script>
     <script src="js/main.js"></script>
     <script src="js/semantic.min.js"></script>
   </body>

@@ -12,3 +12,40 @@ form {
 .button.full {
 	width: 100%;
 }
+
+#airportList {
+	width: 250px;
+	height: 100%;
+	border-right: 1px solid rgba(0,0,0,.1);
+	background: #ffffff;
+}
+.ui.dividing.header.airport {
+	position: relative;
+	padding: 0;
+	height: 57px;
+}
+.ui.dividing.header.airport.active {
+	background: #f0f0f0;
+}
+.ui.dividing.header.airport.active * {
+	color: #009fda;
+}
+.ui.horizontal.statistics.mini {
+	margin-left: 10px;
+	width: 55px;
+	float: left;
+}
+.airport.data {
+	font-size: 12px;
+	color: #999999;
+	width: 170px;
+	float: left;
+	font-weight: normal;
+	line-height: 15px;
+	height: 57px;
+	display: table;
+}
+span {
+  display: table-cell;
+  vertical-align: middle;
+}
