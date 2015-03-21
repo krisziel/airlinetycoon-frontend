@@ -6,33 +6,60 @@
     <link rel="stylesheet" href="css/home.css">
   </head>
   <body>
-    <script id="flightTemplate" type="text/template">
-      <li><%= airline %> <%= flightNumber %> (<%= origin %>-<%= destination %>) on <%= equipment %></li>
-    </script>
-    <script id="airportTemplate" type="text/template">
-			<div class="ui dividing header airport">
+    <script id="airportTemplateOld" type="text/template">
+			<div class="ui dividing header game">
 			  <div class="content">
 					<div class="ui horizontal statistics mini">
-					  <div class="ui statistic iata">
+					  <div class="ui statistic">
 							<div class="value">
 								  <%= iata %>
 								</div>
 							</div>
 						</div>
-						<div class="airport data">
+						<div class="game data">
 							<span><%= name %><br/>
 							<%= city %>, <%= country %></span>
 						</div>
 					</div>
 			  </div>
 			</div>
-			</script>
+		</script>
+		<script id="gameTemplate" type="text/template">
+			<div class="ui dividing header airport game">
+			  <div class="content">
+					<div class="ui horizontal statistics mini">
+					  <div class="ui statistic game">
+							<div class="value">
+								  <%= name %>
+								</div>
+							</div>
+						</div>
+						<div class="game data">
+							<span><%= region %><br/>
+							<%= airlines %> Airlines</span>
+						</div>
+					</div>
+			  </div>
+			</div>
+		</script>
+    <script id="airportTemplate" type="text/template">
+		</script>
     <div id="flightsList" style="display: none;">
     </div>
-	  <div class="column" id="airportList" style="width: 250px;">
-			
+	  <div class="column" id="airportList" style="width: 250px; display:none;">
 		</div>
-    <div class="shaded grid examples">
+		
+    <div class="shaded grid game-window">
+      <div class="ui grid">
+        <div class="five column row">
+          <div class="ui column"></div>
+          <div class="ui column"></div>
+				  <div class="column" id="gameList">
+					</div>
+				</div>
+			</div>
+		</div>
+    <div class="shaded grid login-window" style="display:none;">
       <div class="ui grid">
         <div class="three column row">
           <div class="ui column"></div>
@@ -42,30 +69,30 @@
               <a class="active item" data-tab="sign-up">Sign Up</a>
               <a class="item" data-tab="login">Login</a>
             </div>
-            <form data-tab="sign-up" onsubmit="alert('submitted')">
+            <form data-tab="sign-up" id="signupForm">
               <div class="field">
-                <input placeholder="Name" type="text">
+                <input placeholder="Username" type="text" name="[user]username" data-variation="inverted">
               </div>
               <div class="field">
-                <input placeholder="Username" type="text">
+                <input placeholder="Name" type="text" name="[user]name" data-variation="inverted">
               </div>
               <div class="field">
-                <input placeholder="Email" type="email">
+                <input placeholder="Email" type="email" name="[user]email" data-variation="inverted">
               </div>
               <div class="field">
-                <input placeholder="Password" type="password">
+                <input placeholder="Password" type="password" name="[user]password" data-variation="inverted">
               </div>
-              <div class="button blue ui full">Sign Up</div>
+              <input type="submit" class="button blue ui full" value="Sign Up" />
             </form>
-            <div data-tab="login" style="display:none;">
+            <form data-tab="login" style="display:none;" id="loginForm">
               <div class="field">
-                <input placeholder="Username" type="text">
+                <input placeholder="Username" type="text" name="username">
               </div>
               <div class="field">
-                <input placeholder="Password" type="password">
+                <input placeholder="Password" type="password" name="password">
               </div>
-              <div class="button blue ui full">Login</div>
-            </div>
+              <input type="submit" class="button blue ui full" value="Login" />
+            </form>
           </div>
         </div>
       </div>
@@ -77,6 +104,7 @@
     <script src="js/backbone.localStorage.js"></script>
     <script src="js/airport.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/game.js"></script>
     <script src="js/semantic.min.js"></script>
   </body>
 </html>
