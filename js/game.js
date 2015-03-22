@@ -20,12 +20,13 @@ var GameView = Backbone.View.extend({
     return this;
   },
 	events:{
-		'click .game.button:eq(0)':'selectGame'
+		'click .game.button.green':'selectGame',
+		'click .game.button.blue':'loadGame'
 	},
 	selectGame:function(){
 		var id = this.model.attributes.id;
 		if(this.model.attributes.player) {
-			loadGame(id);
+			this.loadGame();
 		} else {
 			if($('#game' + id).find('.button').hasClass('red')) {
 				$('#game' + id).css({height:57}).find('.button:eq(0)').html('Join Game').removeClass('red');
@@ -36,6 +37,10 @@ var GameView = Backbone.View.extend({
 				new NewAirlineView({el:'#game' + id,id:id});
 			}
 		}
+	},
+	loadGame:function(){
+		var id = this.model.attributes.id;
+		loadGame(id);
 	}
 });
 
@@ -84,6 +89,7 @@ var NewAirlineView = Backbone.View.extend({
 				if(data.cookie) {
 					setCookie({key:'game_id',value:data.cookie});
 					parseCookie();
+					launchGame();
 				}
 			});
 		}
@@ -127,7 +133,7 @@ var gameList;
 function loadGames() {
 	$.getJSON(base + 'game' + cookies.url).done(function(data){
 		$('.login-window').modal('hide');
-		$('.game-window').modal('show',{closable:false});
+		$('.game-window').modal({closable:false}).modal('show');
 	  _.each(data,function(game){
 	    gameItem = new Game(game);
 			games.push(gameItem);

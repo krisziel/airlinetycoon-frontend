@@ -5,16 +5,17 @@ var cookies = {};
 function startApp() {
 	parseCookie();
 	$.post(base + '/user/autologin/' + cookies.url, {}, function(data, textStatus) {
-		if(data.status !== 'loggedin') {
-			$('.login-window').modal('show',{closable:false});
+		if(!data.username) {
+			$('.login-window').modal({closable:false}).modal('show');
 			activateLogin();
+		} else {
+			loadGames();
 		}
 	}, "json");
 }
 var button;
 function parseCookie() {
 	cookie = document.cookie.split('///');
-	console.log(cookie);
 	cookies.url = '?'
 	cookie_url = {
 		'user_id':'user_cookie',
@@ -107,11 +108,9 @@ function validEmail(email) {
 	return re.test(email);
 }
 function setCookie(args) {
-	if(document.cookie !== 9) {
-		var date = new Date();
-		date = new Date(date.getTime()+(30*24*60*60*1000));
-	  var expires = ';expires=' + date.toUTCString().replace(',','') + ';';
-	}
+	var date = new Date();
+	date = new Date(date.getTime()+(30*24*60*60*1000));
+	var expires = ';expires=' + date.toUTCString().replace(',','') + ';';
 	var cookie = document.cookie;
 	var existingCookie;
 	cookie.length > 0 ? existingCookie = cookie + '///' : existingCookie = '';

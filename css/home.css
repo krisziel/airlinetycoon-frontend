@@ -21,95 +21,13 @@ form {
 .button.full {
 	width: 100%;
 }
-.game-window {
-	margin-top: 100px !important;
-}
-#gameList {
-	background: #ffffff;
-	padding: 0;
-	min-width: 410px;
-	max-width: 410px;
-	margin-left: -205px;
-	left: 50%;
-	position: absolute;
-}
-#airportList {
-	width: 250px;
-	height: 100%;
-	border-right: 1px solid rgba(0,0,0,.1);
-	background: #ffffff;
-}
-.ui.dividing.header.airport {
-	position: relative;
-	padding: 0;
-	height: 57px;
-	background: #ffffff;
-	border-bottom: 1px solid #999999;
-	margin-top: 1px;
-	cursor: pointer;
-	-webkit-transition: all 200ms;
-	-moz-transition: all 200ms;
-	-ms-transition: all 200ms;
-	-o-transition: all 200ms;
-	transition: all 200ms;
-	overflow: hidden;
-}
-.game.button.status {
-	float: right;
-	margin-top: 10px;
-	width: 112px;
-}
-.game.button.create {
-	padding: 8px 12px;
-	margin-left: 10px;
-	height: 31px;
-}
-.ui.dividing.header.airport.active {
-	background: #f0f0f0;
-}
-.ui.dividing.header.airport.active * {
-	color: #009fda;
-}
 .ui.horizontal.statistics.mini {
 	margin-left: 6px;
 	width: 55px;
 	float: left;
 	text-align: left;
 }
-.game .ui.horizontal.statistics.mini {
-	width: 190px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-.game.data {
-	font-size: 12px;
-	color: #999999;
-	width: 87px;
-	float: left;
-	font-weight: normal;
-	line-height: 15px;
-	height: 57px;
-	display: table;
-	text-align: left;
-}
-.airport.data {
-	font-size: 12px;
-	color: #999999;
-	width: 170px;
-	float: left;
-	font-weight: normal;
-	line-height: 15px;
-	height: 57px;
-	display: table;
-}
 span {
   display: table-cell;
   vertical-align: middle;
-}
-#newAirline input {
-	padding: 6px;
-	font-size: 14px;
-	margin-left: 3px;
-	margin-right: 1px;
-	max-width: 130px;
 }
