@@ -34,7 +34,6 @@ function activateLogin() {
 		signUp();
 	});
 	$('form#loginForm').submit(function(e){
-		console.log('login called')
 		e.preventDefault();
 		login();
 	});
@@ -42,74 +41,39 @@ function activateLogin() {
 function signUp() {
 	$.post(base + '/user/', $('#signupForm').serialize(), function(data, textStatus) {
 		if(data.username) {
-			$('input[name="[user]username"]').parent().removeClass('error');
-			if($.isArray(data.username)) {
-				$('input[name="[user]username"]:eq(0)').attr('data-content','Username ' + data.username[0]).popup({
-					on:'focus',
-			    position : 'bottom left',
-				}).parent().addClass('error').on('keyup',function(){
-					$(this).removeClass('error').find('input').popup('destroy');
-				});
-			}
+			loginErrorHandler({inputName:'[user]username',fieldName:'Username',value:data.username});
 		}
 		if(data.email) {
-			$('input[name="[user]email"]').parent().removeClass('error');
-			if($.isArray(data.email)) {
-				$('input[name="[user]email"]:eq(0)').attr('data-content','Email ' + data.email[0]).popup({
-					on:'focus',
-			    position : 'bottom left',
-				}).parent().addClass('error');
-			}
+			loginErrorHandler({inputName:'[user]email',fieldName:'Email',value:data.email});
 		}
 		if(data.name) {
-			$('input[name="[user]name"]').parent().removeClass('error');
-			if($.isArray(data.email)) {
-				$('input[name="[user]name"]:eq(0)').attr('data-content','Name ' + data.name[0]).popup({
-					on:'focus',
-			    position : 'bottom left',
-				}).parent().addClass('error').on('keyup',function(){
-					$(this).removeClass('error').find('input').popup('destroy');
-				});
-			}
+			loginErrorHandler({inputName:'[user]name',fieldName:'Name',value:data.name});
 		}
 		if(data.password) {
-			$('input[name="[user]password"]').parent().removeClass('error');
-			if($.isArray(data.email)) {
-				$('input[name="[user]password"]:eq(0)').attr('data-content','Password ' + data.password[0]).popup({
-					on:'focus',
-			    position : 'bottom left',
-				}).parent().addClass('error').on('keyup',function(){
-					$(this).removeClass('error').find('input').popup('destroy');
-				});
-			}
+			loginErrorHandler({inputName:'[user]password',fieldName:'Password',value:data.password});
 		}
 	}, "json");
 }
 function login() {
 	$.post(base + '/user/login', $('#loginForm').serialize(), function(data, textStatus) {
 		if(data.username) {
-			$('input[name="[user]username"]').parent().removeClass('error');
-			if($.isArray(data.username)) {
-				$('input[name="[user]username"]:eq(0)').attr('data-content','Username ' + data.username[0]).popup({
-					on:'focus',
-			    position : 'bottom left',
-				}).parent().addClass('error').on('keyup',function(){
-					$(this).removeClass('error').find('input').popup('destroy');
-				});
-			}
+			loginErrorHandler({inputName:'username',fieldName:'Username',value:data.username});
 		}
 		if(data.password) {
-			$('input[name="[user]password"]').parent().removeClass('error');
-			if($.isArray(data.email)) {
-				$('input[name="[user]password"]:eq(0)').attr('data-content','Password ' + data.password[0]).popup({
-					on:'focus',
-			    position : 'bottom left',
-				}).parent().addClass('error').on('keyup',function(){
-					$(this).removeClass('error').find('input').popup('destroy');
-				});
-			}
+			loginErrorHandler({inputName:'password',fieldName:'Password',value:data.password});
 		}
 	}, "json");
+}
+function loginErrorHandler(args) {
+	$('input[name="' + args.inputName + '"]').parent().removeClass('error');
+	if($.isArray(args.value)) {
+		$('input[name="' + args.inputName + '"]').attr('data-content',args.fieldName + ' ' + args.value[0]).popup({
+			on:'focus',
+	    position : 'bottom left',
+		}).parent().addClass('error').on('keyup',function(){
+			$(this).removeClass('error').find('input').popup('destroy');
+		});
+	}
 }
 function validEmail(email) {
 	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

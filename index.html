@@ -25,7 +25,7 @@
 			</div>
 		</script>
 		<script id="gameTemplate" type="text/template">
-			<div class="ui dividing header airport game">
+			<div class="ui dividing header airport game" id="game<%= id %>">
 			  <div class="content">
 					<div class="ui horizontal statistics mini">
 					  <div class="ui statistic game">
@@ -36,10 +36,29 @@
 						</div>
 						<div class="game data">
 							<span><%= region %><br/>
-							<%= airlines %> Airlines</span>
+							<%= plural(airlines, 'Airline') %><% if(player){ %> <br />
+								You: <%= player %><% } %></span>
 						</div>
+						<%= status %>
+						<% if(player) { %>
+							<div class="button ui blue status game">Load Game</div>
+						<% } else { %>
+							<div class="button ui green status game">Join Game</div>
+						<% } %>
 					</div>
 			  </div>
+			</div>
+		</script>
+		<script id="newAirlineTemplate" type="text/template">
+			<div class="form column ui new airline">
+				<form id="newAirline">
+					<div class="field inline">
+						<input type="hidden" name="[airline]game_id" value="<%= id %>" />
+	        	<input placeholder="Airline Name" type="text" name="[airline]name" data-variation="inverted" />
+	        	<input placeholder="Airline Code (3 letters)" type="text" name="[airline]icao" data-variation="inverted" maxlength="3" />
+						<div class="button ui green create game">Create Airline</div>
+					</div>
+				</form>
 			</div>
 		</script>
     <script id="airportTemplate" type="text/template">
@@ -48,11 +67,9 @@
     </div>
 	  <div class="column" id="airportList" style="width: 250px; display:none;">
 		</div>
-		
     <div class="shaded grid game-window">
       <div class="ui grid">
-        <div class="five column row">
-          <div class="ui column"></div>
+        <div class="three column row">
           <div class="ui column"></div>
 				  <div class="column" id="gameList">
 					</div>
