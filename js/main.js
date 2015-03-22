@@ -4,18 +4,17 @@ $(document).ready(function(){
 var cookies = {};
 function startApp() {
 	parseCookie();
-	loadGames();
 	$.post(base + '/user/autologin/' + cookies.url, {}, function(data, textStatus) {
 		if(data.status !== 'loggedin') {
-			//$('.login-window').modal('show');
-			$('.game-window').modal('show');
+			$('.login-window').modal('show',{closable:false});
 			activateLogin();
 		}
 	}, "json");
 }
 var button;
 function parseCookie() {
-	cookie = document.cookie.split(';')
+	cookie = document.cookie.split('///');
+	console.log(cookie);
 	cookies.url = '?'
 	cookie_url = {
 		'user_id':'user_cookie',
@@ -72,9 +71,9 @@ function signUp() {
 			loginErrorHandler({inputName:'[user]password',fieldName:'Password',value:data.password});
 		}
 		if(data.cookie) {
-			date = new Date().setTime(date.getTime()+(30*24*60*60*1000));
-      expires = "; expires="+date.toGMTString();
+			setCookie({key:'user_id',value:data.cookie});
 			document.cookie = "airtycoon_user=" + data.cookie + expires;
+			loadGames();
 		}
 	}, "json");
 }
@@ -87,9 +86,8 @@ function login() {
 			loginErrorHandler({inputName:'password',fieldName:'Password',value:data.password});
 		}
 		if(data.cookie) {
-			date = new Date().setTime(date.getTime()+(30*24*60*60*1000));
-      expires = "; expires="+date.toGMTString();
-			document.cookie = "airtycoon_user=" + data.cookie + expires;
+			setCookie({key:'user_id',value:data.cookie});
+			loadGames();
 		}
 	}, "json");
 }
@@ -107,4 +105,22 @@ function loginErrorHandler(args) {
 function validEmail(email) {
 	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	return re.test(email);
+}
+function setCookie(args) {
+	if(document.cookie !== 9) {
+		var date = new Date();
+		date = new Date(date.getTime()+(30*24*60*60*1000));
+	  var expires = ';expires=' + date.toUTCString().replace(',','') + ';';
+	}
+	var cookie = document.cookie;
+	var existingCookie;
+	cookie.length > 0 ? existingCookie = cookie + '///' : existingCookie = '';
+	destroyCookie();
+	var cookieString = existingCookie + args.key + '=' + args.value;
+	document.cookie = cookieString + expires;
+	parseCookie();
+}
+function destroyCookie() {
+	document.cookie += ';expires=Mon 6 Mar 1989 12:16:00 UTC';
+	parseCookie();
 }

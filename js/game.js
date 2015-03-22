@@ -82,7 +82,7 @@ var NewAirlineView = Backbone.View.extend({
 					loginErrorHandler({inputName:'[airline]icao',fieldName:'',value:data.icao});
 				}
 				if(data.cookie) {
-					document.cookies += 'game_id=' + data.cookie;
+					setCookie({key:'game_id',value:data.cookie});
 					parseCookie();
 				}
 			});
@@ -125,14 +125,14 @@ var NewAirlineView = Backbone.View.extend({
 var games = [];
 var gameList;
 function loadGames() {
-$.getJSON(base + 'game' + cookies.url).done(function(data){
-  _.each(data,function(game){
-    gameItem = new Game(game);
-    // if(!_.include(airportList,airportItem)) {
-      games.push(gameItem);
-			// }
+	$.getJSON(base + 'game' + cookies.url).done(function(data){
+		$('.login-window').modal('hide');
+		$('.game-window').modal('show',{closable:false});
+	  _.each(data,function(game){
+	    gameItem = new Game(game);
+			games.push(gameItem);
+		});
+	  gameList = new GameList(games);
+	  new GameListView({el:'#gameList'});
 	});
-  gameList = new GameList(games);
-  new GameListView({el:'#gameList'});
-});
 }
