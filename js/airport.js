@@ -25,7 +25,13 @@ var AirportView = Backbone.View.extend({
     var template = _.template($('#airportTemplate').html(),variables);
     this.$el.html(template);
     return this;
-  }
+  },
+	events:{
+		'click':'loadAirport'
+	},
+	loadAirport:function(){
+		console.log('#DICEY');
+	}
 });
 
 var AirportListView = Backbone.View.extend({

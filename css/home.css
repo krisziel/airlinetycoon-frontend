@@ -27,6 +27,11 @@ form {
 #gameList {
 	background: #ffffff;
 	padding: 0;
+	min-width: 410px;
+	max-width: 410px;
+	margin-left: -205px;
+	left: 50%;
+	position: absolute;
 }
 #airportList {
 	width: 250px;
@@ -37,7 +42,7 @@ form {
 .ui.dividing.header.airport {
 	position: relative;
 	padding: 0;
-	height: 60px;
+	height: 57px;
 	background: #ffffff;
 	border-bottom: 1px solid #999999;
 	margin-top: 1px;
@@ -66,22 +71,26 @@ form {
 	color: #009fda;
 }
 .ui.horizontal.statistics.mini {
-	margin-left: 10px;
+	margin-left: 6px;
 	width: 55px;
 	float: left;
+	text-align: left;
 }
 .game .ui.horizontal.statistics.mini {
 	width: 190px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .game.data {
 	font-size: 12px;
 	color: #999999;
-	width: 167px;
+	width: 87px;
 	float: left;
 	font-weight: normal;
 	line-height: 15px;
 	height: 57px;
 	display: table;
+	text-align: left;
 }
 .airport.data {
 	font-size: 12px;
@@ -100,6 +109,7 @@ span {
 #newAirline input {
 	padding: 6px;
 	font-size: 14px;
-	margin-left: 10px;
+	margin-left: 3px;
 	margin-right: 1px;
+	max-width: 130px;
 }

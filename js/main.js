@@ -1,8 +1,11 @@
 $(document).ready(function(){
 	startApp();
 });
+var cookies = {};
 function startApp() {
-	$.post(base + '/user/autologin', {}, function(data, textStatus) {
+	parseCookie();
+	loadGames();
+	$.post(base + '/user/autologin/' + cookies.url, {}, function(data, textStatus) {
 		if(data.status !== 'loggedin') {
 			//$('.login-window').modal('show');
 			$('.game-window').modal('show');
@@ -11,6 +14,22 @@ function startApp() {
 	}, "json");
 }
 var button;
+function parseCookie() {
+	cookie = document.cookie.split(';')
+	cookies.url = '?'
+	cookie_url = {
+		'user_id':'user_cookie',
+		'game_id':'game_cookie',
+		'airline_id':'airline_cooke'
+	}
+	_.each(cookie,function(value){
+		key = value.split("=");
+		cookies[key[0]] = key[1];
+		key[2] ? cookies[key[0]] += '=' + key[2] : key[1];
+		cookies.url += cookie_url[key[0].replace(' ','')] + '=' + cookies[key[0]] + '&';
+	});
+	cookies.url = cookies.url.substring(0,cookies.url.length-1);
+}
 function activateLogin() {
 	$('#loginMenu').on('click','.item',function(e){
 		$(this).parent().find('.item').removeClass('active');
@@ -52,6 +71,11 @@ function signUp() {
 		if(data.password) {
 			loginErrorHandler({inputName:'[user]password',fieldName:'Password',value:data.password});
 		}
+		if(data.cookie) {
+			date = new Date().setTime(date.getTime()+(30*24*60*60*1000));
+      expires = "; expires="+date.toGMTString();
+			document.cookie = "airtycoon_user=" + data.cookie + expires;
+		}
 	}, "json");
 }
 function login() {
@@ -61,6 +85,11 @@ function login() {
 		}
 		if(data.password) {
 			loginErrorHandler({inputName:'password',fieldName:'Password',value:data.password});
+		}
+		if(data.cookie) {
+			date = new Date().setTime(date.getTime()+(30*24*60*60*1000));
+      expires = "; expires="+date.toGMTString();
+			document.cookie = "airtycoon_user=" + data.cookie + expires;
 		}
 	}, "json");
 }
