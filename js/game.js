@@ -40,7 +40,7 @@ var GameView = Backbone.View.extend({
 	},
 	loadGame:function(){
 		var id = this.model.attributes.id;
-		loadGame(id);
+		launchGame(id);
 	}
 });
 
@@ -89,7 +89,7 @@ var NewAirlineView = Backbone.View.extend({
 				if(data.cookie) {
 					setCookie({key:'game_id',value:data.cookie});
 					parseCookie();
-					launchGame();
+					launchGame(this.model.attributes.id);
 				}
 			});
 		}

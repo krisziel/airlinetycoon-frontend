@@ -1,0 +1,44 @@
+.ui.dividing.header.airport {
+	position: relative;
+	padding: 0;
+	height: 57px;
+	background: #ffffff;
+	border-bottom: 1px solid #999999;
+	margin-top: 1px;
+	cursor: pointer;
+	-webkit-transition: all 200ms;
+	-moz-transition: all 200ms;
+	-ms-transition: all 200ms;
+	-o-transition: all 200ms;
+	transition: all 200ms;
+	overflow: hidden;
+}
+.content.airport {
+	width: 100%;
+}
+.ui.dividing.header.airport.active {
+	background: #f0f0f0;
+}
+.ui.dividing.header.airport.active * {
+	color: #009fda;
+}
+.ui.horizontal.statistics.mini.airport {
+	margin-left: 6px;
+	width: 55px;
+	float: left;
+	text-align: left;
+}
+.airport.data {
+	font-size: 12px;
+	color: #999999;
+	width: 235px;
+	float: left;
+	font-weight: normal;
+	line-height: 15px;
+	height: 57px;
+	display: table;
+}
+span {
+  display: table-cell;
+  vertical-align: middle;
+}

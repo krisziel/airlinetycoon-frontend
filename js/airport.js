@@ -30,7 +30,7 @@ var AirportView = Backbone.View.extend({
 		'click':'loadAirport'
 	},
 	loadAirport:function(){
-		console.log('#DICEY');
+		console.log(this.model.attributes.id);
 	}
 });
 
@@ -54,15 +54,14 @@ var AirportListView = Backbone.View.extend({
 
 var airports = [];
 var airportList;
-$.getJSON(base + 'airport').done(function(data){
-  _.each(data,function(airport){
-    airportItem = new Airport(airport);
-    // if(!_.include(airportList,airportItem)) {
-      airports.push(airportItem);
-			// }
+function loadAirports(){
+	$.getJSON(base + 'airport').done(function(data){
+	  _.each(data,function(airport){
+	    airportItem = new Airport(airport);
+	    airports.push(airportItem);
 		});
-  airportList = new AirportList(airports);
-  new AirportListView({el:'#airportList'});
-});
-
+	  airportList = new AirportList(airports);
+	  new AirportListView({el:'#airportList'});
+	});
+}
 var ROR = $.parseJSON('{"iata": "ROR","cityCode": "ROR","name": "Airai Airport","city": "Koror","state": null,"country": "Palau","population": 500000,"slots": {"total": 1989,"available": 1213},"coordinates": {"latitude": "7.364122","longitude": "134.532892"},"id": 9}');
