@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/game.css">
     <link rel="stylesheet" href="css/airport.css">
+    <link rel="stylesheet" href="css/alliance.css">
+    <link rel="stylesheet" href="css/chat.css">
   </head>
   <body>
     <script id="airportTemplate" type="text/template">
@@ -77,6 +79,16 @@
 			<div class="column" id="aircraftList" data-tabid="aircraft">
 			</div>
 			<div class="column" id="allianceList" data-tabid="alliance">
+				<div class="chat window">
+					<form class="ui form" id="messageForm">
+						<div class="field chat">
+					    <textarea id="chatMessage" class="message" name="[alliance_chat]message"></textarea>
+							<input type="submit" class="ui button blue super small" name="alliance" value="Send" />
+					  </div>
+					</form>
+					<div class="message list">
+					</div>
+				</div>
 			</div>
 			<div class="column" id="moreList" data-tabid="more">
 			</div>
@@ -87,6 +99,8 @@
 		<script id="allianceListTemplate" type="text/template">
 		</script>
 		<script id="allianceAirlineTemplate" type="text/template">
+		</script>
+		<script id="allianceMessageView" type="text/template">
 		</script>
 		<div id="leftColumn">
 		</div>
@@ -139,8 +153,10 @@
     <script src="js/airport.js"></script>
     <script src="js/main.js"></script>
     <script src="js/game.js"></script>
+    <script src="js/alliance.js"></script>
     <script src="js/user.js"></script>
     <script src="js/menu.js"></script>
+    <script src="js/chat.js"></script>
     <script src="js/semantic.min.js"></script>
   </body>
 </html>

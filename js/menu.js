@@ -1,5 +1,4 @@
 function launchGame(id) {
-	console.log(id);
 	$('.game-window').modal('hide');
 	loadGame(id);
 	loadAirports();
@@ -7,6 +6,7 @@ function launchGame(id) {
 	loadAircraft();
 	loadAlliance();
 	loadMore();
+	loadMsc();
 	var menu = new MenuView({el:'#leftColumn'});
 }
 var MenuView = Backbone.View.extend({
@@ -39,8 +39,18 @@ function loadAircraft() {
 	
 }
 function loadAlliance() {
-	
 }
 function loadMore() {
 	
+}
+function loadMsc() {
+	$('body').on('keyup','textarea',function(){
+		$(this).css('height','auto');
+		$(this).height(this.scrollHeight-20);
+	});
+	$('body').on('click','.ui.button.blue.super.small',function(e){
+		e.preventDefault();
+		sendChatMessage();
+	});
+	launchChat();
 }

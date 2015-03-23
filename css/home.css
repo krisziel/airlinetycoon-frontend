@@ -48,3 +48,6 @@ span {
 	left: 0px;
 	top: 0px;
 }
+#leftColumn > .column {
+	position: relative;
+}

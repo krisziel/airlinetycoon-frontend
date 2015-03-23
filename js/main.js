@@ -50,3 +50,7 @@ function destroyCookie(key) {
 	document.cookie = key + '=false;expires=Mon 6 Mar 1989 12:13:00 UTC';
 	parseCookie();
 }
+$('body').on('keyup','textarea',function(){
+	$(this).css('height','auto');
+	$(this).height(this.scrollHeight);
+});
