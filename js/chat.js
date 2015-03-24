@@ -1,6 +1,7 @@
 var messageInterval;
 
 function launchChat() {
+	closeChat();
 	$('.message.list').css({height:$('.chat.window').height()-54});
 	$('body').on('click','.ui.button.blue.super.small',function(e){
 		e.preventDefault();

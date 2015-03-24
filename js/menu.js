@@ -53,6 +53,6 @@ function loadMsc() {
 function prepareTab(tab) {
 	if(tab === 'alliance') {
 		loadAlliance();
-		launchChat();
+		//launchChat();
 	}
 }

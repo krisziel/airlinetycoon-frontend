@@ -80,38 +80,41 @@
 			<div class="column" id="aircraftList" data-tabid="aircraft">
 			</div>
 			<div class="column" id="allianceList" data-tabid="alliance">
-				<div class="alliance info">
-					<div class="ui statistic mini alliance info">
-					  <div class="value">
-					    Star Alliance
-					  </div>
-					  <div class="label">
-					    4 Airlines (1 Pending)
-					  </div>
-					</div>
-				</div>
-				<div class="ui secondary pointing two item alliance menu blue">
-					<a class="active item" data-tab="alliance_airlines">Airlines</a>
-				  <a class="item" data-tab="alliance_chat">Chat</a>
-				</div>
-				<div class="alliance airline list" data-tab="alliance_airlines">
-				</div>
-				<div class="chat window" data-tab="alliance_chat" style="display:none;">
-					<div class="message list">
-					</div>
-					<form class="ui form" id="messageForm">
-						<div class="field chat">
-					    <textarea id="chatMessage" class="message" name="[alliance_chat]message"></textarea>
-							<input type="submit" class="ui button blue super small" name="alliance" value="Send" />
-					  </div>
-						</form>
-				</div>
 			</div>
 			<div class="column" id="moreList" data-tabid="more">
 			</div>
 		</script>
 		<script id="allianceTemplate" type="text/template">
 			<div><%= name %></div>
+		</script>
+		<script id="allianceInfoTemplate" type="text/template">
+			<div class="alliance info">
+				<div class="ui statistic mini alliance info">
+				  <div class="value">
+				    <%= name %>
+				  </div>
+				  <div class="label">
+				    <%= plural(airlines.length,'Airline') %><% if(pending > 0) { %> (<%= pending %> Pending) <% } %>
+				  </div>
+				</div>
+			</div>
+			<div class="ui secondary pointing two item alliance menu blue">
+				<a class="active item" data-tab="alliance_airlines">Airlines</a>
+			  <a class="item" data-tab="alliance_chat">Chat</a>
+			</div>
+			<div class="alliance airline list" data-tab="alliance_airlines">
+				<%= allianceAirlines(airlines) %>
+			</div>
+			<div class="chat window" data-tab="alliance_chat" style="display:none;">
+				<div class="message list">
+				</div>
+				<form class="ui form" id="messageForm">
+					<div class="field chat">
+				    <textarea id="chatMessage" class="message" name="[alliance_chat]message"></textarea>
+						<input type="submit" class="ui button blue super small" name="alliance" value="Send" />
+				  </div>
+				</form>
+			</div>
 		</script>
 		<script id="allianceListTemplate" type="text/template">
 		</script>
@@ -126,7 +129,7 @@
 						</div>
 					</div>
 					<div class="airport data">
-						<span><%= name %><br /><%= plural(flights,'Flight') %><br /><%= plural(aircraft,'Aircraft') %></span>
+						<span><%= name %><br /><%= plural(flights,'Flight') %><br /><%= aircraft %> Aircraft</span>
 					</div>
 				</div>
 			</div>

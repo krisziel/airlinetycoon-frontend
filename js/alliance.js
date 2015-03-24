@@ -4,7 +4,6 @@ var alliance = {};
 var alliances = [];
 
 function loadAlliance() {
-	$('.chat.window').css({height:$('#leftColumn').height()-115});
 	loadAllianceAirlines();
 	$('#allianceList').on('click','.item[data-tab]',function(e){
 		var tab = $(e.currentTarget);
@@ -24,8 +23,10 @@ function loadAllianceAirlines(id) {
 			allianceAirlines.push(allianceAirlineItem);
 		});
 		alliance.airlines = allianceAirlines;
-	  allianceAirlineList = new AllianceAirlineList(allianceAirlines);
-	  new AllianceAirlineListView({el:'.alliance.airline.list'});
+		alliance = new Alliance(alliance);
+		new AllianceInfoView({el:'#allianceList',model:alliance});
+		$('.chat.window').css({height:$('#leftColumn').height()-115});
+		launchChat();
 	});
 }
 
@@ -45,7 +46,6 @@ var AllianceAirlineList = Backbone.Collection.extend({
 var AllianceAirlineView = Backbone.View.extend({
   initialize:function(){
     this.render();
-    this.listenTo(this.model, 'add', this.render);
   },
   render:function(){
     var variables = this.model.attributes;
@@ -58,7 +58,6 @@ var AllianceAirlineView = Backbone.View.extend({
 var AllianceAirlineListView = Backbone.View.extend({
   initialize:function(){
     this.render();
-    this.listenTo(alliance.airlines, 'add', this.addOne);
   },
   render:function(){
     this.addAll();
@@ -70,5 +69,28 @@ var AllianceAirlineListView = Backbone.View.extend({
   addAll:function(){
     this.$el.html('');
     allianceAirlineList.each(this.addOne,this);
+  }
+});
+
+
+var AllianceInfoView = Backbone.View.extend({
+  initialize:function(){
+    this.render();
+  },
+  render:function(){
+		allianceAirlines = function(airlines){
+		  allianceAirlineList = new AllianceAirlineList(airlines);
+		  return new AllianceAirlineListView().$el.html();
+		}
+    var variables = this.model.attributes;
+		variables.pending = 0;
+		_.each(variables.airlines,function(airline){
+			if(!airline.attributes.status) {
+				variables.pending++;
+			}
+		});
+    var template = _.template($('#allianceInfoTemplate').html(),variables);
+    this.$el.html(template);
+    return this;
   }
 });
