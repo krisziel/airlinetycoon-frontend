@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/airport.css">
     <link rel="stylesheet" href="css/alliance.css">
     <link rel="stylesheet" href="css/chat.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.4/semantic.min.css">
   </head>
   <body>
     <script id="airportTemplate" type="text/template">
@@ -79,15 +80,31 @@
 			<div class="column" id="aircraftList" data-tabid="aircraft">
 			</div>
 			<div class="column" id="allianceList" data-tabid="alliance">
-				<div class="chat window">
+				<div class="alliance info">
+					<div class="ui statistic mini alliance info">
+					  <div class="value">
+					    Star Alliance
+					  </div>
+					  <div class="label">
+					    4 Airlines (1 Pending)
+					  </div>
+					</div>
+				</div>
+				<div class="ui secondary pointing two item alliance menu blue">
+					<a class="active item" data-tab="alliance_airlines">Airlines</a>
+				  <a class="item" data-tab="alliance_chat">Chat</a>
+				</div>
+				<div class="alliance airline list" data-tab="alliance_airlines">
+				</div>
+				<div class="chat window" data-tab="alliance_chat" style="display:none;">
+					<div class="message list">
+					</div>
 					<form class="ui form" id="messageForm">
 						<div class="field chat">
 					    <textarea id="chatMessage" class="message" name="[alliance_chat]message"></textarea>
 							<input type="submit" class="ui button blue super small" name="alliance" value="Send" />
 					  </div>
-					</form>
-					<div class="message list">
-					</div>
+						</form>
 				</div>
 			</div>
 			<div class="column" id="moreList" data-tabid="more">
@@ -99,6 +116,20 @@
 		<script id="allianceListTemplate" type="text/template">
 		</script>
 		<script id="allianceAirlineTemplate" type="text/template">
+			<div class="ui dividing header airport">
+			  <div class="content airport">
+					<div class="ui horizontal statistics mini airport">
+					  <div class="ui statistic">
+							<div class="value">
+							  <%= icao %>
+							</div>
+						</div>
+					</div>
+					<div class="airport data">
+						<span><%= name %><br /><%= plural(flights,'Flight') %><br /><%= plural(aircraft,'Aircraft') %></span>
+					</div>
+				</div>
+			</div>
 		</script>
 		<script id="allianceMessageView" type="text/template">
 		</script>

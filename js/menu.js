@@ -23,8 +23,11 @@ var MenuView = Backbone.View.extend({
 	selectTab:function(e) {
 		var tab = $(e.currentTarget);
 		var tabid = tab.data('tabid');
+		prepareTab(tabid);
 		tab.parent().children('.item').removeClass('active');
 		tab.addClass('active');
+		$('*:not(.item)[data-tabid]').css({display:'none'});
+		$('*:not(.item)[data-tabid=' + tabid + ']').css({display:'block'});
 	}
 });
 function loadGame(id) {
@@ -38,8 +41,6 @@ function loadFlights() {
 function loadAircraft() {
 	
 }
-function loadAlliance() {
-}
 function loadMore() {
 	
 }
@@ -48,9 +49,10 @@ function loadMsc() {
 		$(this).css('height','auto');
 		$(this).height(this.scrollHeight-20);
 	});
-	$('body').on('click','.ui.button.blue.super.small',function(e){
-		e.preventDefault();
-		sendChatMessage();
-	});
-	launchChat();
+}
+function prepareTab(tab) {
+	if(tab === 'alliance') {
+		loadAlliance();
+		launchChat();
+	}
 }

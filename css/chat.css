@@ -1,11 +1,12 @@
 .chat {
 	width: 100%;
-	height: auto;
+	height: 100%;
+	overflow: hidden;
 }
 .message.list {
 	overflow-x: hidden;
 	overflow-y: scroll;
-	max-height: 400px;
+	padding-bottom: 5px;
 }
 .message.container {
 	width: 300px;
@@ -41,13 +42,24 @@
 	margin: 2px auto 0 auto;
 	color: #999999;
 }
+.message.author.divider {
+	height: 1px;
+}
 .message.self {
 	float: right;
 	text-align: right;
 }
+.message.self.continuation {
+	margin-top: -10px;
+}
 .message.content.self {
 	background: #0F88F2;
 	color: #FFFFFF;
+}
+#messageForm {
+	position: absolute;
+	left: 0;
+	bottom: 0;
 }
 .chat.field {
 	-webkit-border-radius: 0;
@@ -63,7 +75,7 @@
 	height: 40px;
 	width: 227px;
 }
-.ui.button.blue.super.small {
+.ui.button.super.small {
 	padding: 12px 15px 13px 15px;
 	margin: 1px 0 0 0;
 	background: #0F88F2;
