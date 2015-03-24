@@ -4,3 +4,18 @@
 .ui.secondary.pointing.two.item.menu.blue.alliance {
 	margin: 0;
 }
+.ui.statistic.tiny.alliance {
+	min-width: 300px;
+}
+.ui.statistic.tiny.alliance * {
+	text-align: left !important;
+	margin-left: 10px;
+}
+.ui.statistic.tiny.alliance .value {
+	font-size: 20px;
+	line-height: 20px;
+	margin-top: 5px;
+}
+.ui.statistic.tiny.alliance .label {
+	margin-top: 3px;
+}

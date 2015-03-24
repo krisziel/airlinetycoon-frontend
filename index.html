@@ -84,9 +84,6 @@
 			<div class="column" id="moreList" data-tabid="more">
 			</div>
 		</script>
-		<script id="allianceTemplate" type="text/template">
-			<div><%= name %></div>
-		</script>
 		<script id="allianceInfoTemplate" type="text/template">
 			<div class="alliance info">
 				<div class="ui statistic mini alliance info">
@@ -116,7 +113,15 @@
 				</form>
 			</div>
 		</script>
-		<script id="allianceListTemplate" type="text/template">
+		<script id="allianceTemplate" type="text/template">
+			<div class="ui dividing header airport">
+			  <div class="content">
+					<div class="ui statistic tiny alliance">
+						<div class="value"><%= name %></div>
+					  <div class="label"><%= plural(airlines,'Airline') %></div>
+					</div>
+				</div>
+			</div>
 		</script>
 		<script id="allianceAirlineTemplate" type="text/template">
 			<div class="ui dividing header airport">

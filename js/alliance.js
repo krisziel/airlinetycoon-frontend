@@ -1,7 +1,7 @@
 var allianceAirlineList;
 var allianceView;
 var alliance = {};
-var alliances = [];
+var allianceList = [];
 
 function loadAlliance() {
 	loadAllianceAirlines();
@@ -16,17 +16,32 @@ function loadAlliance() {
 function loadAllianceAirlines(id) {
 	var id = id || 'own';
 	$.getJSON(base + 'alliance/' + id + cookies.url).done(function(data){
-		alliance = data;
-		var allianceAirlines = [];
-		_.each(data.airlines,function(airline){
-			var allianceAirlineItem = new AllianceAirline(airline);
-			allianceAirlines.push(allianceAirlineItem);
+		if(data.error) {
+			loadAllianceList();
+		} else {
+			alliance = data;
+			var allianceAirlines = [];
+			_.each(data.airlines,function(airline){
+				var allianceAirlineItem = new AllianceAirline(airline);
+				allianceAirlines.push(allianceAirlineItem);
+			});
+			alliance.airlines = allianceAirlines;
+			alliance = new Alliance(alliance);
+			new AllianceInfoView({el:'#allianceList',model:alliance});
+			$('.chat.window').css({height:$('#leftColumn').height()-115});
+			launchChat();
+		}
+	});
+}
+function loadAllianceList() {
+	$.getJSON(base + 'alliance' + cookies.url).done(function(data){
+		allianceList = [];
+		_.each(data,function(alliance){
+			var allianceItem = new Alliance(alliance);
+			allianceList.push(allianceItem);
 		});
-		alliance.airlines = allianceAirlines;
-		alliance = new Alliance(alliance);
-		new AllianceInfoView({el:'#allianceList',model:alliance});
-		$('.chat.window').css({height:$('#leftColumn').height()-115});
-		launchChat();
+		allianceList = new AllianceList(allianceList);
+		new AllianceListView({el:'#allianceList',model:allianceList});
 	});
 }
 
@@ -43,6 +58,9 @@ var AllianceAirline = Backbone.Model.extend({
 var AllianceAirlineList = Backbone.Collection.extend({
   model:AllianceAirline
 });
+var AllianceList = Backbone.Collection.extend({
+	model:Alliance
+});
 var AllianceAirlineView = Backbone.View.extend({
   initialize:function(){
     this.render();
@@ -54,7 +72,33 @@ var AllianceAirlineView = Backbone.View.extend({
     return this;
   }
 });
-
+var AllianceView = Backbone.View.extend({
+  initialize:function(){
+    this.render();
+  },
+  render:function(){
+    var variables = this.model.attributes;
+    var template = _.template($('#allianceTemplate').html(),variables);
+    this.$el.html(template);
+    return this;
+  }
+});
+var AllianceListView = Backbone.View.extend({
+	initialize:function(){
+		this.render();
+	},
+  render:function(){
+    this.addAll();
+  },
+  addOne:function(alliance){
+    var view = new AllianceView({model: alliance});
+    this.$el.append(view.$el);
+  },
+  addAll:function(){
+    this.$el.html('');
+    allianceList.each(this.addOne,this);
+  }
+});
 var AllianceAirlineListView = Backbone.View.extend({
   initialize:function(){
     this.render();
@@ -71,8 +115,6 @@ var AllianceAirlineListView = Backbone.View.extend({
     allianceAirlineList.each(this.addOne,this);
   }
 });
-
-
 var AllianceInfoView = Backbone.View.extend({
   initialize:function(){
     this.render();

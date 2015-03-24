@@ -4,7 +4,6 @@ function launchGame(id) {
 	loadAirports();
 	loadFlights();
 	loadAircraft();
-	loadAlliance();
 	loadMore();
 	loadMsc();
 	var menu = new MenuView({el:'#leftColumn'});
@@ -53,6 +52,5 @@ function loadMsc() {
 function prepareTab(tab) {
 	if(tab === 'alliance') {
 		loadAlliance();
-		//launchChat();
 	}
 }
