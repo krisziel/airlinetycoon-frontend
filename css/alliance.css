@@ -19,3 +19,20 @@
 .ui.statistic.tiny.alliance .label {
 	margin-top: 3px;
 }
+.button.alliance.airline.micro {
+	height: 21px;
+	margin-bottom: 1px;
+	margin-top: 4px;
+	max-height: 21px;
+	line-height: 21px;
+	padding: 0;
+	width: 50px;
+	font-size: 12px;
+	float: right;
+}
+.button.alliance.airline.micro.eject {
+	margin-top: 18px;
+}
+.alliance.airport.data span {
+	min-width: 175px;
+}

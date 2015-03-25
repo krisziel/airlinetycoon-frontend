@@ -91,7 +91,7 @@
 				    <%= name %>
 				  </div>
 				  <div class="label">
-				    <%= plural(airlines.length,'Airline') %><% if(pending > 0) { %> (<%= pending %> Pending) <% } %>
+				    <%= plural(airlines.length-pending,'Airline') %><% if(pending > 0) { %> (<%= pending %> Pending) <% } %>
 				  </div>
 				</div>
 			</div>
@@ -133,8 +133,18 @@
 							</div>
 						</div>
 					</div>
-					<div class="airport data">
+					<div class="airport alliance data">
 						<span><%= name %><br /><%= plural(flights,'Flight') %><br /><%= aircraft %> Aircraft</span>
+						<% if(admin) { %>
+							<% if(status) { %>
+								<div class="ui button red micro alliance airline eject">Eject</div>
+							<% } else { %>
+								<div class="ui button green micro alliance airline accept">Accept</div>
+								<div class="ui button red micro alliance airline reject">Reject</div>
+							<% } %>
+						<% } else if(status) { %>
+							<div class="ui button red micro alliance airline eject">Leave</div>
+						<% } %>
 					</div>
 				</div>
 			</div>

@@ -20,6 +20,7 @@ var MenuView = Backbone.View.extend({
 		'click .item[data-tabid]':'selectTab'
 	},
 	selectTab:function(e) {
+		closeChat();
 		var tab = $(e.currentTarget);
 		var tabid = tab.data('tabid');
 		prepareTab(tabid);

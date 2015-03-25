@@ -67,10 +67,25 @@ var AllianceAirlineView = Backbone.View.extend({
   },
   render:function(){
     var variables = this.model.attributes;
+		variables.admin = alliance.attributes.admin;
     var template = _.template($('#allianceAirlineTemplate').html(),variables);
     this.$el.html(template);
     return this;
-  }
+  },
+	events:{
+		'click .button.alliance.airline.reject.micro':'rejectAllianceAirline',
+		'click .button.alliance.airline.accept.micro':'acceptAllianceAirline',
+		'click .button.alliance.airline.eject.micro':'ejectAllianceAirline'
+	},
+	rejectAllianceAirline:function(){
+		
+	},
+	acceptAllianceAirline:function(){
+		
+	},
+	ejectAllianceAirline:function(){
+		
+	},
 });
 var AllianceView = Backbone.View.extend({
   initialize:function(){
