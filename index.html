@@ -114,13 +114,14 @@
 			</div>
 		</script>
 		<script id="allianceTemplate" type="text/template">
-			<div class="ui dividing header airport">
+			<div class="ui dividing header airport alliance" data-alliance="<%= id %>">
 			  <div class="content">
 					<div class="ui statistic tiny alliance">
 						<div class="value"><%= name %></div>
 					  <div class="label"><%= plural(airlines,'Airline') %></div>
 					</div>
 				</div>
+				<div class="ui button green micro alliance airline eject">Request to Join</div>
 			</div>
 		</script>
 		<script id="allianceAirlineTemplate" type="text/template">
@@ -149,7 +150,12 @@
 				</div>
 			</div>
 		</script>
-		<script id="allianceMessageView" type="text/template">
+		<script id="newAllianceView" type="text/template"><div class="ui one bottom attached buttons create">
+      <div class="ui button primary">
+        <i class="add icon"></i>
+        Create New Alliance
+				</div>
+			</div>
 		</script>
 		<div id="leftColumn">
 		</div>
@@ -197,6 +203,7 @@
     <script src="js/json2.js"></script>
     <script src="js/jquery.js"></script>
     <script src="js/underscore.js"></script>
+    <script src="js/q.js"></script>
     <script src="js/backbone.js"></script>
     <script src="js/backbone.localStorage.js"></script>
     <script src="js/airport.js"></script>

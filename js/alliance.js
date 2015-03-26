@@ -13,7 +13,7 @@ function loadAlliance() {
 		$('#allianceList > div[data-tab=' + tab.attr('data-tab') + ']').css({display:'block'});
 	});
 }
-function loadAllianceAirlines(id) {
+function loadAllianceAirlines(id,el) {
 	var id = id || 'own';
 	$.getJSON(base + 'alliance/' + id + cookies.url).done(function(data){
 		if(data.error) {
@@ -26,14 +26,23 @@ function loadAllianceAirlines(id) {
 				allianceAirlines.push(allianceAirlineItem);
 			});
 			alliance.airlines = allianceAirlines;
-			alliance = new Alliance(alliance);
-			new AllianceInfoView({el:'#allianceList',model:alliance});
-			$('.chat.window').css({height:$('#leftColumn').height()-115});
-			//launchChat();
+			if(!el){
+				alliance = new Alliance(alliance);
+				new AllianceInfoView({el:'#allianceList',model:alliance});
+				$('.chat.window').css({height:$('#leftColumn').height()-115});
+				//launchChat();
+				return alliance;
+			} else {
+		  	allianceAirlineList = new AllianceAirlineList(alliance.airlines);
+				alliance = new Alliance(alliance);
+				$('.airline.alliance.compressed').remove();
+				$(el).after('<div class="airline alliance compressed">' + new AllianceAirlineListView().$el.html() + '</div>');
+			}
 		}
 	});
 }
-function loadAllianceList() {
+function loadAllianceList(el) {
+	el = el || '#allianceList';
 	$.getJSON(base + 'alliance' + cookies.url).done(function(data){
 		allianceList = [];
 		_.each(data,function(alliance){
@@ -41,7 +50,7 @@ function loadAllianceList() {
 			allianceList.push(allianceItem);
 		});
 		allianceList = new AllianceList(allianceList);
-		new AllianceListView({el:'#allianceList',model:allianceList});
+		new AllianceListView({el:el,model:allianceList});
 	});
 }
 
@@ -61,7 +70,7 @@ var AllianceAirlineList = Backbone.Collection.extend({
 var AllianceList = Backbone.Collection.extend({
 	model:Alliance
 });
-var AllianceAirlineView = Backbone.View.extend({
+var AllianceAirlineView = Backbone.View.extend({ // Row that displays an airline's name/flights/aircraft in the airline list in alliance info view
   initialize:function(){
     this.render();
   },
@@ -71,12 +80,9 @@ var AllianceAirlineView = Backbone.View.extend({
     var template = _.template($('#allianceAirlineTemplate').html(),variables);
     this.$el.html(template);
     return this;
-  },
-	testing:function(){
-		alert('testing');
-	}
+  }
 });
-var AllianceView = Backbone.View.extend({
+var AllianceView = Backbone.View.extend({ // Actual row that shows an alliance and members in the list
   initialize:function(){
     this.render();
   },
@@ -85,9 +91,28 @@ var AllianceView = Backbone.View.extend({
     var template = _.template($('#allianceTemplate').html(),variables);
     this.$el.html(template);
     return this;
-  }
+  },
+	events:{
+		'click .ui.dividing.header.alliance':'loadAllianceInfo',
+		'click .ui.button.green.micro.alliance.airline.eject':'requestAlliance'
+	},
+	loadAllianceInfo:function(){
+		var id = this.model.attributes.id;
+		if(alliance.id != id) {
+			loadAllianceAirlines(id,'.ui.dividing.header.alliance[data-alliance=' + id + ']');
+		}
+	},
+	requestAlliance:function(e){
+		console.log(e);
+		console.log('hi')
+		console.log(this.model.attributes);
+		
+		$.post(base + 'alliance/' + this.model.attributes.id + '/request' + cookies.url).done(function(data){
+			
+		});
+	}
 });
-var AllianceListView = Backbone.View.extend({
+var AllianceListView = Backbone.View.extend({ // The list of alliances displayed to user if they aren't in an alliance (AllianceInfoView)
 	initialize:function(){
 		this.render();
 	},
@@ -99,11 +124,17 @@ var AllianceListView = Backbone.View.extend({
     this.$el.append(view.$el);
   },
   addAll:function(){
-    this.$el.html('');
+    var template = _.template($('#newAllianceView').html());
+    this.$el.html(template);
     allianceList.each(this.addOne,this);
-  }
+  },
+	events:{
+		'click .ui.one.bottom.attached.buttons.create':'createAlliance'
+	},
+	createAlliance:function(){
+	}
 });
-var AllianceAirlineListView = Backbone.View.extend({
+var AllianceAirlineListView = Backbone.View.extend({ // The view that combines all airlines into a list (using AllianceAirlineView)
   initialize:function(){
     this.render();
   },
@@ -117,12 +148,9 @@ var AllianceAirlineListView = Backbone.View.extend({
   addAll:function(){
     this.$el.html('');
     allianceAirlineList.each(this.addOne,this);
-  },
-	testing:function(e){
-		alert('dafuq');
-	}
+  }
 });
-var AllianceInfoView = Backbone.View.extend({
+var AllianceInfoView = Backbone.View.extend({ // The view that displays the alliance name/airlines and a list of all members
   initialize:function(){
     this.render();
   },
@@ -139,7 +167,11 @@ var AllianceInfoView = Backbone.View.extend({
 			}
 		});
     var template = _.template($('#allianceInfoTemplate').html(),variables);
-    this.$el.html(template);
+		if(this.$el === '#allianceList') {
+			this.$el.html(template);
+		} else {
+			this.$el.after(template);
+		}
     return this;
   },
 	events:{
