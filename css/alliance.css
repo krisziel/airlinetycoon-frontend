@@ -32,8 +32,10 @@
 	width: 50px;
 	font-size: 12px;
 	float: right;
+	z-index: 2;
+	position: relative;
 }
-.button.alliance.airline.micro.eject {
+.button.alliance.airline.micro.single {
 	margin-top: 18px;
 }
 .alliance.airport.data span {
@@ -43,7 +45,7 @@
 	margin-left: 20px;
 }
 .airline.alliance.compressed .airport.alliance.data {
-	width: 200px;
+	width: 185px;
 }
 .ui.one.bottom.attached.buttons.create {
 	width: 100%;

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/game.css">
     <link rel="stylesheet" href="css/airport.css">
     <link rel="stylesheet" href="css/alliance.css">
+    <link rel="stylesheet" href="css/airline.css">
     <link rel="stylesheet" href="css/chat.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.4/semantic.min.css">
   </head>
@@ -125,7 +126,7 @@
 			</div>
 		</script>
 		<script id="allianceAirlineTemplate" type="text/template">
-			<div class="ui dividing header airport" data-membership="<%= mid %>">
+			<div class="ui dividing header airport" data-membership="<%= mid %>" data-id="<%= id %>">
 			  <div class="content airport">
 					<div class="ui horizontal statistics mini airport">
 					  <div class="ui statistic">
@@ -135,25 +136,44 @@
 						</div>
 					</div>
 					<div class="airport alliance data">
-						<span><%= name %><br /><%= plural(flights,'Flight') %><br /><%= aircraft %> Aircraft</span>
-						<% if(admin) { %>
+					<span><%= name %><br /><%= plural(flights,'Flight') %><br /><%= aircraft %> Aircraft</span>
+						<% if((admin)&&(self !== true)) { %>
 							<% if(status) { %>
-								<div class="ui button red micro alliance airline eject">Eject</div>
+								<div class="ui button red micro alliance airline eject single">Eject</div>
 							<% } else { %>
 								<div class="ui button green micro alliance airline accept">Accept</div>
 								<div class="ui button red micro alliance airline reject">Reject</div>
 							<% } %>
-						<% } else if(status) { %>
-							<div class="ui button red micro alliance airline eject">Leave</div>
+						<% } else if((self === true)&&(admin === false)) { %>
+							<div class="ui button red micro alliance airline leave single">Leave</div>
 						<% } %>
 					</div>
 				</div>
 			</div>
 		</script>
-		<script id="newAllianceView" type="text/template"><div class="ui one bottom attached buttons create">
-      <div class="ui button primary">
-        <i class="add icon"></i>
-        Create New Alliance
+		<script id="newAllianceView" type="text/template">
+			<div class="ui one bottom attached buttons create">
+	      <div class="ui button primary">
+	        <i class="add icon"></i>
+	        Create New Alliance
+				</div>
+			</div>
+		</script>
+		<script id="airlineModalView" type="text/template">
+			<div class="ui standard modal airline info" style="display:none;">
+		  	<i class="close icon"></i>
+		    <div class="header ui aligned center"><%= name %> (<%= icao %>)</div>
+				<div class="routes container">
+					<div class="ui tablet stackable steps fluid airline flights" id="airlineRouteList">
+					</div>
+				</div>
+			</div>
+		</script>
+		<script id="airlineModalFlightView" type="text/template">
+			<div class="step flight">
+		  	<div class="content">
+		    	<div class="title route"><%= route.origin.iata %><i class="resize horizontal icon"></i><%= route.destination.iata %></div>
+		    	<div class="description aircraft frequencies"><%= userAircraft %><br><%= frequencies %>/week</div>
 				</div>
 			</div>
 		</script>
@@ -206,6 +226,7 @@
     <script src="js/q.js"></script>
     <script src="js/backbone.js"></script>
     <script src="js/backbone.localStorage.js"></script>
+    <script src="js/airline.js"></script>
     <script src="js/airport.js"></script>
     <script src="js/main.js"></script>
     <script src="js/game.js"></script>

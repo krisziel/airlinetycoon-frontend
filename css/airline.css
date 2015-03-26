@@ -1,0 +1,45 @@
+.ui.standard.modal.transition.airline.info {
+	max-width: 410px;
+	margin-left: -205px;
+	max-height: 567px !important;
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+div.container.routes {
+	margin-left: 1px;
+	margin-top: -1px;
+	max-width: 408px;
+	max-height: 500px !important;
+	border: none;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+.ui.tablet.stackable.steps.fluid.airline.flights > *:first-child {
+	-webkit-border-top-right-radius: 0;
+	-moz-border-top-right-radius: 0;
+	-ms-border-top-right-radius: 0;
+	-o-border-top-right-radius: 0;
+	border-top-right-radius: 0;
+	-webkit-border-top-left-radius: 0;
+	-moz-border-top-left-radius: 0;
+	-ms-border-top-left-radius: 0;
+	-o-border-top-left-radius: 0;
+	border-top-left-radius: 0;
+}
+.step.flight {
+	min-height: 57px;
+}
+.step.flight .title.route {
+	width: 180px;
+	float: left;
+	line-height: 31px;
+	font-size: 28px !important;
+	height: 31px;
+	text-align: right;
+	padding-right: 5px;
+}
+.step.flight .description.frequencies.aircraft {
+	width: 180px;
+	float: left;
+	padding-left: 5px;
+}

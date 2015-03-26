@@ -96,17 +96,20 @@ var AllianceView = Backbone.View.extend({ // Actual row that shows an alliance a
 		'click .ui.dividing.header.alliance':'loadAllianceInfo',
 		'click .ui.button.green.micro.alliance.airline.eject':'requestAlliance'
 	},
-	loadAllianceInfo:function(){
-		var id = this.model.attributes.id;
-		if(alliance.id != id) {
-			loadAllianceAirlines(id,'.ui.dividing.header.alliance[data-alliance=' + id + ']');
+	loadAllianceInfo:function(e){
+		var notAction = $(e.currentTarget);
+		console.log(notAction);
+		if(notAction.hasClass('button')) {
+			console.log('button');
+			this.requestAlliance(e);
+		} else {
+			var id = this.model.attributes.id;
+			if(alliance.id != id) {
+				loadAllianceAirlines(id,'.ui.dividing.header.alliance[data-alliance=' + id + ']');
+			}
 		}
 	},
 	requestAlliance:function(e){
-		console.log(e);
-		console.log('hi')
-		console.log(this.model.attributes);
-		
 		$.post(base + 'alliance/' + this.model.attributes.id + '/request' + cookies.url).done(function(data){
 			
 		});
@@ -150,6 +153,7 @@ var AllianceAirlineListView = Backbone.View.extend({ // The view that combines a
     allianceAirlineList.each(this.addOne,this);
   }
 });
+var hello = '';
 var AllianceInfoView = Backbone.View.extend({ // The view that displays the alliance name/airlines and a list of all members
   initialize:function(){
     this.render();
@@ -167,7 +171,8 @@ var AllianceInfoView = Backbone.View.extend({ // The view that displays the alli
 			}
 		});
     var template = _.template($('#allianceInfoTemplate').html(),variables);
-		if(this.$el === '#allianceList') {
+		hello = this.$el[0];
+		if($(this.$el[0]).attr('id') === 'allianceList') {
 			this.$el.html(template);
 		} else {
 			this.$el.after(template);
@@ -177,7 +182,9 @@ var AllianceInfoView = Backbone.View.extend({ // The view that displays the alli
 	events:{
 		'click .ui.button.red.micro.alliance.airline.eject':'ejectAllianceAirline',
 		'click .ui.button.red.micro.alliance.airline.reject':'rejectAllianceAirline',
-		'click .ui.button.green.micro.alliance.airline.accept':'approveAllianceAirline'
+		'click .ui.button.green.micro.alliance.airline.accept':'approveAllianceAirline',
+		'click .ui.button.red.micro.alliance.airline.leave':'leaveAllianceAirline',
+		'click .ui.dividing.header.airport':'showAirlineInfo'
 	},
 	ejectAllianceAirline:function(e){
 		var airline = $(e.currentTarget).closest('.dividing.header');
@@ -199,15 +206,35 @@ var AllianceInfoView = Backbone.View.extend({ // The view that displays the alli
 			}
 		});
 	},
+	leaveAllianceAirline:function(e){
+		var airline = $(e.currentTarget).closest('.dividing.header');
+		console.log(airline);
+		$.post(base + 'alliance/' + this.model.attributes.id + '/leave' + cookies.url + '&membership_id=' + airline.data('membership')).done(function(data){
+			if(data.airline) {
+				airline.remove();
+			} else {
+				loadAllianceList();
+			}
+		});
+	},
 	approveAllianceAirline:function(e){
 		var airline = $(e.currentTarget).closest('.dividing.header');
 		$.post(base + 'alliance/' + this.model.attributes.id + '/approve' + cookies.url + '&membership_id=' + airline.data('membership')).done(function(data){
 			if(data.airline) {
 				airline.find('.airport.alliance.data div').remove();
-				airline.find('.airport.alliance.data').append('<div class="ui button red micro alliance airline eject">Eject</div>');
+				airline.find('.airport.alliance.data').append('<div class="ui button red micro alliance airline eject single">Eject</div>');
 			} else {
 				
 			}
 		});
+	},
+	showAirlineInfo:function(e){
+		var notAction = $(e.currentTarget);
+		if(notAction.hasClass('button')) {
+			this.rejectAllianceAirline(e);
+		} else {
+			var airlineId = notAction.closest('.ui.dividing.header.airport').data('id');
+			showAirlineInfo(airlineId);
+		}
 	}
 });

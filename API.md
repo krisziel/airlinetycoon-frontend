@@ -9,6 +9,7 @@
 # Airline
 * post 'airline' (airline:{icao:string(3),name:string}) : create an airline
 * get 'airline' : all airlines in a game
+* get 'airline/:id' : returns airline name, iata, alliance, and basic flight info
 
 # Aircraft
 * get 'aircraft' : list of all aircraft
@@ -35,6 +36,7 @@
 * post 'alliance/:id/approve' (membership_id:int) : approve request to join an alliance
 * post 'alliance/:id/reject' (membership_id:int) : reject request to join and alliance
 * post 'alliance/:id/eject' (membership_id:int) : eject a member from an alliance
+* post 'alliance/:id/leave' (membership_id:int) : leave an alliance
 
 # Alliance Chat
 * get 'chat/alliance' (*offset:int,*since:timestamp,*limit:int) : get the most recent 20 alliance chat messages
