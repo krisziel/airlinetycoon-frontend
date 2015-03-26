@@ -29,7 +29,7 @@ function loadAllianceAirlines(id) {
 			alliance = new Alliance(alliance);
 			new AllianceInfoView({el:'#allianceList',model:alliance});
 			$('.chat.window').css({height:$('#leftColumn').height()-115});
-			launchChat();
+			//launchChat();
 		}
 	});
 }
@@ -72,20 +72,9 @@ var AllianceAirlineView = Backbone.View.extend({
     this.$el.html(template);
     return this;
   },
-	events:{
-		'click .button.alliance.airline.reject.micro':'rejectAllianceAirline',
-		'click .button.alliance.airline.accept.micro':'acceptAllianceAirline',
-		'click .button.alliance.airline.eject.micro':'ejectAllianceAirline'
-	},
-	rejectAllianceAirline:function(){
-		
-	},
-	acceptAllianceAirline:function(){
-		
-	},
-	ejectAllianceAirline:function(){
-		
-	},
+	testing:function(){
+		alert('testing');
+	}
 });
 var AllianceView = Backbone.View.extend({
   initialize:function(){
@@ -128,7 +117,10 @@ var AllianceAirlineListView = Backbone.View.extend({
   addAll:function(){
     this.$el.html('');
     allianceAirlineList.each(this.addOne,this);
-  }
+  },
+	testing:function(e){
+		alert('dafuq');
+	}
 });
 var AllianceInfoView = Backbone.View.extend({
   initialize:function(){
@@ -149,5 +141,41 @@ var AllianceInfoView = Backbone.View.extend({
     var template = _.template($('#allianceInfoTemplate').html(),variables);
     this.$el.html(template);
     return this;
-  }
+  },
+	events:{
+		'click .ui.button.red.micro.alliance.airline.eject':'ejectAllianceAirline',
+		'click .ui.button.red.micro.alliance.airline.reject':'rejectAllianceAirline',
+		'click .ui.button.green.micro.alliance.airline.accept':'approveAllianceAirline'
+	},
+	ejectAllianceAirline:function(e){
+		var airline = $(e.currentTarget).closest('.dividing.header');
+		$.post(base + 'alliance/' + this.model.attributes.id + '/eject' + cookies.url + '&membership_id=' + airline.data('membership')).done(function(data){
+			if(data.airline) {
+				airline.remove();
+			} else {
+				
+			}
+		});
+	},
+	rejectAllianceAirline:function(e){
+		var airline = $(e.currentTarget).closest('.dividing.header');
+		$.post(base + 'alliance/' + this.model.attributes.id + '/reject' + cookies.url + '&membership_id=' + airline.data('membership')).done(function(data){
+			if(data.airline) {
+				airline.remove();
+			} else {
+				
+			}
+		});
+	},
+	approveAllianceAirline:function(e){
+		var airline = $(e.currentTarget).closest('.dividing.header');
+		$.post(base + 'alliance/' + this.model.attributes.id + '/approve' + cookies.url + '&membership_id=' + airline.data('membership')).done(function(data){
+			if(data.airline) {
+				airline.find('.airport.alliance.data div').remove();
+				airline.find('.airport.alliance.data').append('<div class="ui button red micro alliance airline eject">Eject</div>');
+			} else {
+				
+			}
+		});
+	}
 });
