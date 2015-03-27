@@ -57,3 +57,7 @@
 	-moz-border-radius: 0;
 	border-radius: 0;
 }
+.create-alliance-window {
+	margin-top: 100px !important;
+	display: none;
+}

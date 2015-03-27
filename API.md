@@ -29,7 +29,7 @@
 
 # Alliances
 * get 'alliance' : get a list of all alliances in a game
-* post 'alliance' (alliance:{icao:string(3),name:string}) : create a new alliance
+* post 'alliance' (alliance:{name:string}) : create a new alliance
 * get 'alliance/:id' : show alliance details and all member airlines
 * delete 'alliance/:id' : delete an alliance
 * post 'alliance/:id/request' (membership_id:int) : request to join alliance

@@ -133,7 +133,7 @@
 					  <div class="label"><%= plural(airlines,'Airline') %></div>
 					</div>
 				</div>
-				<div class="ui button green micro alliance airline eject single">Request</div>
+				<div class="ui button green micro alliance airline request single">Request</div>
 			</div>
 		</script>
 		<script id="allianceAirlineTemplate" type="text/template">
@@ -188,6 +188,24 @@
 		    	<div class="title route"><%= route.origin.iata %><i class="resize horizontal icon"></i><%= route.destination.iata %></div>
 		    	<div class="description aircraft frequencies"><%= userAircraft %><br><%= frequencies %>/week</div>
 				</div>
+			</div>
+		</script>
+		<script id="newAllianceModalView" type="text/template">
+		  <div class="shaded grid create-alliance-window">
+		    <div class="ui grid">
+		      <div class="three column row">
+		        <div class="ui column"></div>
+		        <div class="ui raised segment column form login-form">
+						<div class="ui header center aligned">Create a New Alliance</div>
+							<form id="allianceForm">
+		            <div class="field">
+		              <input placeholder="Alliance Name" type="text" name="[alliance]name">
+		            </div>
+		            <input type="submit" class="button blue ui full" value="Create Alliance" />
+		          </form>
+		        </div>
+		      </div>
+		    </div>
 			</div>
 		</script>
 		<div id="leftColumn">
