@@ -13,7 +13,7 @@
   </head>
   <body>
     <script id="airportTemplate" type="text/template">
-			<div class="ui dividing header airport">
+			<div class="ui dividing header airport" data-iata="<%= iata %>">
 			  <div class="content airport">
 					<div class="ui horizontal statistics mini airport">
 					  <div class="ui statistic">
@@ -83,6 +83,17 @@
 			<div class="column" id="allianceList" data-tabid="alliance">
 			</div>
 			<div class="column" id="moreList" data-tabid="more">
+			</div>
+		</script>
+		<script id="airportListTemplate" type="text/template">
+			<div class="ui mini icon input airport">
+				<input type="text" placeholder="Search Airports" class="search airport" maxlength="3">
+			  <i class="search icon"></i>
+			</div>
+			<div class="ui dividing header airport none">
+				<div class="content airport">
+					<h4 class="ui center aligned header">No Airports Found</h4>
+				</div>
 			</div>
 		</script>
 		<script id="allianceInfoTemplate" type="text/template">

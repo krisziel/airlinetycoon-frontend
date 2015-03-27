@@ -14,7 +14,7 @@ var MenuView = Backbone.View.extend({
 	},
 	render:function(){
 		var template = _.template($('#menuTemplate').html());
-    this.$el.append(template);
+    this.$el.html(template);
 	},
 	events:{
 		'click .item[data-tabid]':'selectTab'

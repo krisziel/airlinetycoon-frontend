@@ -1,3 +1,10 @@
+.ui.dividing.header.airport.none {
+	display: none;
+	height: 37px;
+	cursor: arrow;
+	padding-top: 9px;
+	margin-bottom: 0;
+}
 .ui.dividing.header.airport {
 	position: relative;
 	padding: 0;
@@ -41,4 +48,9 @@
 span {
   display: table-cell;
   vertical-align: middle;
+}
+.ui.mini.icon.input.airport {
+	width: 100%;
+	padding: 2px 5px 6px 5px;
+	border-bottom: 1px solid #999999;
 }
