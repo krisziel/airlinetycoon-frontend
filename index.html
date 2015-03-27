@@ -122,11 +122,11 @@
 					  <div class="label"><%= plural(airlines,'Airline') %></div>
 					</div>
 				</div>
-				<div class="ui button green micro alliance airline eject">Request to Join</div>
+				<div class="ui button green micro alliance airline eject single">Request</div>
 			</div>
 		</script>
 		<script id="allianceAirlineTemplate" type="text/template">
-			<div class="ui dividing header airport" data-membership="<%= mid %>" data-id="<%= id %>">
+			<div class="ui dividing header airport airline" data-membership="<%= mid %>" data-id="<%= id %>">
 			  <div class="content airport">
 					<div class="ui horizontal statistics mini airport">
 					  <div class="ui statistic">
@@ -144,6 +144,8 @@
 								<div class="ui button green micro alliance airline accept">Accept</div>
 								<div class="ui button red micro alliance airline reject">Reject</div>
 							<% } %>
+						<% } else if((self === true)&&(admin === false)&&(!status)) { %>
+							<div class="ui button red micro alliance airline pending single">Pending</div>
 						<% } else if((self === true)&&(admin === false)) { %>
 							<div class="ui button red micro alliance airline leave single">Leave</div>
 						<% } %>

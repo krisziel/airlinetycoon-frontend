@@ -94,13 +94,12 @@ var AllianceView = Backbone.View.extend({ // Actual row that shows an alliance a
   },
 	events:{
 		'click .ui.dividing.header.alliance':'loadAllianceInfo',
-		'click .ui.button.green.micro.alliance.airline.eject':'requestAlliance'
+		'click .ui.button.green.micro.alliance.airline.eject':'requestAlliance',
+		'click .ui.dividing.header.airport.airline':'showAirlineInfo'
 	},
 	loadAllianceInfo:function(e){
 		var notAction = $(e.currentTarget);
-		console.log(notAction);
 		if(notAction.hasClass('button')) {
-			console.log('button');
 			this.requestAlliance(e);
 		} else {
 			var id = this.model.attributes.id;
@@ -113,8 +112,18 @@ var AllianceView = Backbone.View.extend({ // Actual row that shows an alliance a
 		$.post(base + 'alliance/' + this.model.attributes.id + '/request' + cookies.url).done(function(data){
 			
 		});
+	},
+	showAirlineInfo:function(e){
+		var notAction = $(e.currentTarget);
+		if(notAction.hasClass('button')) {
+			this.rejectAllianceAirline(e);
+		} else {
+			var airlineId = notAction.closest('.ui.dividing.header.airport').data('id');
+			showAirlineInfo(airlineId);
+		}
 	}
 });
+var a;
 var AllianceListView = Backbone.View.extend({ // The list of alliances displayed to user if they aren't in an alliance (AllianceInfoView)
 	initialize:function(){
 		this.render();
@@ -184,7 +193,10 @@ var AllianceInfoView = Backbone.View.extend({ // The view that displays the alli
 		'click .ui.button.red.micro.alliance.airline.reject':'rejectAllianceAirline',
 		'click .ui.button.green.micro.alliance.airline.accept':'approveAllianceAirline',
 		'click .ui.button.red.micro.alliance.airline.leave':'leaveAllianceAirline',
-		'click .ui.dividing.header.airport':'showAirlineInfo'
+		'click .ui.dividing.header.airport.airline':'showAirlineInfo'
+	},
+	yolosweg:function(){
+		alert('hi');
 	},
 	ejectAllianceAirline:function(e){
 		var airline = $(e.currentTarget).closest('.dividing.header');
