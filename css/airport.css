@@ -53,4 +53,8 @@ span {
 	width: 100%;
 	padding: 2px 5px 6px 5px;
 	border-bottom: 1px solid #999999;
+	font-size: 15px;
+}
+.ui.mini.icon.input.airport input {
+	padding: 7px 39px 7px 7px;
 }

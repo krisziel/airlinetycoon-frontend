@@ -3,7 +3,7 @@ function launchGame(id) {
 	loadGame(id);
 	loadAirports();
 	loadFlights();
-	loadAircraft();
+	loadUserAircraft();
 	loadMore();
 	loadMsc();
 	var menu = new MenuView({el:'#leftColumn'});
@@ -36,9 +36,6 @@ function loadGame(id) {
 	});
 }
 function loadFlights() {
-	
-}
-function loadAircraft() {
 	
 }
 function loadMore() {

@@ -43,7 +43,7 @@ span {
 	border-right: 1px solid #999999;
 	height: 100%;
 	overflow-x: hidden;
-	overflow-y: auto;
+	overflow-y: hidden;
 	position: absolute;
 	left: 0px;
 	top: 0px;
@@ -51,4 +51,6 @@ span {
 #leftColumn > .column {
 	position: relative;
 	margin-top: 5px;
+	overflow-x: hidden;
+	overflow-y: auto;
 }

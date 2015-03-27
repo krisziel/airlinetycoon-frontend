@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/game.css">
     <link rel="stylesheet" href="css/airport.css">
     <link rel="stylesheet" href="css/alliance.css">
+    <link rel="stylesheet" href="css/aircraft.css">
     <link rel="stylesheet" href="css/airline.css">
     <link rel="stylesheet" href="css/chat.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.4/semantic.min.css">
@@ -208,6 +209,20 @@
 		    </div>
 			</div>
 		</script>
+		<script id="userAircraftTemplate" type="text/template">
+			<% if(flight) { %>
+				<a class="step own" id="menuFlight" data-flightid="<%= flight.id %>" data-routeid="<%= flight.route.id %>">
+					<div class="content">
+						<div class="title">
+							<%= aircraft.full_name %>
+							(<%= flight.route.origin.iata %>-<%= flight.route.destination.iata %> <%= flight.frequencies %>x/week)</div>
+						<div class="description"> % Load Factor(<span class="greenColor"></span>)</div>
+					</div>
+				</a>
+			<% } else { %>
+				Aircraft not in use
+			<% } %>
+		</script>
 		<div id="leftColumn">
 		</div>
     <div class="shaded grid game-window">
@@ -259,6 +274,7 @@
     <script src="js/backbone.localStorage.js"></script>
     <script src="js/airline.js"></script>
     <script src="js/airport.js"></script>
+    <script src="js/aircraft.js"></script>
     <script src="js/main.js"></script>
     <script src="js/game.js"></script>
     <script src="js/alliance.js"></script>
