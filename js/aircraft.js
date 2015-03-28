@@ -83,7 +83,12 @@ var AircraftView = Backbone.View.extend({
 		alert('configs');
 	},
 	loadAircraftList:function(){
-		alert('list');
+		var el = $('#list' + this.model.attributes.iata);
+		var hidden = el.hasClass('hide')
+		$('.aircraft.compressed').removeClass('show').addClass('hide');
+		if(hidden) {
+			el.removeClass('hide').addClass('show');
+		}
 	}
 });
 var AircraftListView = Backbone.View.extend({

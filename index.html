@@ -231,11 +231,18 @@
 					</div>
 			  </div>
 			</div>
-			<div class="aircraft compressed" id="list<%= iata %>">
+			<div class="aircraft compressed hide" id="list<%= iata %>">
 				<% _.each(user.aircraft.models,function(aircraft){ %>
 					<% aircraft = aircraft.attributes %>
 					<% if(aircraft.flight === null){ %>
-						not in use
+						<div class="ui dividing header airport flight empty">
+							<div class="content aircraft flight">
+								<div class="aircraft data flight">
+									<span>Unused with <%= aircraft.configuration.name %> config</span>
+								</div>
+								<div class="ui button blue micro alliance airline">Edit</div>
+							</div>
+						</div>
 					<% } else { %>
 						<div class="ui dividing header airport game flight">
 							<div class="content airport aircraft flight">

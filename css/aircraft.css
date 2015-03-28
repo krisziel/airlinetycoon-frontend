@@ -31,3 +31,22 @@
 .aircraft.compressed .ui.button {
 	margin-right: 4px;
 }
+.ui.dividing.header.airport.flight.empty {
+	height: 32px;
+	margin-bottom: 0;
+}
+.ui.dividing.header.airport.flight.empty .data {
+	color: #999999;
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 32px;
+	width: 220px;
+	height: 32px;
+	float: left;
+}
+.show {
+	display: block;
+}
+.hide {
+	display: none;
+}
