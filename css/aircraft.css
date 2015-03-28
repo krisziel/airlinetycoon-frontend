@@ -1,0 +1,15 @@
+#aircraftList {
+	margin-top: 0 !important;
+}
+.ui.button.blue.micro.alliance.airline.purchase.single {
+	width: 64px;
+}
+.content.airport {
+	max-width: 225px;
+}
+.data.airport {
+	max-width: 125px;
+}
+.ui.button.blue.micro.alliance.airline.purchase.single.aircraft {
+	margin-right: 7px;
+}

@@ -1,14 +1,47 @@
+var aircraftList = [];
+var userAircraftObj;
 var userAircraftListView;
 var userAircraftList = [];
+var userAircraft = {};
+
+function loadAircraft() {
+	$.getJSON(base + 'aircraft' + cookies.url).done(function(data){
+		var inuse = [];
+		var unused = [];
+		_.each(data,function(aircraft){
+			var userAircrafts = [];
+			_.each(aircraft.user.aircraft,function(thisAircraftId){
+				var thisAircraft = userAircraft[thisAircraftId];
+				if(thisAircraft.flight) {
+					aircraft.user.inuse++;
+				} else {
+					aircraft.user.unused++;
+				}
+				userAircrafts.push(new UserAircraft(thisAircraft));
+			});
+			aircraft.user.aircraft = new UserAircraftList(userAircrafts);
+			if((aircraft.user.inuse > 0)||(aircraft.user.unused > 0)) {
+				inuse.push(new Aircraft(aircraft));
+			} else {
+				unused.push(new Aircraft(aircraft));
+			}
+		});
+		aircraftList = inuse.concat(unused);
+		aircraftList = new AircraftList(aircraftList);
+		aircraftListView = new AircraftListView({el:'#aircraftList'});
+	});
+}
 
 function loadUserAircraft() {
 	$.getJSON(base + 'aircraft/user' + cookies.url).done(function(data){
+		userAircraft = data;
+		loadAircraft();
 		$('#aircraftList').css({height:$(window).height()-35});
 		_.each(data,function(aircraft){
 			userAircraftList.push(new UserAircraft(aircraft));
 		});
-		userAircraftList = new AircraftList(userAircraftList);
-		userAircraftListView = new UserAircraftListView({el:'#aircraftList'});
+		userAircraftList = new UserAircraftList(userAircraftList);
+		//userAircraftListView = new UserAircraftListView({el:'#aircraftList'});
 	});
 }
 
@@ -25,15 +58,26 @@ var AircraftView = Backbone.View.extend({
 	},
 	render:function(){
 		var variables = this.model.attributes;
-		var template = _.template($('#userAircraftTemplate').html(),variables);
+		var template = _.template($('#aircraftTemplate').html(),variables);
 		this.$el.html(template);
 		return this;
 	},
 	events:{
-		'click .header.aircraft':'loadAircraftInfo'
+		'click .aircraft.header':'checkAircraft'
 	},
-	loadAircraftInfo:function(e){
-		
+	checkAircraft:function(e){
+		console.log($(e.currentTarget).hasClass('button'));
+		if($(e.currentTarget).hasClass('button')) {
+			this.loadAircraftInfo(e);
+		} else {
+			
+		}
+	},
+	loadAircraftInfo:function(){
+		alert('info');
+	},
+	loadAircraftList:function(){
+		alert('list');
 	}
 });
 var AircraftListView = Backbone.View.extend({
@@ -45,7 +89,8 @@ var AircraftListView = Backbone.View.extend({
 		this.addAll();
 	},
 	addOne:function(aircraft){
-		var view = new AircraftView({model:flight});
+		var view = new AircraftView({model:aircraft});
+    this.$el.append(view.$el);
 	},
 	addAll:function(){
 		this.$el.html('');
@@ -71,6 +116,12 @@ var UserAircraftView = Backbone.View.extend({
 		var template = _.template($('#userAircraftTemplate').html(),variables);
 		this.$el.html(template);
 		return this;
+	},
+	events:{
+		'click .airport.compressed.header':'loadPlaneInfo'
+	},
+	loadPlaneInfo:function(){
+		alert(this.model);
 	}
 });
 var UserAircraftListView = Backbone.View.extend({

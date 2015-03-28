@@ -210,19 +210,48 @@
 			</div>
 		</script>
 		<script id="userAircraftTemplate" type="text/template">
+			<%= full_name %>
+		</script>
+		<script id="aircraftTemplate" type="text/template">
+			<div class="ui dividing header airport aircraft" data-iata="<%= iata %>">
+			  <div class="content airport alliance">
+					<div class="ui horizontal statistics mini airport">
+					  <div class="ui statistic">
+							<div class="value">
+								  <%= iata %>
+								</div>
+							</div>
+						</div>
+						<div class="airport data">
+							<span><%= full_name %><br />In use: <%= user.inuse %><br />Unused: <%= user.unused %></span>
+						</div>
+					</div>
+					<div class="ui button blue micro alliance airline purchase single aircraft">Purchase</div>
+			  </div>
+			</div>
+		</script>
+		<script id="d" type="text/template">
+		
 			<% if(flight) { %>
-				<a class="step own" id="menuFlight" data-flightid="<%= flight.id %>" data-routeid="<%= flight.route.id %>">
+				<div class="ui dividing header airport game">
 					<div class="content">
 						<div class="title">
 							<%= aircraft.full_name %>
-							(<%= flight.route.origin.iata %>-<%= flight.route.destination.iata %> <%= flight.frequencies %>x/week)</div>
-						<div class="description"> % Load Factor(<span class="greenColor"></span>)</div>
+							</div>
+						<div class="description"><%= flight.route.origin.iata %>-<%= flight.route.destination.iata %> // <%= flight.frequencies %>x/week</div>
+					</div>
+				</div>
+			<% } else { %>
+				<a class="step own empty" data-flightid="" data-routeid="">
+					<div class="content">
+						<div class="title">
+							<%= aircraft.full_name %>
+							</div>
+						<div class="description">Aircraft not in use</div>
 					</div>
 				</a>
-			<% } else { %>
-				Aircraft not in use
-			<% } %>
-		</script>
+				<% } %>
+				</script>
 		<div id="leftColumn">
 		</div>
     <div class="shaded grid game-window">
