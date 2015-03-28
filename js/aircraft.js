@@ -63,18 +63,24 @@ var AircraftView = Backbone.View.extend({
 		return this;
 	},
 	events:{
-		'click .aircraft.header':'checkAircraft'
+		'click .aircraft:not(.flight)':'checkAircraft'
 	},
 	checkAircraft:function(e){
-		console.log($(e.currentTarget).hasClass('button'));
-		if($(e.currentTarget).hasClass('button')) {
-			this.loadAircraftInfo(e);
+		var el = $(e.currentTarget);
+		e.stopPropagation();
+		if(el.hasClass('purchase')) {
+			this.loadAircraftPurchase();
+		} else if(el.hasClass('configs')) {
+			this.loadAircraftConfigs();
 		} else {
-			
+			this.loadAircraftList();
 		}
 	},
-	loadAircraftInfo:function(){
-		alert('info');
+	loadAircraftPurchase:function(){
+		alert('purchase');
+	},
+	loadAircraftConfigs:function(){
+		alert('configs');
 	},
 	loadAircraftList:function(){
 		alert('list');

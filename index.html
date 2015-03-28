@@ -148,7 +148,7 @@
 						</div>
 					</div>
 					<div class="airport alliance data">
-					<span><%= name %><br /><%= plural(flights,'Flight') %><br /><%= aircraft %> Aircraft</span>
+						<span><%= name %><br /><%= plural(flights,'Flight') %><br /><%= aircraft %> Aircraft</span>
 						<% if((admin)&&(self !== true)) { %>
 							<% if(status) { %>
 								<div class="ui button red micro alliance airline eject single">Eject</div>
@@ -209,49 +209,74 @@
 		    </div>
 			</div>
 		</script>
-		<script id="userAircraftTemplate" type="text/template">
-			<%= full_name %>
-		</script>
 		<script id="aircraftTemplate" type="text/template">
 			<div class="ui dividing header airport aircraft" data-iata="<%= iata %>">
 			  <div class="content airport alliance">
-					<div class="ui horizontal statistics mini airport">
+					<div class="ui horizontal statistics mini airport aircraft">
 					  <div class="ui statistic">
 							<div class="value">
 								  <%= iata %>
 								</div>
 							</div>
 						</div>
-						<div class="airport data">
+						<div class="airport aircraft data">
 							<span><%= full_name %><br />In use: <%= user.inuse %><br />Unused: <%= user.unused %></span>
 						</div>
+					<% if ((user.inuse > 0)||(user.unused > 0)) { %>
+						<div class="ui button green micro alliance airline purchase aircraft">Purchase</div>
+						<div class="ui button blue micro alliance airline configs aircraft">Configs</div>
+					<% } else { %>
+						<div class="ui button green micro alliance airline purchase aircraft single">Purchase</div>
+						<% } %>
 					</div>
-					<div class="ui button blue micro alliance airline purchase single aircraft">Purchase</div>
 			  </div>
+			</div>
+			<div class="aircraft compressed" id="list<%= iata %>">
+				<% _.each(user.aircraft.models,function(aircraft){ %>
+					<% aircraft = aircraft.attributes %>
+					<% if(aircraft.flight === null){ %>
+						not in use
+					<% } else { %>
+						<div class="ui dividing header airport game flight">
+							<div class="content airport aircraft flight">
+								<div class="ui horizontal statistics mini airport aircraft flight">
+								  <div class="ui statistic">
+										<div class="value">
+										  <%= aircraft.flight.route.origin.iata %>-<%= aircraft.flight.route.destination.iata %>
+										</div>
+									</div>
+								</div>
+								<div class="airport aircraft data flight">
+									<span>100% Load Factor<br /><%= aircraft.flight.frequencies %>x/week<br /><%= aircraft.configuration.name %></span>
+								</div>
+								<div class="ui button blue micro alliance airline single">Edit</div>
+							</div>
+						</div>
+					<% } %>
+				<% }) %>
 			</div>
 		</script>
 		<script id="d" type="text/template">
-		
-			<% if(flight) { %>
-				<div class="ui dividing header airport game">
-					<div class="content">
-						<div class="title">
-							<%= aircraft.full_name %>
-							</div>
-						<div class="description"><%= flight.route.origin.iata %>-<%= flight.route.destination.iata %> // <%= flight.frequencies %>x/week</div>
+		<% if(aircraft.flight) { %>
+					<div class="ui dividing header airport game">
+						<div class="content">
+							<div class="title">
+								<%= aircraft.aircraft.full_name %>
+								</div>
+							<div class="description"><%= aircraft.flight.route.origin.iata %>-<%= aircraft.flight.route.destination.iata %> // <%= flight.frequencies %>x/week</div>
+						</div>
 					</div>
-				</div>
-			<% } else { %>
-				<a class="step own empty" data-flightid="" data-routeid="">
-					<div class="content">
-						<div class="title">
-							<%= aircraft.full_name %>
-							</div>
-						<div class="description">Aircraft not in use</div>
-					</div>
-				</a>
-				<% } %>
-				</script>
+				<% } else { %>
+					<a class="step own empty" data-flightid="" data-routeid="">
+						<div class="content">
+							<div class="title">
+								<%= aircraft.aircraft.full_name %>
+								</div>
+							<div class="description">Aircraft not in use</div>
+						</div>
+					</a>
+					<% } %>
+			</script>
 		<div id="leftColumn">
 		</div>
     <div class="shaded grid game-window">

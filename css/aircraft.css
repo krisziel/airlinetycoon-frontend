@@ -1,15 +1,33 @@
 #aircraftList {
 	margin-top: 0 !important;
 }
-.ui.button.blue.micro.alliance.airline.purchase.single {
+.ui.button.micro.alliance.airline.aircraft {
 	width: 64px;
+	margin-right: 4px;
 }
-.content.airport {
-	max-width: 200px;
+.content.aircraft:not(.flight) {
+	max-width: 130px;
 }
-.data.airport {
+.data.aircraft:not(.flight) {
+	max-width: 130px;
+}
+.ui.button.micro.airline.aircraft.purchase {
+}
+.ui.button.micro.airline.aircraft.configs {
+}
+.ui.horizontal.statistics.mini.airport.aircraft.flight {
+	width: 100px;
+}
+.ui.dividing.header.airport.aircraft {
+	margin-bottom: 0;
+}
+.airport.aircraft.data.flight { 
 	max-width: 100px;
 }
-.ui.button.blue.micro.alliance.airline.purchase.single.aircraft {
-	margin-right: 7px;
+.aircraft.compressed .content {
+	margin-left: 20px;
+	width: 279px;
+}
+.aircraft.compressed .ui.button {
+	margin-right: 4px;
 }
