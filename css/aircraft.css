@@ -5,10 +5,10 @@
 	width: 64px;
 }
 .content.airport {
-	max-width: 225px;
+	max-width: 200px;
 }
 .data.airport {
-	max-width: 125px;
+	max-width: 100px;
 }
 .ui.button.blue.micro.alliance.airline.purchase.single.aircraft {
 	margin-right: 7px;
