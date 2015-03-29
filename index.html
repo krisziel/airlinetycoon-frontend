@@ -521,17 +521,17 @@
       <div class="row config-row" data-rowtype="quantity">
         <div class="ui checkbox" style="opacity:0;"><input type="checkbox"><label></label></div>
         <div class="label">Quantity</div>
-        <span>1</span><input type="range" value="1" min="1" max="12">
+        <span>1</span><input type="range" value="1" min="1" max="<%= maxFlights %>">
       </div>
       <h4 class="ui header">Configuration</h4>
 			<% if(user.configs.length > 0) { %>
-				<div class="ui selection dropdown">
+				<div class="ui selection dropdown" data-rowtype="configuration">
 					<input type="hidden" name="configuration_id" value="<%= user.configs[0].id %>">
 					<div class="default text"><%= user.configs[0].name + stringifyConfig(user.configs[0].config) %></div>
 					<i class="dropdown icon"></i>
 					<div class="menu">
 						<% _.each(user.configs,function(config){ %>
-							<div class="item" data-value="<%= config.id %>"><%= config.name + stringifyConfig(config.config) %></div>
+							<div class="item" data-value="<%= config.id %>" data-json="<%= JSON.stringify(config.config).replace(/\"/gi,'\'') %>"><%= config.name + stringifyConfig(config.config) %></div>
 						<% }) %>
 					</div>
 				</div>
@@ -539,22 +539,22 @@
       <div class="row config-row" data-cabintype="f">
         <div class="ui checkbox" style="opacity:0;"><input type="checkbox"><label></label></div>
         <div class="label">First</div>
-        <span>3</span><input type="range" value="3" min="0" max="22">
+        <span>3</span><input type="range" value="<%= config.def['f'] %>" min="0" max="<%= config.max['f'] %>">
       </div>
       <div class="row config-row" data-cabintype="j">
         <div class="ui checkbox" style="opacity:0;"><input type="checkbox"><label></label></div>
         <div class="label">Business</div>
-        <span>12</span><input type="range" value="12" min="0" max="47">
+        <span>12</span><input type="range" value="<%= config.def['j'] %>" min="0" max="<%= config.max['j'] %>">
       </div>
       <div class="row config-row" data-cabintype="p">
         <div class="ui checkbox" style="opacity:0;"><input type="checkbox"><label></label></div>
         <div class="label">Premium</div>
-        <span>15</span><input type="range" value="15" min="0" max="95">
+        <span>15</span><input type="range" value="<%= config.def['p'] %>" min="0" max="<%= config.max['p'] %>">
       </div>
       <div class="row config-row" data-cabintype="y">
         <div class="ui checkbox" style="opacity:0;"><input type="checkbox"><label></label></div>
         <div class="label">Economy</div>
-        <span>69</span><input type="range" value="69" min="0" max="149">
+        <span>69</span><input type="range" value="<%= config.def['y'] %>" min="0" max="<%= config.max['y'] %>">
       </div>
       <div class="ui button positive" id="purchaseButton">Purchase Aircraft</div>
     </div>
