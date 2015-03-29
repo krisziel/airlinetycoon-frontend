@@ -526,7 +526,7 @@
       <h4 class="ui header">Configuration</h4>
 			<% if(user.configs.length > 0) { %>
 				<div class="ui selection dropdown" data-rowtype="configuration">
-					<input type="hidden" name="configuration_id" value="<%= user.configs[0].id %>">
+					<input type="hidden" name="configuration_id" id="configurationId" value="<%= user.configs[0].id %>">
 					<div class="default text"><%= user.configs[0].name + stringifyConfig(user.configs[0].config) %></div>
 					<i class="dropdown icon"></i>
 					<div class="menu">
@@ -535,6 +535,8 @@
 						<% }) %>
 					</div>
 				</div>
+			<% } else { %>
+				<input type="hidden" name="configuration_id" id="configurationId" value="">
 			<% } %>
       <div class="row config-row" data-cabintype="f">
         <div class="ui checkbox" style="opacity:0;"><input type="checkbox"><label></label></div>
@@ -556,6 +558,10 @@
         <div class="label">Economy</div>
         <span>69</span><input type="range" value="<%= config.def['y'] %>" min="0" max="<%= config.max['y'] %>">
       </div>
+			<div class="ui action left input configuration">
+			  <input type="text" placeholder="Configuration Name" id="configurationName">
+			  <div class="ui gray button" id="saveConfiguration">Save</div>
+			</div>
       <div class="ui button positive" id="purchaseButton">Purchase Aircraft</div>
     </div>
   </div>

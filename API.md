@@ -17,14 +17,14 @@
 
 # User Aircraft
 * get 'aircraft/user' : list of all user aircraft
-* post 'aircraft/user' (quantity:int,configuration_id:int) : create a user aircraft
+* post 'aircraft/user' (quantity:int,configuration_id:int,aircraft_id:int) : create a user aircraft
 * put 'aircraft/user' (id:int,configuration_id:int): update a user aircraft
 * delete 'aircraft/user' : delete a user aircraft
 
 # User Aircraft Configs
 * get 'aircraft/configs' : all aircraft configs belonging to a user
 * get 'aircraft/configs/:type' : all configurations of a type belonging to a user
-* post 'aircraft/configs' (config:{name:string,aircraft_id:int,seats:{f_count:int,j_count:int,p_count:int,y_count:int,f_seat:int,j_seat:int,p_seat:int,y_seat:int}}) : create a new configuration
+* post 'aircraft/configs' (config:{name:string,aircraft_id:int,seats:{count:{f:int,j:int,p:int,y:int},id:{f:int,j:int,p:int,y:int}}}) : create a new configuration
 * delete 'aircraft/configs/:id' : delete a configuration
 
 # Alliances

@@ -275,3 +275,9 @@
 .row input.frequencies {
   width: 125px;
 }
+.ui.selection.dropdown[data-rowtype="configuration"] {
+	margin: -10px 0 10px 0;
+}
+.configuration.input.left.action.ui {
+	width: 328px;
+}
