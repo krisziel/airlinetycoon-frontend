@@ -3,6 +3,8 @@ var userAircraftObj;
 var userAircraftListView;
 var userAircraftList = [];
 var userAircraft = {};
+var selectedAircraft;
+var seats;
 
 function loadAircraft() {
 	$.getJSON(base + 'aircraft' + cookies.url).done(function(data){
@@ -29,9 +31,9 @@ function loadAircraft() {
 		aircraftList = inuse.concat(unused);
 		aircraftList = new AircraftList(aircraftList);
 		aircraftListView = new AircraftListView({el:'#aircraftList'});
+		loadSeats();
 	});
 }
-
 function loadUserAircraft() {
 	$.getJSON(base + 'aircraft/user' + cookies.url).done(function(data){
 		userAircraft = data;
@@ -43,6 +45,13 @@ function loadUserAircraft() {
 		userAircraftList = new UserAircraftList(userAircraftList);
 		//userAircraftListView = new UserAircraftListView({el:'#aircraftList'});
 	});
+}
+function loadSeats() {
+  $.getJSON(base + 'aircraft/seats' + cookies.url).done(function(data){
+    seats = data;
+    seats[1].sqft += 0.5;
+    seats[3].sqft += 0.5;
+  });
 }
 
 var Aircraft = Backbone.Model.extend({
@@ -77,7 +86,14 @@ var AircraftView = Backbone.View.extend({
 		}
 	},
 	loadAircraftPurchase:function(){
-		alert('purchase');
+		selectedAircraft = this.model;
+		var variables = this.model.attributes;
+		var template = _.template($('#aircraftPurchaseTemplate').html(),variables);
+		$('body').append(template);
+		$('.row.config-row[data-rowtype="quantity"] input[type="range"]').on('input change',function(){
+			console.log(changeAircraftQuantity($(this).val()));
+		});
+		$('#aircraftPanel').modal('show');
 	},
 	loadAircraftConfigs:function(){
 		alert('configs');
@@ -152,3 +168,64 @@ var UserAircraftListView = Backbone.View.extend({
 		userAircraftList.each(this.addOne,this);
 	}
 });
+
+function stringifyConfig(config) {
+	var classes = [];
+	config.f.count > 0 ? classes.push('F: ' + config.f.count) : '';
+	config.j.count > 0 ? classes.push('J: ' + config.j.count) : '';
+	config.p.count > 0 ? classes.push('P: ' + config.p.count) : '';
+	config.y.count > 0 ? classes.push('Y: ' + config.y.count) : '';
+	return ' (' + classes.join(' // ') + ')';
+}
+function changeConfiguration(cabinClass) {
+  var aircraft = selectedAircraft;
+  var availableSpace = aircraft.sqft;
+  var classType = {f:{name:"First",id:9},j:{name:"Business",id:6},p:{name:"Premium",id:2},y:{name:"Economy",id:1}};
+  $.each(classType,function(key,value){
+    var seat = seats[value.id];
+    var row = $('.row[data-cabintype="' + key + '"]');
+    var seatsVal = Math.max(Math.ceil(row.find('input[type="range"]').val()),0);
+    var space = (seatsVal*seat.sqft);
+    if(space > availableSpace) {
+      seatsVal = Math.floor(availableSpace/seat.sqft);
+      space = availableSpace;
+    }
+    if(key == "y") {
+      if(space < availableSpace) {
+        seatsVal = Math.floor(availableSpace/seat.sqft);
+      }
+    }
+    row.find('span').html(seatsVal);
+    row.find('input[type="range"]').val(seatsVal);
+    availableSpace -= space;
+  });
+}
+function setLayout() {
+	var classType = {f:{name:"First",percent:12,id:9},j:{name:"Business",percent:23,id:6},p:{name:"Premium",percent:15,id:2},y:{name:"Economy",percent:50,id:1}};
+	$.each(classType,function(key,value){
+	  var seat = seats[value.id];
+	  var seatsCount = ((value.percent*0.01*aircraft.sqft)/seat.sqft);
+	  var seatsSpace = Math.ceil(seatsCount*seat.sqft);
+	  var seatsVal = Math.ceil(Math.min(seatsCount,(availableSpace/seat.sqft)));
+	  availableSpace -= (seatsVal*seat.sqft);
+	  var seatsMax = Math.floor(aircraft.sqft/seat.sqft);
+	  var classRow = '<div class="row config-row" data-cabintype="' + key + '">';
+	  classRow += '<div class="ui checkbox" style="opacity:0;"><input type="checkbox"></div>';
+	  classRow += '<div class="label">' + value.name + '</div>';
+	  classRow += '<span>' + seatsVal + '</span>'
+	  classRow += '<input type="range" value="' + seatsVal + '" min="0" max="' + seatsMax + '" />';
+	  classRow += '</div>';
+	  panel += classRow;
+	});
+}
+function changeAircraftQuantity(quantity) {
+	console.log(quantity);
+	var selection = selectedAircraft.attributes;
+  var maxPlanes = Math.floor(airline.money/selection.price);
+  if(quantity > maxPlanes) {
+    quantity = maxPlanes;
+  }
+  var discount = Math.min(((quantity-1)*selection.discount),50);
+  var price = Math.round(selection.price*(1-(discount*0.01)));
+  return {quantity:quantity,price:price,discount:discount};
+}

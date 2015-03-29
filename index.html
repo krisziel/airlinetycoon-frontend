@@ -30,7 +30,7 @@
 					</div>
 			  </div>
 			</div>
-		</script>
+			</script>
 		<script id="gameTemplate" type="text/template">
 			<div class="ui dividing header airport game" id="game<%= id %>">
 			  <div class="content">
@@ -238,7 +238,7 @@
 						<div class="ui dividing header airport flight empty">
 							<div class="content aircraft flight">
 								<div class="aircraft data flight">
-									<span>Unused with <%= aircraft.configuration.name %> config</span>
+									<span>Unused with <%= aircraft.configuration.name %></span>
 								</div>
 								<div class="ui button blue micro alliance airline">Edit</div>
 							</div>
@@ -263,27 +263,304 @@
 				<% }) %>
 			</div>
 		</script>
-		<script id="d" type="text/template">
-		<% if(aircraft.flight) { %>
-					<div class="ui dividing header airport game">
-						<div class="content">
-							<div class="title">
-								<%= aircraft.aircraft.full_name %>
-								</div>
-							<div class="description"><%= aircraft.flight.route.origin.iata %>-<%= aircraft.flight.route.destination.iata %> // <%= flight.frequencies %>x/week</div>
-						</div>
+		<script id="aircraftPurchaseTemplate" type="text/template">
+			<div class="route-panel" id="aircraftPanel" style="margin-top: 100px !important;">
+  <i class="icon remove"></i>
+  <div class="fleet-info" style="display:none;">
+    <div class="info" style="border: 1px solid rgba(0,0,0,.15) !important; border-width: 0 0 1px 0 !important;">
+      <div class="ui statistic">
+        <div class="value total-aircraft">23</div>
+        <div class="label">Owned Aircraft</div>
+      </div>
+      <div class="ui statistic">
+        <div class="value unused-aircraft">1</div>
+        <div class="label">Unused Aircraft</div>
+      </div>
+    </div>
+    <div class="ui unordered steps aircraft-list vertical" style="height: 436px;">
+      <a class="step own active" id="aircraft1" data-aircraftid="1">
+        <div class="content">
+          <div class="title">Boeing 737-700</div>
+          <div class="description">Range: 3,950mi // Capacity: 149</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft2" data-aircraftid="2">
+        <div class="content">
+          <div class="title">Boeing 737-800</div>
+          <div class="description">Range: 3,400mi // Capacity: 189</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft3" data-aircraftid="3">
+        <div class="content">
+          <div class="title">Boeing 737-900ER</div>
+          <div class="description">Range: 3,520mi // Capacity: 220</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft4" data-aircraftid="4">
+        <div class="content">
+          <div class="title">Boeing 747-400</div>
+          <div class="description">Range: 8,350mi // Capacity: 565</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft5" data-aircraftid="5">
+        <div class="content">
+          <div class="title">Boeing 747-8i</div>
+          <div class="description">Range: 9,200mi // Capacity: 605</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft6" data-aircraftid="6">
+        <div class="content">
+          <div class="title">Boeing 757-200</div>
+          <div class="description">Range: 4,700mi // Capacity: 239</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft7" data-aircraftid="7">
+        <div class="content">
+          <div class="title">Boeing 757-300</div>
+          <div class="description">Range: 4,150mi // Capacity: 295</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft8" data-aircraftid="8">
+        <div class="content">
+          <div class="title">Boeing 767-200ER</div>
+          <div class="description">Range: 7,350mi // Capacity: 290</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft9" data-aircraftid="9">
+        <div class="content">
+          <div class="title">Boeing 767-300ER</div>
+          <div class="description">Range: 7,260mi // Capacity: 350</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft10" data-aircraftid="10">
+        <div class="content">
+          <div class="title">Boeing 767-400</div>
+          <div class="description">Range: 6,450mi // Capacity: 375</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft11" data-aircraftid="11">
+        <div class="content">
+          <div class="title">Boeing 777-200ER</div>
+          <div class="description">Range: 8,900mi // Capacity: 440</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft12" data-aircraftid="12">
+        <div class="content">
+          <div class="title">Boeing 777-200LR</div>
+          <div class="description">Range: 10,800mi // Capacity: 440</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft13" data-aircraftid="13">
+        <div class="content">
+          <div class="title">Boeing 777-300ER</div>
+          <div class="description">Range: 9,100mi // Capacity: 550</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft14" data-aircraftid="14">
+        <div class="content">
+          <div class="title">Boeing 787-8</div>
+          <div class="description">Range: 9,030mi // Capacity: 380</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft15" data-aircraftid="15">
+        <div class="content">
+          <div class="title">Boeing 787-9</div>
+          <div class="description">Range: 9,550mi // Capacity: 420</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft16" data-aircraftid="16">
+        <div class="content">
+          <div class="title">Boeing 787-10</div>
+          <div class="description">Range: 8,080mi // Capacity: 460</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft17" data-aircraftid="17">
+        <div class="content">
+          <div class="title">Airbus A318</div>
+          <div class="description">Range: 3,700mi // Capacity: 132</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft18" data-aircraftid="18">
+        <div class="content">
+          <div class="title">Airbus A319</div>
+          <div class="description">Range: 4,300mi // Capacity: 156</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft19" data-aircraftid="19">
+        <div class="content">
+          <div class="title">Airbus A320</div>
+          <div class="description">Range: 3,800mi // Capacity: 180</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft20" data-aircraftid="20">
+        <div class="content">
+          <div class="title">Airbus A321</div>
+          <div class="description">Range: 3,700mi // Capacity: 220</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft21" data-aircraftid="21">
+        <div class="content">
+          <div class="title">Airbus A330-200</div>
+          <div class="description">Range: 8,285mi // Capacity: 375</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft22" data-aircraftid="22">
+        <div class="content">
+          <div class="title">Airbus A330-300</div>
+          <div class="description">Range: 7,020mi // Capacity: 410</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft23" data-aircraftid="23">
+        <div class="content">
+          <div class="title">Airbus A340-300</div>
+          <div class="description">Range: 8,500mi // Capacity: 400</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft24" data-aircraftid="24">
+        <div class="content">
+          <div class="title">Airbus A340-500</div>
+          <div class="description">Range: 9,980mi // Capacity: 420</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft25" data-aircraftid="25">
+        <div class="content">
+          <div class="title">Airbus A340-600</div>
+          <div class="description">Range: 8,920mi // Capacity: 440</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft26" data-aircraftid="26">
+        <div class="content">
+          <div class="title">Airbus A350-800</div>
+          <div class="description">Range: 9,250mi // Capacity: 400</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft27" data-aircraftid="27">
+        <div class="content">
+          <div class="title">Airbus A350-900</div>
+          <div class="description">Range: 9,000mi // Capacity: 440</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft28" data-aircraftid="28">
+        <div class="content">
+          <div class="title">Airbus A350-1000</div>
+          <div class="description">Range: 9,500mi // Capacity: 475</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft29" data-aircraftid="29">
+        <div class="content">
+          <div class="title">Airbus A380-800</div>
+          <div class="description">Range: 9,755mi // Capacity: 850</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft30" data-aircraftid="30">
+        <div class="content">
+          <div class="title">Bombardier CRJ200ER</div>
+          <div class="description">Range: 1,895mi // Capacity: 50</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft31" data-aircraftid="31">
+        <div class="content">
+          <div class="title">Bombardier CRJ700</div>
+          <div class="description">Range: 1,400mi // Capacity: 78</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft32" data-aircraftid="32">
+        <div class="content">
+          <div class="title">Bombardier CRJ900</div>
+          <div class="description">Range: 1,200mi // Capacity: 90</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft33" data-aircraftid="33">
+        <div class="content">
+          <div class="title">Bombardier CRJ1000</div>
+          <div class="description">Range: 1,640mi // Capacity: 104</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft34" data-aircraftid="34">
+        <div class="content">
+          <div class="title">Embraer ERJ 145XR</div>
+          <div class="description">Range: 2,900mi // Capacity: 50</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft35" data-aircraftid="35">
+        <div class="content">
+          <div class="title">Embraer E170</div>
+          <div class="description">Range: 2,070mi // Capacity: 80</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft36" data-aircraftid="36">
+        <div class="content">
+          <div class="title">Embraer E175</div>
+          <div class="description">Range: 2,070mi // Capacity: 88</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft37" data-aircraftid="37">
+        <div class="content">
+          <div class="title">Embraer E190</div>
+          <div class="description">Range: 2,070mi // Capacity: 114</div>
+        </div>
+      </a>
+      <a class="step own" id="aircraft38" data-aircraftid="38">
+        <div class="content">
+          <div class="title">Embraer E195</div>
+          <div class="description">Range: 1,600mi // Capacity: 122</div>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="line" style="height: 500px;"></div>
+  <div class="aircraft-info">
+    <div class="empty" style="display: none;">select an aircraft to view</div>
+    <div class="row-container">
+      <h2 class="ui header"><%= full_name %></h2>
+      <div class="row config-row"><span class="label">Capacity</span> <span><%= capacity %> passengers<span></div>
+      <div class="row config-row"><span class="label">Range</span> <span><%= comma(range) %> miles<span></div>
+      <div class="row config-row"><span class="label">Speed</span> <span><%= speed %>mph<span></div>
+      <div class="row config-row"><span class="label">Turn Time</span> <span><%= turn_time %> minutes<span></div>
+      <div class="row config-row" data-rowtype="price"><span class="label">Price</span> <span class="price" data-html="<%= parseInt(discount) %>% discount per plane (up to 50%)">$<%= comma(price) %></span><span class="total"></span></div>
+      <div class="row config-row" data-rowtype="quantity">
+        <div class="ui checkbox" style="opacity:0;"><input type="checkbox"><label></label></div>
+        <div class="label">Quantity</div>
+        <span>1</span><input type="range" value="1" min="1" max="12">
+      </div>
+      <h4 class="ui header">Configuration</h4>
+			<% if(user.configs.length > 0) { %>
+				<div class="ui selection dropdown">
+					<input type="hidden" name="configuration_id" value="<%= user.configs[0].id %>">
+					<div class="default text"><%= user.configs[0].name + stringifyConfig(user.configs[0].config) %></div>
+					<i class="dropdown icon"></i>
+					<div class="menu">
+						<% _.each(user.configs,function(config){ %>
+							<div class="item" data-value="<%= config.id %>"><%= config.name + stringifyConfig(config.config) %></div>
+						<% }) %>
 					</div>
-				<% } else { %>
-					<a class="step own empty" data-flightid="" data-routeid="">
-						<div class="content">
-							<div class="title">
-								<%= aircraft.aircraft.full_name %>
-								</div>
-							<div class="description">Aircraft not in use</div>
-						</div>
-					</a>
-					<% } %>
-			</script>
+				</div>
+			<% } %>
+      <div class="row config-row" data-cabintype="f">
+        <div class="ui checkbox" style="opacity:0;"><input type="checkbox"><label></label></div>
+        <div class="label">First</div>
+        <span>3</span><input type="range" value="3" min="0" max="22">
+      </div>
+      <div class="row config-row" data-cabintype="j">
+        <div class="ui checkbox" style="opacity:0;"><input type="checkbox"><label></label></div>
+        <div class="label">Business</div>
+        <span>12</span><input type="range" value="12" min="0" max="47">
+      </div>
+      <div class="row config-row" data-cabintype="p">
+        <div class="ui checkbox" style="opacity:0;"><input type="checkbox"><label></label></div>
+        <div class="label">Premium</div>
+        <span>15</span><input type="range" value="15" min="0" max="95">
+      </div>
+      <div class="row config-row" data-cabintype="y">
+        <div class="ui checkbox" style="opacity:0;"><input type="checkbox"><label></label></div>
+        <div class="label">Economy</div>
+        <span>69</span><input type="range" value="69" min="0" max="149">
+      </div>
+      <div class="ui button positive" id="purchaseButton">Purchase Aircraft</div>
+    </div>
+  </div>
+	</div>
+		</script>
 		<div id="leftColumn">
 		</div>
     <div class="shaded grid game-window">

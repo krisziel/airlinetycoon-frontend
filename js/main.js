@@ -54,3 +54,6 @@ $('body').on('keyup','textarea',function(){
 	$(this).css('height','auto');
 	$(this).height(this.scrollHeight);
 });
+function comma(number){
+	return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}

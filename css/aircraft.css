@@ -25,8 +25,7 @@
 	max-width: 100px;
 }
 .aircraft.compressed .content {
-	margin-left: 20px;
-	width: 279px;
+	padding-left: 20px;
 }
 .aircraft.compressed .ui.button {
 	margin-right: 4px;
@@ -49,4 +48,231 @@
 }
 .hide {
 	display: none;
+}
+
+#aircraftPanel {
+  width: 600px;
+  height: 60%;
+  overflow: hidden;
+}
+#aircraftPanel .aircraft-list {
+  width: 260px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+  float: left;
+}
+#aircraftPanel .fleet-info {
+  width: 260px;
+  float: left;
+  height: 100%;
+}
+#aircraftPanel .fleet-info .info {
+  height: 60px;
+  margin: 5px 0 0 0;
+}
+#aircraftPanel .fleet-info .info .statistic {
+  width: 120px;
+}
+#aircraftPanel .fleet-info .aircraft-list {
+  margin-top: -1px;
+}
+#aircraftPanel .aircraft-info {
+  width: 340px;
+  height: 100%;
+  float: left;
+}
+#aircraftPanel .aircraft-info .empty {
+  min-height: 400px;
+  line-height: 400px;
+  text-align: center;
+  font-weight: bold;
+}
+#aircraftPanel .aircraft-info .row-container {
+  margin: 6px;
+}
+#aircraftPanel .aircraft-info .config-row {
+  position: relative;
+  width: 100%;
+  height: 30px;
+}
+#aircraftPanel .aircraft-info .config-row .checkbox {
+  margin-left: 5px;
+  float: right;
+}
+#aircraftPanel .aircraft-info .config-row input[type="range"] {
+  float: right;
+}
+#aircraftPanel .aircraft-info .config-row .label {
+  width: 90px;
+  float: left;
+}
+#aircraftPanel .aircraft-info .config-row span {
+  float: left;
+}
+#aircraftPanel .aircraft-info #purchaseButton {
+  margin: 5px 85px;
+}
+.route-panel {
+  z-index: 1009;
+  position: absolute;
+  -webkit-transition: all .7s;
+  overflow: hidden;
+  width: 301px;
+  margin: 0 0 0 -150px;
+  top: 150px;
+  left: 50%;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+.route-panel .line {
+  width: 1px;
+  height: 100%;
+  float: left;
+  background: rgba(0, 0, 0, 0.3);
+}
+.route-panel .remove {
+  position: absolute;
+  left: 3px;
+  top: 3px;
+}
+.route-panel.open {
+  width: 601px !important;
+  margin-left: -300px !important;
+}
+.route-panel.open .step {
+  -webkit-border-top-right-radius: 0 !important;
+  -moz-border-top-right-radius: 0 !important;
+  -ms-border-top-right-radius: 0 !important;
+  -o-border-top-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  -webkit-border-bottom-right-radius: 0 !important;
+  -moz-border-bottom-right-radius: 0 !important;
+  -ms-border-bottom-right-radius: 0 !important;
+  -o-border-bottom-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+.route-panel .route-info {
+  width: 298px;
+  float: left;
+  overflow-x: hidden;
+}
+.route-panel .info {
+  margin-top: 5px;
+}
+.route-panel .info .statistic {
+  margin: 0;
+  top: 0;
+  float: left;
+  width: 129px;
+  padding-bottom: 5px;
+}
+.route-panel .info .statistic .value {
+  font-size: 42px;
+  line-height: 42px;
+}
+.route-panel .info .statistic .label {
+  font-size: 11px;
+  line-height: 11px;
+}
+.route-panel .info .resize.horizontal {
+  color: #000000;
+  font-size: 40px;
+  line-height: 45px;
+  text-align: center;
+  width: 40px;
+  float: left;
+  padding: 0;
+  margin: 0;
+}
+.route-panel .flight-list {
+  width: 298px;
+  height: auto;
+  overflow: hidden;
+  z-index: 7;
+  position: relative;
+}
+.route-panel .flight-list .step {
+  padding: 8px 12px !important;
+  width: 100%;
+}
+.route-panel .flight-list .step:first-child {
+  -webkit-border-top-left-radius: 0 !important;
+  -moz-border-top-left-radius: 0 !important;
+  -ms-border-top-left-radius: 0 !important;
+  -o-border-top-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+  -webkit-border-top-right-radius: 0 !important;
+  -moz-border-top-right-radius: 0 !important;
+  -ms-border-top-right-radius: 0 !important;
+  -o-border-top-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+.route-panel .flight-info {
+  height: 100%;
+  width: 300px;
+  float: left;
+  z-index: 8;
+  position: relative;
+  background: #ffffff;
+}
+.route-panel .flight-info .empty {
+  min-height: 112px;
+  line-height: 112px;
+  text-align: center;
+  font-weight: bold;
+}
+.route-panel .flight-info .tab > .menu {
+  margin: 4px 0 4px 2px;
+}
+.route-panel .flight-info .secondary.menu .item {
+  padding: 6px 7px 6px 6px !important;
+  font-size: 12px;
+  margin: 2px;
+}
+.route-panel .flight-info .buttons {
+  margin: 0 0 6px 6px;
+}
+.route-panel .flight-info .segment[data-tab] {
+  margin: 0px 6px 6px 6px;
+  padding: 10px;
+}
+.route-panel .flight-info .row-container {
+  margin: 6px;
+}
+.route-panel .dropdown {
+  width: 100%;
+}
+.route-panel .noclass {
+  display: none;
+  height: 95px;
+  text-align: center;
+  line-height: 91px !important;
+  font-weight: bold;
+}
+.row {
+  display: block;
+  font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  position: relative;
+}
+.row .label {
+  font-weight: bold;
+	text-align: right;
+	margin-right: 5px;
+}
+.row input {
+  float: right;
+  margin-top: 2px;
+  margin-left: 10px;
+  width: 170px;
+}
+.row input.frequencies {
+  width: 125px;
 }

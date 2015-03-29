@@ -32,6 +32,7 @@ var MenuView = Backbone.View.extend({
 });
 function loadGame(id) {
 	$.getJSON(base + 'game/' + id + cookies.url).done(function(data){
+		airline = data.own;
 		setCookie({key:'game_id',value:data.cookie});
 	});
 }

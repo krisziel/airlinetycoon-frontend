@@ -1,3 +1,5 @@
+var airline;
+
 var Airline = Backbone.Model.extend({
 });
 var AirlineList = Backbone.Collection.extend({
