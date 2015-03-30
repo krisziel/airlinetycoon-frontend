@@ -43,7 +43,6 @@ function loadUserAircraft() {
 			userAircraftList.push(new UserAircraft(aircraft));
 		});
 		userAircraftList = new UserAircraftList(userAircraftList);
-		//userAircraftListView = new UserAircraftListView({el:'#aircraftList'});
 	});
 }
 function loadSeats() {
@@ -58,7 +57,18 @@ var Aircraft = Backbone.Model.extend({
 	
 });
 var AircraftList = Backbone.Collection.extend({
-	model:Aircraft
+	model:Aircraft,
+	search: function(query, callback){
+		var collection = this;
+		var result;
+		collection.find(function(model) {
+			var key = Object.keys(query)[0];
+			if(model.get(key) === query[key]) {
+				result = model;
+			}
+		});
+		return result;
+	}
 });
 var AircraftView = Backbone.View.extend({
 	initialize:function(){
@@ -87,48 +97,19 @@ var AircraftView = Backbone.View.extend({
 	},
 	loadAircraftPurchase:function(){
 		selectedAircraft = this.model;
-		var variables = this.model.attributes;
-		variables.maxFlights = changeAircraftQuantity(1000).quantity;
-		if((variables.iata.match(/CR2|ERJ/gi))) {
-			variables.config = getConfigSpecs({f:{p:0.0,i:6},j:{p:0.0,i:3},p:{p:0.0,i:1},y:{p:1.0,i:0}});
-		} else if(variables.iata.match(/73|31|32[01]/gi)) {
-			variables.config = getConfigSpecs({f:{p:0.0,i:7},j:{p:0.1,i:4},p:{p:0.2,i:1},y:{p:0.7,i:0}});
+		var template = _.template($('#aircraftPurchaseModalTemplate').html());
+		if($('.route-panel').length > 0) {
 		} else {
-			variables.config = getConfigSpecs({f:{p:0.12,i:8},j:{p:0.30,i:5},p:{p:0.14,i:2},y:{p:0.44,i:0}});
+			$('body').append(template);
+			$('.aircraft-list.vertical').on('click','.step.own',function(e){
+				selectedAircraft = aircraftList.search({id:$(e.currentTarget).data('aircraftid')});
+				showPurchaseModal();
+			});
 		}
-		this.model.attributes = variables;
-		var template = _.template($('#aircraftPurchaseTemplate').html(),variables);
-		$('body').append(template);
-		$('.row.config-row[data-rowtype="price"] .price').popup();
-		$('.selection.dropdown').dropdown();
-		$('.row.config-row[data-rowtype="quantity"] input[type="range"]').on('input change',function(){
-			var quantity = changeAircraftQuantity($(this).val());
-			$('.row.config-row[data-rowtype="quantity"] span').html(quantity.quantity);
-			$('.row.config-row[data-rowtype="price"] .price').html('$' + comma(quantity.price) + ' ($' + comma(quantity.price*quantity.quantity) + ' total)');
-		});
-		$('.selection.dropdown[data-rowtype="configuration"] input').on('change',function(){
-			var id = $(this).val();
-			fillConfigDetails(id);
-		});
-		$('#saveConfiguration').on('click',function(){
-			if($(this).hasClass('blue')) {
-				saveConfiguration();
-			}
-		});
-		$('#purchaseButton').on('click',function(){
-			purchaseAircraft();
-		});
-		$('.row.config-row[data-cabintype] input[type="range"]').on('change input',function(){ changeConfiguration($(this).data('data-cabintype')); });
-		if(variables.user.configs.length > 0) {
-			fillConfigDetails(variables.user.configs[0].id);
-		}
-		$('#aircraftPanel').modal('show');
-	},
-	loadAircraftConfigs:function(){
-		alert('configs');
+		showPurchaseModal();
 	},
 	loadAircraftList:function(){
-		var el = $('#list' + this.model.attributes.iata);
+		var el = $('#list' + this.get(iata));
 		var hidden = el.hasClass('hide')
 		$('.aircraft.compressed').removeClass('show').addClass('hide');
 		if(hidden) {
@@ -197,7 +178,51 @@ var UserAircraftListView = Backbone.View.extend({
 		userAircraftList.each(this.addOne,this);
 	}
 });
-
+function showPurchaseModal() {
+	var variables = selectedAircraft.attributes;
+	selectedAircraft.set('maxFlights',changeAircraftQuantity(1000).quantity);
+	if((selectedAircraft.get('iata').match(/CR2|ERJ/gi))) {
+		selectedAircraft.set('config',getConfigSpecs({f:{p:0.0,i:6},j:{p:0.0,i:3},p:{p:0.0,i:1},y:{p:1.0,i:0}}));
+	} else if(selectedAircraft.get('iata').match(/73|31|32[01]/gi)) {
+		selectedAircraft.set('config',getConfigSpecs({f:{p:0.0,i:7},j:{p:0.1,i:4},p:{p:0.2,i:1},y:{p:0.7,i:0}}));
+	} else {
+		selectedAircraft.set('config',getConfigSpecs({f:{p:0.12,i:8},j:{p:0.30,i:5},p:{p:0.14,i:2},y:{p:0.44,i:0}}));
+	}
+	console.log(selectedAircraft.get('config'));
+	selectedAircraft.attributes = variables;
+	var template = _.template($('#aircraftPurchaseTemplate').html(),variables);
+	$('.aircraft-info').html(template);
+	$('.row.config-row[data-rowtype="price"] .price').popup();
+	$('.selection.dropdown').dropdown();
+	$('.row.config-row[data-rowtype="quantity"] input[type="range"]').on('input change',function(){
+		var quantity = changeAircraftQuantity($(this).val());
+		$('.row.config-row[data-rowtype="quantity"] span').html(quantity.quantity);
+		$('.row.config-row[data-rowtype="price"] .price').html('$' + comma(quantity.price) + ' ($' + comma(quantity.price*quantity.quantity) + ' total)');
+	});
+	$('.selection.dropdown[data-rowtype="configuration"] input').on('change',function(){
+		var id = $(this).val();
+		fillConfigDetails(id);
+	});
+	$('#saveConfiguration').on('click',function(){
+		if($(this).hasClass('blue')) {
+			saveConfiguration();
+		}
+	});
+	$('#purchaseButton').on('click',function(){
+		purchaseAircraft();
+	});
+	$('.row.config-row[data-cabintype] input[type="range"]').on('change input',function(){ changeConfiguration($(this).data('data-cabintype')); });
+	if(variables.user.configs.length > 0) {
+		fillConfigDetails(variables.user.configs[0].id);
+	} else {
+		$('#saveConfiguration').removeClass('gray').addClass('blue');
+	}
+	$('.step.own[data-aircraftid]').removeClass('active');
+	$('#aircraft' + variables.id).addClass('active');
+	$('.fleet-info').css({marginLeft:0});
+	changeConfiguration();
+	$('#aircraftPanel').modal('show');
+}
 function fillConfigDetails(id) {
 	var configData = $('[data-rowtype="configuration"] .item[data-value="' + id + '"]');
 	var name = configData.html().split(' (')[0];
@@ -210,7 +235,7 @@ function fillConfigDetails(id) {
 	$('#configurationName').val(name).parent().find('.button').removeClass('blue').addClass('gray');
 }
 function getConfigSpecs(config) {
-	var sqft = selectedAircraft.attributes.sqft;
+	var sqft = selectedAircraft.get('sqft');
 	var configData = {def:{f:0,j:0,p:0,y:0},max:{f:0,j:0,p:0,y:0},layout:config};
 	var sqftLeft = sqft;
 	_.each(config,function(value,cabin){
@@ -225,9 +250,9 @@ function getConfigSpecs(config) {
 	return configData;
 }
 function saveConfiguration() {
-	var config = selectedAircraft.attributes.config.layout;
+	var config = selectedAircraft.get('config').layout;
 	var name = $('#configurationName');
-	var nameArray = _.map(selectedAircraft.attributes.user.configs,function(cfg){ return cfg.name });
+	var nameArray = _.map(selectedAircraft.get('user').configs,function(cfg){ return cfg.name });
 	if(name.val() === '') {
 		name.attr('data-html','The configuration must have a name').popup('show').parent().addClass('error');
 		return false;
@@ -237,7 +262,7 @@ function saveConfiguration() {
 	} else {
 		name.attr('data-html','').popup('hide').parent().removeClass('error');
 	}
-	var aircraft_id = selectedAircraft.attributes.id;
+	var aircraft_id = selectedAircraft.get('id');
 	var configData = {
 		name:name.val(),
 		aircraft_id:aircraft_id,
@@ -261,7 +286,9 @@ function saveConfiguration() {
 			name.attr('data-html',data.name[0]).popup('show').parent().addClass('error');
 			return false;
 		} else {
-			selectedAircraft.attributes.user.configs.push(data);
+			var updatedUser = selectedAircraft.get('user');
+			updatedUser.configs.push(data);
+			selectedAircraft.set('user',updatedUser);
 			$('#configurationId').val(data.id);
 			$('#saveConfiguration').removeClass('blue').addClass('gray');
 			return true;
@@ -278,8 +305,8 @@ function stringifyConfig(config) {
 }
 function changeConfiguration(cabinClass) {
   var aircraft = selectedAircraft;
-  var availableSpace = selectedAircraft.attributes.sqft;
-  _.each(selectedAircraft.attributes.config.layout,function(seat,cabin){
+  var availableSpace = selectedAircraft.get('sqft');
+  _.each(selectedAircraft.get('config').layout,function(seat,cabin){
     var seat = seats[seat.i];
     var row = $('.row[data-cabintype="' + cabin + '"]');
     var seatsVal = Math.max(Math.ceil(row.find('input[type="range"]').val()),0);
@@ -300,9 +327,8 @@ function changeConfiguration(cabinClass) {
 	$('#configurationName').val('').parent().find('.button').removeClass('gray').addClass('blue');
 }
 function changeAircraftQuantity(quantity) {
-	var selection = selectedAircraft.attributes;
-  var discount = Math.min(((quantity-1)*selection.discount),50);
-  var price = Math.round(selection.price*(1-(discount*0.01)));
+  var discount = Math.min(((quantity-1)*selectedAircraft.get('discount')),50);
+  var price = Math.round(selectedAircraft.get('price')*(1-(discount*0.01)));
   var maxPlanes = Math.floor(airline.money/price);
   if(quantity > maxPlanes) {
     quantity = maxPlanes;
@@ -316,7 +342,7 @@ function purchaseAircraft() {
 		if(saveConfiguration()) {
 			
 		} else {
-			console.log('error purchasing aircraft')
+			console.log('error purchasing aircraft');
 			return false;
 		}
 	}
@@ -326,11 +352,13 @@ function purchaseAircraft() {
 	var purchaseData = {aircraft_id:aircraft_id,configuration_id:configuration_id,quantity:quantity};
 	$.post(base + 'aircraft/user' + cookies.url,purchaseData).done(function(data){
 		if(data.length > 0) {
+			var updatedUser = selectedAircraft.get('user');
 			_.each(data,function(aircraft){
-				selectedAircraft.attributes.user.aircraft.models.push(new UserAircraft(aircraft));
+				updatedUser.aircraft.models.push(new UserAircraft(aircraft));
 				userAircraft[aircraft.id] = new UserAircraft(aircraft);
 			});
-			selectedAircraft.attributes.user.unused += data.length;
+			updatedUser.unused += data.length;
+			selectedAircraft.set('user',updatedUser);
 		} else {
 			
 		}

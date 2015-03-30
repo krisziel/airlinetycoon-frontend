@@ -49,29 +49,27 @@
 .hide {
 	display: none;
 }
+
 #aircraftPanel {
-  width: 600px;
-  height: 60%;
+  height: 600px;
+	width: 600px;
   overflow: hidden;
+	top: 50%;
+	left: 50%;
+	margin-left: -301px;
+	position: relative;
 }
 #aircraftPanel .aircraft-list {
-  width: 260px;
+  width: 257px;
   overflow-x: hidden;
   overflow-y: auto;
   height: 100%;
-  float: left;
+  float: right;
 }
 #aircraftPanel .fleet-info {
-  width: 260px;
-  float: left;
+  width: 257px;
   height: 100%;
-}
-#aircraftPanel .fleet-info .info {
-  height: 60px;
-  margin: 5px 0 0 0;
-}
-#aircraftPanel .fleet-info .info .statistic {
-  width: 120px;
+  float: right;
 }
 #aircraftPanel .fleet-info .aircraft-list {
   margin-top: -1px;
@@ -79,7 +77,7 @@
 #aircraftPanel .aircraft-info {
   width: 340px;
   height: 100%;
-  float: left;
+  float: right;
 }
 #aircraftPanel .aircraft-info .empty {
   min-height: 400px;
@@ -112,15 +110,13 @@
 #aircraftPanel .aircraft-info #purchaseButton {
   margin: 5px 85px;
 }
+.fleet-info  .own.step {
+	text-align: left;
+}
 .route-panel {
   z-index: 1009;
   position: absolute;
-  -webkit-transition: all .7s;
   overflow: hidden;
-  width: 301px;
-  margin: 0 0 0 -150px;
-  top: 150px;
-  left: 50%;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.3);
   -webkit-border-radius: 5px;
@@ -134,15 +130,12 @@
   height: 100%;
   float: left;
   background: rgba(0, 0, 0, 0.3);
+  float: right;
 }
 .route-panel .remove {
   position: absolute;
   left: 3px;
   top: 3px;
-}
-.route-panel.open {
-  width: 601px !important;
-  margin-left: -300px !important;
 }
 .route-panel.open .step {
   -webkit-border-top-right-radius: 0 !important;
@@ -170,14 +163,6 @@
   float: left;
   width: 129px;
   padding-bottom: 5px;
-}
-.route-panel .info .statistic .value {
-  font-size: 42px;
-  line-height: 42px;
-}
-.route-panel .info .statistic .label {
-  font-size: 11px;
-  line-height: 11px;
 }
 .route-panel .info .resize.horizontal {
   color: #000000;
