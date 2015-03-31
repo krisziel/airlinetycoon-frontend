@@ -8,6 +8,7 @@ function launchGame(id) {
 	loadMsc();
 	connect();
 	var menu = new MenuView({el:'#leftColumn'});
+	$('#leftColumn .column').css({height:$('#leftColumn').height()-35})
 }
 var MenuView = Backbone.View.extend({
 	initialize:function(){

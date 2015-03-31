@@ -53,4 +53,5 @@ span {
 	margin-top: 5px;
 	overflow-x: hidden;
 	overflow-y: auto;
+	display: none;
 }

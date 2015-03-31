@@ -75,7 +75,7 @@
 		    <a class="item" data-tabid="alliance">Alliance</a>
 		    <a class="item" data-tabid="more">More</a>
 			</div>
-			<div class="column" id="airportList" data-tabid="airport">
+			<div class="column" id="airportList" data-tabid="airport" style="display:block;">
 			</div>
 			<div class="column" id="flightList" data-tabid="flight">
 			</div>
@@ -229,11 +229,15 @@
 			<div class="aircraft compressed hide" id="list<%= iata %>">
 				<% _.each(user.aircraft.models,function(aircraft){ %>
 					<% aircraft = aircraft.attributes %>
-					<% if(aircraft.flight === null){ %>
+					<% if((aircraft.flight === null)||(!aircraft.flight)||(!aircraft.flight.route)){ %>
 						<div class="ui dividing header airport flight empty">
 							<div class="content aircraft flight">
 								<div class="aircraft data flight">
-									<span>Unused with <%= aircraft.configuration.name %></span>
+									<% if(aircraft.configuration&&aircraft.configuration.name) { %>
+										<span>Unused with <%= aircraft.configuration.name %></span>
+									<% } else { %>
+										<span>Unused</span>
+									<% } %>
 								</div>
 								<div class="ui button blue micro alliance airline">Edit</div>
 							</div>
@@ -307,7 +311,11 @@
 	        <span>69</span><input type="range" value="<%= config.def['y'] %>" min="0" max="<%= config.max['y'] %>">
 	      </div>
 				<div class="ui action left input configuration">
-				  <input type="text" placeholder="Configuration Name" id="configurationName">
+				<% if(user.configs.length > 0){ %>
+					  <input type="text" placeholder="Configuration Name" id="configurationName" value="<%= user.configs[0].name %>">
+					<% } else { %>
+						<input type="text" placeholder="Configuration Name" id="configurationName">
+					<% } %>
 				  <div class="ui gray button" id="saveConfiguration">Save</div>
 				</div>
 	      <div class="ui button positive" id="purchaseButton">Purchase Aircraft</div>

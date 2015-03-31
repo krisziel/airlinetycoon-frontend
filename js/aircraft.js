@@ -74,25 +74,27 @@ var AircraftList = Backbone.Collection.extend({
 	},
 	sort:function(){
 		var collection = this.models;
-		console.log(collection);
 		var inuse = []; // array of used aircraft
 		var unused = []; // array of unused aircraft
 		_.each(collection,function(model){ // for every aircraft type (777-300ER, 777-200LR, etc)
+			console.log(model);
 			var userAircrafts = []; // empty array to hold all of the user's aircraft of this type
-			_.each(model.get('user').aircraft,function(thisAircraftId){ // for each aircraft id in the list of user aircraft
-				var thisAircraft = userAircraft[thisAircraftId]; // set this aircraft to the actualy user aircraft pulled from loadUserAircraft
+			var user = model.get('user');
+			_.each(user.aircraft.models,function(thisAircraftId){ // for each aircraft id in the list of user aircraft
+				var thisAircraft = userAircraft[thisAircraftId.get('id')]; // set this aircraft to the actualy user aircraft pulled from loadUserAircraft
+				console.log(thisAircraft);
 				if(thisAircraft.flight) { // if it has a flight it is in use
-					aircraft.user.inuse++;
+					user.inuse++;
 				} else {
-					aircraft.user.unused++;
+					user.unused++;
 				}
 				userAircrafts.push(new UserAircraft(thisAircraft)); // Push the aircraft into the user aircraft array
 			});
-			aircraft.user.aircraft = new UserAircraftList(userAircrafts); // set this aircraft's list of user aircraft to be this list
-			if((aircraft.user.inuse > 0)||(aircraft.user.unused > 0)) { // if the airline owns at least one aircraft
-				inuse.push(new Aircraft(aircraft)); // put it in the inuse array so it is at the top of the list
+			user.aircraft = new UserAircraftList(userAircrafts); // set this aircraft's list of user aircraft to be this list
+			if((user.inuse > 0)||(user.unused > 0)) { // if the airline owns at least one aircraft
+				inuse.push(model); // put it in the inuse array so it is at the top of the list
 			} else {
-				unused.push(new Aircraft(aircraft)); // otherwise it isnt at the top of the list
+				unused.push(model); // otherwise it isnt at the top of the list
 			}
 		});
 		aircraftList = inuse.concat(unused); // combine the two lists
@@ -102,7 +104,6 @@ var AircraftList = Backbone.Collection.extend({
 var AircraftView = Backbone.View.extend({
 	initialize:function(){
 		this.render();
-		this.listenTo(aircraftList,'add',this.addOne);
 	},
 	render:function(){
 		var variables = this.model.attributes;
@@ -138,7 +139,8 @@ var AircraftView = Backbone.View.extend({
 		showPurchaseModal();
 	},
 	loadAircraftList:function(){
-		var el = $('#list' + this.get(iata));
+		console.log(this);
+		var el = $('#list' + this.model.get('iata'));
 		var hidden = el.hasClass('hide')
 		$('.aircraft.compressed').removeClass('show').addClass('hide');
 		if(hidden) {
@@ -217,7 +219,6 @@ function showPurchaseModal() {
 	} else {
 		selectedAircraft.set('config',getConfigSpecs({f:{p:0.12,i:8},j:{p:0.30,i:5},p:{p:0.14,i:2},y:{p:0.44,i:0}}));
 	}
-	console.log(selectedAircraft.get('config'));
 	selectedAircraft.attributes = variables;
 	var template = _.template($('#aircraftPurchaseTemplate').html(),variables);
 	$('.aircraft-info').html(template);
@@ -316,7 +317,7 @@ function saveConfiguration() {
 			return false;
 		} else {
 			var updatedUser = selectedAircraft.get('user');
-			updatedUser.configs.push(data);
+			updatedUser.configs[data.id] = data;
 			selectedAircraft.set('user',updatedUser);
 			$('#configurationId').val(data.id);
 			$('#saveConfiguration').removeClass('blue').addClass('gray');
@@ -383,13 +384,32 @@ function purchaseAircraft() {
 		if(data.length > 0) {
 			var updatedUser = selectedAircraft.get('user');
 			_.each(data,function(aircraft){
-				updatedUser.aircraft.models.push(new UserAircraft(aircraft));
-				userAircraft[aircraft.id] = new UserAircraft(aircraft);
+				var newAircraft = new UserAircraft(aircraft);
+				updatedUser.aircraft.add(newAircraft);
+				userAircraft[aircraft.id] = newAircraft;
 			});
 			updatedUser.unused += data.length;
 			selectedAircraft.set('user',updatedUser);
+			aircraftList.add(selectedAircraft);
+			aircraftList.sort();
+			new AircraftListView({el:'#aircraftList'});
 		} else {
 			
 		}
 	});
+}
+function pA() {
+	var data = [{"id":59,"aircraft":{"name":"737-800","manufacturer":"Boeing","iata":"738","full_name":"Boeing 737-800","capacity":"189","range":3400,"sqft":"851","id":2},"inuse":false,"configuration":{"id":19,"name":"domestic","config":{"f":{"count":0,"seat":8},"j":{"count":7,"seat":5},"p":{"count":22,"seat":2},"y":{"count":133,"seat":1}}},"flight":null}];
+	if(data.length > 0) {
+		var updatedUser = selectedAircraft.get('user');
+		_.each(data,function(aircraft){
+			var newAircraft = new UserAircraft(aircraft);
+			updatedUser.aircraft.add(newAircraft);
+			userAircraft[aircraft.id] = newAircraft;
+		});
+		updatedUser.unused += data.length;
+		selectedAircraft.set('user',updatedUser);
+	} else {
+		
+	}
 }
