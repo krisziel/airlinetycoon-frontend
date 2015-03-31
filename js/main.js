@@ -4,14 +4,22 @@ $(document).ready(function(){
 var cookies = {};
 function startApp() {
 	parseCookie();
-	$.post(base + '/user/autologin/' + cookies.url, {}, function(data, textStatus) {
-		if(!data.username) {
+	if(cookies.user_id) {
+		$.post(base + '/user/autologin/' + cookies.url, {}, function(data) {
+			if(!data.username) {
+				$('.login-window').modal({closable:false}).modal('show');
+				activateLogin();
+			} else {
+				loadGames();
+			}
+		}, "json").error(function(){
 			$('.login-window').modal({closable:false}).modal('show');
 			activateLogin();
-		} else {
-			loadGames();
-		}
-	}, "json");
+		});
+	} else {
+		$('.login-window').modal({closable:false}).modal('show');
+		activateLogin();
+	}
 }
 var button;
 function parseCookie() {

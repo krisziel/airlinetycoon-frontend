@@ -8,31 +8,34 @@ var seats;
 
 function loadAircraft() {
 	$.getJSON(base + 'aircraft' + cookies.url).done(function(data){
-		var inuse = []; // array of used aircraft
-		var unused = []; // array of unused aircraft
-		_.each(data,function(aircraft){ // for every aircraft type (777-300ER, 777-200LR, etc)
-			var userAircrafts = []; // empty array to hold all of the user's aircraft of this type
-			_.each(aircraft.user.aircraft,function(thisAircraftId){ // for each aircraft id in the list of user aircraft
-				var thisAircraft = userAircraft[thisAircraftId]; // set this aircraft to the actualy user aircraft pulled from loadUserAircraft
-				if(thisAircraft.flight) { // if it has a flight it is in use
-					aircraft.user.inuse++;
-				} else {
-					aircraft.user.unused++;
-				}
-				userAircrafts.push(new UserAircraft(thisAircraft)); // Push the aircraft into the user aircraft array
-			});
-			aircraft.user.aircraft = new UserAircraftList(userAircrafts); // set this aircraft's list of user aircraft to be this list
-			if((aircraft.user.inuse > 0)||(aircraft.user.unused > 0)) { // if the airline owns at least one aircraft
-				inuse.push(new Aircraft(aircraft)); // put it in the inuse array so it is at the top of the list
-			} else {
-				unused.push(new Aircraft(aircraft)); // otherwise it isnt at the top of the list
-			}
-		});
-		aircraftList = inuse.concat(unused); // combine the two lists
-		aircraftList = new AircraftList(aircraftList); // create an AircraftList from the list
-		aircraftListView = new AircraftListView({el:'#aircraftList'});
-		loadSeats();
+		createAircraftList(data);
 	});
+}
+function createAircraftList(data) {
+	var inuse = []; // array of used aircraft
+	var unused = []; // array of unused aircraft
+	_.each(data,function(aircraft){ // for every aircraft type (777-300ER, 777-200LR, etc)
+		var userAircrafts = []; // empty array to hold all of the user's aircraft of this type
+		_.each(aircraft.user.aircraft,function(thisAircraftId){ // for each aircraft id in the list of user aircraft
+			var thisAircraft = userAircraft[thisAircraftId]; // set this aircraft to the actualy user aircraft pulled from loadUserAircraft
+			if(thisAircraft.flight) { // if it has a flight it is in use
+				aircraft.user.inuse++;
+			} else {
+				aircraft.user.unused++;
+			}
+			userAircrafts.push(new UserAircraft(thisAircraft)); // Push the aircraft into the user aircraft array
+		});
+		aircraft.user.aircraft = new UserAircraftList(userAircrafts); // set this aircraft's list of user aircraft to be this list
+		if((aircraft.user.inuse > 0)||(aircraft.user.unused > 0)) { // if the airline owns at least one aircraft
+			inuse.push(new Aircraft(aircraft)); // put it in the inuse array so it is at the top of the list
+		} else {
+			unused.push(new Aircraft(aircraft)); // otherwise it isnt at the top of the list
+		}
+	});
+	aircraftList = inuse.concat(unused); // combine the two lists
+	aircraftList = new AircraftList(aircraftList); // create an AircraftList from the list
+	aircraftListView = new AircraftListView({el:'#aircraftList'});
+	loadSeats();
 }
 function loadUserAircraft() {
 	$.getJSON(base + 'aircraft/user' + cookies.url).done(function(data){
@@ -68,6 +71,32 @@ var AircraftList = Backbone.Collection.extend({
 			}
 		});
 		return result;
+	},
+	sort:function(){
+		var collection = this.models;
+		console.log(collection);
+		var inuse = []; // array of used aircraft
+		var unused = []; // array of unused aircraft
+		_.each(collection,function(model){ // for every aircraft type (777-300ER, 777-200LR, etc)
+			var userAircrafts = []; // empty array to hold all of the user's aircraft of this type
+			_.each(model.get('user').aircraft,function(thisAircraftId){ // for each aircraft id in the list of user aircraft
+				var thisAircraft = userAircraft[thisAircraftId]; // set this aircraft to the actualy user aircraft pulled from loadUserAircraft
+				if(thisAircraft.flight) { // if it has a flight it is in use
+					aircraft.user.inuse++;
+				} else {
+					aircraft.user.unused++;
+				}
+				userAircrafts.push(new UserAircraft(thisAircraft)); // Push the aircraft into the user aircraft array
+			});
+			aircraft.user.aircraft = new UserAircraftList(userAircrafts); // set this aircraft's list of user aircraft to be this list
+			if((aircraft.user.inuse > 0)||(aircraft.user.unused > 0)) { // if the airline owns at least one aircraft
+				inuse.push(new Aircraft(aircraft)); // put it in the inuse array so it is at the top of the list
+			} else {
+				unused.push(new Aircraft(aircraft)); // otherwise it isnt at the top of the list
+			}
+		});
+		aircraftList = inuse.concat(unused); // combine the two lists
+		aircraftList = new AircraftList(aircraftList); // create an AircraftList from the list
 	}
 });
 var AircraftView = Backbone.View.extend({
@@ -183,7 +212,7 @@ function showPurchaseModal() {
 	selectedAircraft.set('maxFlights',changeAircraftQuantity(1000).quantity);
 	if((selectedAircraft.get('iata').match(/CR2|ERJ/gi))) {
 		selectedAircraft.set('config',getConfigSpecs({f:{p:0.0,i:6},j:{p:0.0,i:3},p:{p:0.0,i:1},y:{p:1.0,i:0}}));
-	} else if(selectedAircraft.get('iata').match(/73|31|32[01]/gi)) {
+	} else if(selectedAircraft.get('iata').match(/73|31|32[01]|75|CR|E/gi)) {
 		selectedAircraft.set('config',getConfigSpecs({f:{p:0.0,i:7},j:{p:0.1,i:4},p:{p:0.2,i:1},y:{p:0.7,i:0}}));
 	} else {
 		selectedAircraft.set('config',getConfigSpecs({f:{p:0.12,i:8},j:{p:0.30,i:5},p:{p:0.14,i:2},y:{p:0.44,i:0}}));

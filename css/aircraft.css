@@ -239,25 +239,25 @@
   line-height: 91px !important;
   font-weight: bold;
 }
-.row {
+.row.panel {
   display: block;
   font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   font-size: 13px;
   line-height: 18px;
   position: relative;
 }
-.row .label {
+.row.panel .label {
   font-weight: bold;
 	text-align: right;
 	margin-right: 5px;
 }
-.row input {
+.row.panel input {
   float: right;
   margin-top: 2px;
   margin-left: 10px;
   width: 170px;
 }
-.row input.frequencies {
+.row.panel input.frequencies {
   width: 125px;
 }
 .ui.selection.dropdown[data-rowtype="configuration"] {
