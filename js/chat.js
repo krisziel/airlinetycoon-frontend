@@ -14,7 +14,7 @@ function closeChat() {
 	$('.chat.window').css({display:'none'});
 	clearInterval(messageInterval);
 }
-function sendChatMessage() {
+function sendChatMessages() {
 	var message = $('#chatMessage').val();
 	var type = $('.ui.button.blue.super.small').attr('name');
 	$.post(base + 'chat/' + type + cookies.url,$('#messageForm').serialize(),function(data,textResponse){

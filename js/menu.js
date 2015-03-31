@@ -6,6 +6,7 @@ function launchGame(id) {
 	loadUserAircraft();
 	loadMore();
 	loadMsc();
+	connect();
 	var menu = new MenuView({el:'#leftColumn'});
 }
 var MenuView = Backbone.View.extend({

@@ -118,12 +118,12 @@
 			<div class="chat window" data-tab="alliance_chat" style="display:none;">
 				<div class="message list">
 				</div>
-				<form class="ui form" id="messageForm">
+				<div class="ui form" id="messageForm">
 					<div class="field chat">
-				    <textarea id="chatMessage" class="message" name="[alliance_chat]message"></textarea>
-						<input type="submit" class="ui button blue super small" name="alliance" value="Send" />
+				    <textarea id="chatMessage" class="message" name="message"></textarea>
+						<input type="submit" class="ui button blue super small" id="sendChatMessage" name="alliance" value="Send" />
 				  </div>
-				</form>
+				</div>
 			</div>
 		</script>
 		<script id="allianceTemplate" type="text/template">

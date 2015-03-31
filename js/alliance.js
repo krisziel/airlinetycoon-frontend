@@ -12,6 +12,11 @@ function loadAlliance() {
 		$('#allianceList > div[data-tab]').css({display:'none'});
 		$('#allianceList > div[data-tab=' + tab.attr('data-tab') + ']').css({display:'block'});
 	});
+	$('.message.list').css({height:$('.chat.window').height()-70});
+	$('body').on('click','.ui.button.blue.super.small',function(e){
+		e.preventDefault();
+		sendChatMessage();
+	});
 }
 function loadAllianceAirlines(id,el) {
 	var id = id || 'own';
