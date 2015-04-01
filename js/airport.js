@@ -78,6 +78,7 @@ var airports = [];
 var airportList;
 function loadAirports(){
 	$.getJSON(base + 'airport').done(function(data){
+		addAirportMarkers(data);
 	  _.each(data,function(airport){
 	    airportItem = new Airport(airport);
 	    airports.push(airportItem);

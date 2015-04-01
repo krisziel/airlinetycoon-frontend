@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/airline.css">
     <link rel="stylesheet" href="css/chat.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.4/semantic.min.css">
+    <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
   </head>
   <body>
     <script id="airportTemplate" type="text/template">
@@ -385,6 +386,9 @@
         </div>
       </div>
     </div>
+		<div id="map"></div>
+    <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/arc.js/v0.1.0/arc.js'></script>
+    <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
     <script src="js/json2.js"></script>
     <script src="js/jquery.js"></script>
     <script src="js/underscore.js"></script>
@@ -396,6 +400,7 @@
     <script src="js/aircraft.js"></script>
     <script src="js/main.js"></script>
     <script src="js/sockets.js"></script>
+    <script src="js/map.js"></script>
     <script src="js/game.js"></script>
     <script src="js/alliance.js"></script>
     <script src="js/user.js"></script>
