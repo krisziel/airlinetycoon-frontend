@@ -30,7 +30,7 @@ var AirportView = Backbone.View.extend({
 		'click':'loadAirport'
 	},
 	loadAirport:function(e){
-		console.log(this.model.attributes.id);
+		$('.leaflet-marker-icon[title="' + this.model.attributes.name + ' (' + this.model.attributes.iata + ')"]').click();
 	}
 });
 
@@ -86,4 +86,7 @@ function loadAirports(){
 	  airportList = new AirportList(airports);
 	  new AirportListView({el:'#airportList'});
 	});
+}
+function loadAirport(e) {
+	console.log(e);
 }

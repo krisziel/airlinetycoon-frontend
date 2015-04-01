@@ -38,9 +38,6 @@ function loadGame(id) {
 		setCookie({key:'game_id',value:data.cookie});
 	});
 }
-function loadFlights() {
-	
-}
 function loadMore() {
 	
 }

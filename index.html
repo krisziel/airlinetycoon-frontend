@@ -354,6 +354,109 @@
 			<span><%= name + ' (' + iata + ')' %></span>
 			<span><%= city + ', ' + country %></span>
 		</script>
+		<script id="flightTemplate" type="text/template">
+			<a class="step own active" id="flight<%= id %>" data-flightid="<%= id %>" data-routeid="<%= route.id %>">
+			  <div class="content">
+			    <div class="title"><%= aircraft.userAircraft.full_name %> (<%= frequencies %>x/week)</div>
+					<% if(load&&load.average&&profit) { %>
+			    	<div class="description"><%= load.average %>% Load Factor 
+						<% if(profit > 0) { %>
+							(<span class="greenColor">$<%= comma(profit) %> Profit</span>)
+						<% } else if(profit < 0) { %>
+							(<span class="redColor">$<%= comma(profit) %> Loss</span>)
+						<% } else { %>
+							(<span>Breakeven</span>)
+						<% } %>
+						</div>
+					<% } else { %>
+			    	<div class="description">Just Launched</div>
+					<% } %>
+			  </div>
+			</a>
+		</script>
+		<script id="flightListTemplate" type="text/template">
+	    <div class="ui secondary menu" id="classMenu"><a class="item active" data-tab="f">First</a><a class="item" data-tab="j">Business</a><a class="item" data-tab="p">Premium Economy</a><a class="item" data-tab="y">Economy</a></div>
+	    <div class="ui tab segment open" data-tab="f">
+	      <div class="row" style="display:none;" data-rowtype="seattype"><span class="label">Seat Type:</span> <span>Enclosed Suite</span></div>
+	      <div class="row" style="display:none;" data-rowtype="capacity"><span class="label">Capacity:</span> <span>0</span></div>
+	      <div class="row" style="display:none;" data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span>0%</span></div>
+	      <div class="row" style="display:none;" data-rowtype="weeklyprofit"><span class="label">Weekly Revenue:</span> $<span>0</span></div>
+	      <div class="row" style="display:none;" data-rowtype="fare"><span class="label">Fare:</span> $<span id="ffare">976</span><input name="ffare" type="range" value="976" class="fareRange" min="124" max="1828"></div>
+	      <div class="row noclass" style="display:block;" data-rowtype="noclass">This aircraft has no first class</div>
+			</div>
+		</script>
+		<script id="cabinInfoTemplate" type="text/template">
+		</script>
+		<script id="flightInfoTemplate" type="text/template">
+			<div class="flight-info" data-flightid="12">
+			  <div class="row-container">
+			    <div class="row" data-rowtype="aircraft">
+			      <div class="ui selection dropdown" tabindex="0">
+			        <div class="text"><%= userAircraft.aircraft.full_name %> (<%= configuration.config.f.count + '/' + configuration.config.j.count + '/' + configuration.config.p.count + '/' + configuration.config.y.count %>)</div>
+			        <i class="dropdown icon"></i><input name="aircraft-id" id="aircraftInput" value="<%= userAircraft.id %>" type="hidden">
+			        <div class="menu" style="max-height: 300px;" tabindex="-1">
+			          <div class="item active selected" data-value="<%= userAircraft.id %>"><%= userAircraft.aircraft.full_name %> (<%= configuration.config.f.count + '/' + configuration.config.j.count + '/' + configuration.config.p.count + '/' + configuration.config.y.count %>)</div>
+			          <div class="item" data-value="2"><%= userAircraft.aircraft.full_name %> (<%= config.f.count + '/' + config.j.count + '/' + config.p.count + '/' + config.y.count %>)</div>
+			        </div
+			      </div>
+			    </div>
+			    <div class="row" data-rowtype="flight-length"><span class="label">Flight Length:</span> <span><%= comma(route.distance) %></span> Miles</div>
+			    <div class="row" data-rowtype="flight-duration"><span class="label">Flight Time:</span> <span><%= minutesToHours(duration) %></span></div>
+					<div class="row">
+					<% if(profit > 0) { %>
+						<span class="label">Weekly Profit:</span> <span class="greenColor">$<%= comma(profit) %></span>
+					<% } else if(profit < 0) { %>
+						<span class="label">Weekly Loss:</span> <span class="redColor">$<%= comma(profit) %></span>
+					<% } else { %>
+						<span class="label">Breakeven</span>
+					<% } %>
+					</div>
+			    <div class="row" data-rowtype="weekly-frequencies"><span class="label">Weekly Frequencies:</span> <span id="weeklyFrequencies"><%= frequencies %></span><input name="weekly-frequencies" type="range" class="frequencies" min="1" max="56" value="<%= frequencies %>"></div>
+			  </div>
+			  <div class="tab">
+			    <div class="ui tab segment" data-tab="j">
+			      <div class="row" data-rowtype="seattype"><span class="label">Seat Type:</span> <span>Herringbone</span></div>
+			      <div class="row" data-rowtype="capacity"><span class="label">Capacity:</span> <span>18</span></div>
+			      <div class="row" data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span>100%</span></div>
+			      <div class="row" data-rowtype="weeklyprofit"><span class="label">Weekly Revenue:</span> $<span>248,832</span></div>
+			      <div class="row" data-rowtype="fare"><span class="label">Fare:</span> $<span id="jfare">384</span><input name="jfare" type="range" value="384" class="fareRange" min="62" max="1114"></div>
+			      <div class="row noclass" data-rowtype="noclass">This aircraft has no business class</div>
+			    </div>
+			    <div class="ui tab segment" data-tab="p">
+			      <div class="row" data-rowtype="seattype"><span class="label">Seat Type:</span> <span>Premium Economy</span></div>
+			      <div class="row" data-rowtype="capacity"><span class="label">Capacity:</span> <span>24</span></div>
+			      <div class="row" data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span>100%</span></div>
+			      <div class="row" data-rowtype="weeklyprofit"><span class="label">Weekly Revenue:</span> $<span>223,776</span></div>
+			      <div class="row" data-rowtype="fare"><span class="label">Fare:</span> $<span id="pfare">259</span><input name="pfare" type="range" value="259" class="fareRange" min="37" max="748"></div>
+			      <div class="row noclass" data-rowtype="noclass">This aircraft has no premium economy class</div>
+			    </div>
+			    <div class="ui tab segment" data-tab="y">
+			      <div class="row" data-rowtype="seattype"><span class="label">Seat Type:</span> <span>Economy</span></div>
+			      <div class="row" data-rowtype="capacity"><span class="label">Capacity:</span> <span>145</span></div>
+			      <div class="row" data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span>100%</span></div>
+			      <div class="row" data-rowtype="weeklyprofit"><span class="label">Weekly Revenue:</span> $<span>730,800</span></div>
+			      <div class="row" data-rowtype="fare"><span class="label">Fare:</span> $<span id="yfare">140</span><input name="yfare" type="range" value="140" class="fareRange" min="12" max="383"></div>
+			      <div class="row noclass" data-rowtype="noclass">This aircraft has no economy class</div>
+			    </div>
+			  </div>
+			  <div class="ui buttons">
+			    <div class="ui button" id="cancelButton">Cancel</div>
+			    <div class="or"></div>
+			    <div class="ui positive button" id="saveFlightButton">Save</div>
+			    <div class="or"></div>
+			    <div class="ui red button" id="cancelFlightButton">Cancel Flight</div>
+			  </div>
+			</div>
+		</script>
+		<script id="newFlightTemplate" type="text/template">
+		
+		</script>
+		<script id="routePanelTemplate" type="text/template">
+		
+		</script>
+		<script id="routeFlightTemplate" type="text/template">
+		
+		</script>
 		<div id="leftColumn">
 		</div>
     <div class="shaded grid game-window">
@@ -409,8 +512,10 @@
     <script src="js/airline.js"></script>
     <script src="js/airport.js"></script>
     <script src="js/aircraft.js"></script>
+    <script src="js/flight.js"></script>
     <script src="js/main.js"></script>
     <script src="js/sockets.js"></script>
+    <script src="js/route.js"></script>
     <script src="js/map.js"></script>
     <script src="js/game.js"></script>
     <script src="js/alliance.js"></script>

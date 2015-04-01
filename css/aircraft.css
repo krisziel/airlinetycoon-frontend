@@ -11,7 +11,8 @@
 .data.aircraft:not(.flight) {
 	max-width: 130px;
 }
-.ui.button.micro.airline.aircraft.purchase {
+.header.airport:not(.empty) .ui.button.micro.airline.aircraft.purchase {
+	margin-right: 5px;
 }
 .ui.button.micro.airline.aircraft.configs {
 }
@@ -39,7 +40,7 @@
 	font-size: 13px;
 	font-weight: normal;
 	line-height: 32px;
-	width: 220px;
+	width: 225px;
 	height: 32px;
 	float: left;
 }
