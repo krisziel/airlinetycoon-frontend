@@ -62,3 +62,6 @@ span {
 	top: 0px;
 	left: 300px;
 }
+.icon.selected {
+	color: #009fda;
+}

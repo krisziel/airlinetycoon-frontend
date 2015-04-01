@@ -343,6 +343,17 @@
 			  </div>
 			</div>
 		</script>
+		<script id="airportPopupTemplate" type="text/template">
+			<% if(selectedAirport.origin.iata === iata){ %>
+				<i class="icon lock selected" id="lock<%= id %>" data-id="<%= id %>"></i>
+			<% } else if(selectedAirport.selected){ %>
+				<i class="icon horizontal resize" id="airportroute<%= id %>" data-id="<%= id %>"></i>
+			<% } else { %>
+				<i class="icon lock" id="lock<%= id %>" data-id="<%= id %>"></i>
+			<% } %>
+			<span><%= name + ' (' + iata + ')' %></span>
+			<span><%= city + ', ' + country %></span>
+		</script>
 		<div id="leftColumn">
 		</div>
     <div class="shaded grid game-window">
