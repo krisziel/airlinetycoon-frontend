@@ -77,12 +77,10 @@ var AircraftList = Backbone.Collection.extend({
 		var inuse = []; // array of used aircraft
 		var unused = []; // array of unused aircraft
 		_.each(collection,function(model){ // for every aircraft type (777-300ER, 777-200LR, etc)
-			console.log(model);
 			var userAircrafts = []; // empty array to hold all of the user's aircraft of this type
 			var user = model.get('user');
 			_.each(user.aircraft.models,function(thisAircraftId){ // for each aircraft id in the list of user aircraft
 				var thisAircraft = userAircraft[thisAircraftId.get('id')]; // set this aircraft to the actualy user aircraft pulled from loadUserAircraft
-				console.log(thisAircraft);
 				if(thisAircraft.flight) { // if it has a flight it is in use
 					user.inuse++;
 				} else {

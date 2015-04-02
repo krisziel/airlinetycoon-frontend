@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/airport.css">
     <link rel="stylesheet" href="css/alliance.css">
     <link rel="stylesheet" href="css/aircraft.css">
+    <link rel="stylesheet" href="css/flight.css">
     <link rel="stylesheet" href="css/airline.css">
     <link rel="stylesheet" href="css/chat.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.4/semantic.min.css">
@@ -355,26 +356,39 @@
 			<span><%= city + ', ' + country %></span>
 		</script>
 		<script id="flightTemplate" type="text/template">
-			<a class="step own" id="flight<%= id %>" data-flightid="<%= id %>" data-routeid="<%= route.id %>">
+			<div class="ui dividing header airport alliance" id="flight<%= id %>" data-flightid="<%= id %>" data-routeid="<%= route.id %>">
 			  <div class="content">
-			    <div class="title"><%= route.origin.iata %>-<%= route.destination.iata %> (<%= userAircraft.aircraft.full_name %> <%= frequencies %>x/week)</div>
-					<% if(load&&load.average&&profit) { %>
-			    	<div class="description"><%= load.average %>% Load Factor 
-						<% if(profit > 0) { %>
-							(<span class="greenColor">$<%= comma(profit) %> Profit</span>)
-						<% } else if(profit < 0) { %>
-							(<span class="redColor">$<%= comma(profit) %> Loss</span>)
-						<% } else { %>
-							(<span>Breakeven</span>)
-						<% } %>
+					<div class="ui statistic tiny alliance">
+						<div class="value route"><%= route.origin.iata %>-<%= route.destination.iata %> <span>(<%= userAircraft.aircraft.name %> x <%= frequencies %>)</span></div>
+					  <div class="label">
+							<% if(load&&load.average&&profit) { %>
+					    	<%= load.average %>% Load Factor 
+								<% if(profit > 0) { %>
+									(<span class="greenColor">$<%= comma(profit) %> Profit</span>)
+								<% } else if(profit < 0) { %>
+									(<span class="redColor">$<%= comma(profit) %> Loss</span>)
+								<% } else { %>
+									(<span>Breakeven</span>)
+								<% } %>
+							<% } else { %>
+					    	Just Launched
+							<% } %>
 						</div>
-					<% } else { %>
-			    	<div class="description">Just Launched</div>
-					<% } %>
-			  </div>
-			</a>
+					</div>
+				</div>
+				<div class="ui button blue micro alliance airline single">View</div>
+			</div>
 		</script>
 		<script id="flightListTemplate" type="text/template">
+			<div class="ui mini icon input airport">
+				<input type="text" placeholder="Search Flights" class="search airport" maxlength="7">
+			  <i class="search icon"></i>
+			</div>
+			<div class="ui dividing header airport none">
+				<div class="content airport">
+					<h4 class="ui center aligned header">No Flights Found</h4>
+				</div>
+			</div>
 		</script>
 		<script id="cabinInfoTemplate" type="text/template">
 			<div class="ui tab segment" data-tab="<%= cabin %>">

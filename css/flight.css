@@ -1,0 +1,7 @@
+.value.route span {
+	font-size: 12px;
+	display: inline;
+}
+.value.route {
+	margin-bottom: -3px;
+}

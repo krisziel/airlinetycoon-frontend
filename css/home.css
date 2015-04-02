@@ -50,10 +50,13 @@ span {
 }
 #leftColumn > .column {
 	position: relative;
-	margin-top: 5px;
+	margin-top: none;
 	overflow-x: hidden;
 	overflow-y: auto;
 	display: none;
+}
+.ui.mini.icon.input.airport {
+	margin-top: 5px;
 }
 #map {
 	width: 100%;
