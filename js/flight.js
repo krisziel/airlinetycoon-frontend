@@ -26,9 +26,7 @@ var FlightView = Backbone.View.extend({
   },
   render:function(){
     var variables = this.model.attributes;
-		console.log(variables);
     var template = _.template($('#flightTemplate').html(),variables);
-		console.log(template);
     this.$el.html(template);
     return this;
   },
@@ -49,7 +47,6 @@ var FlightListView = Backbone.View.extend({
     this.addAll();
   },
   addOne:function(flight){
-		console.log(flight);
     var view = new FlightView({model: flight});
     this.$el.append(view.$el);
   },
@@ -59,13 +56,18 @@ var FlightListView = Backbone.View.extend({
     flightList.each(this.addOne,this);
   }
 });
-
+function showFlight(flight) {
+	showRoute(flight.route.id);
+	var template = _.template($('#flightInfoTemplate').html(),flight.attributes);
+  $('.flight-info').html(template);
+}
 function calculateDuration(distance, speed) {
   var duration = 40;
   duration += ((distance/speed)*60);
   return Math.round(duration);
 }
 function maxFrequencies(duration,turn_time) {
+	console.log(turn_time,duration);
   return Math.floor(10080/(turn_time+duration)/2);
 }
 function minutesToHours(minutes) {
@@ -74,10 +76,10 @@ function minutesToHours(minutes) {
   return hours + ":" + minutes;
 }
 function maxFlights(route, aircraft) {
-	var hours = (route.distance/aircraft.speend)
+	var hours = (route.distance/aircraft.speed)
 	var minutes = hours*60;
-	var totalFlight = (minutes+turn_time);
-	var frequencies = (10080(totalFlight*2));
+	var totalFlight = (minutes+aircraft.turn_time);
+	var frequencies = (10080/(totalFlight*2));
 	return frequencies;
 }
 
