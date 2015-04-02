@@ -16,7 +16,7 @@ function showRoute(id) {
 		});
 		data.flights = flights
 		selectedRoute = new Route(data);
-		var routeView = new RouteView({model:selectedRoute});
+		return new RouteView({model:selectedRoute});
 	});
 }
 
@@ -29,9 +29,10 @@ var RouteView = Backbone.View.extend({
   },
   render:function(){
     var variables = this.model.attributes;
-		console.log(variables);
     var template = _.template($('#routeModalTemplate').html(),variables);
-		$('.route-panel').html(template);
+		$('.route-info').attr('data-routeid',variables.i).html(template);
+		$('#routePanel').modal('show');
+		return true;
   }
 });
 var RouteFlightView = Backbone.View.extend({
@@ -41,6 +42,6 @@ var RouteFlightView = Backbone.View.extend({
   render:function(){
     var variables = this.model.attributes;
     var template = _.template($('#routeModalTemplate').html(),variables);
-		$('.route-panel').html(template);
+		//$('.route-panel').html(template);
   }
 });

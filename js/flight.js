@@ -1,4 +1,5 @@
 var flightList = [];
+var selectedFlight;
 
 function loadFlights() {
 	$.getJSON(base + 'flight' + cookies.url).done(function(data){
@@ -25,6 +26,7 @@ var FlightView = Backbone.View.extend({
     this.render();
   },
   render:function(){
+		selectedFlight = this.model;
     var variables = this.model.attributes;
     var template = _.template($('#flightTemplate').html(),variables);
     this.$el.html(template);
@@ -57,9 +59,17 @@ var FlightListView = Backbone.View.extend({
   }
 });
 function showFlight(flight) {
-	showRoute(flight.route.id);
-	var template = _.template($('#flightInfoTemplate').html(),flight.attributes);
-  $('.flight-info').html(template);
+	(function(){
+    return Q.all(_.map(showRoute(flight.get('route').id)));
+	})().then(function(){
+		var template = _.template($('#flightInfoTemplate').html(),flight.attributes);
+  	$('.flight-info').html(template);
+	  $('#classMenu').on('click','a',function(){
+	    $(this).addClass('active').closest('.ui.menu').find('.item').not($(this)).removeClass('active');
+	    $(this).closest('.tab').find('div').addClass('open').not('[data-tab="' + $(this).data('tab') + '"]').removeClass('open');
+	  });
+		$('.route-panel .tab .segment[data-tab="f"]').addClass('open');
+	});
 }
 function calculateDuration(distance, speed) {
   var duration = 40;
@@ -67,7 +77,6 @@ function calculateDuration(distance, speed) {
   return Math.round(duration);
 }
 function maxFrequencies(duration,turn_time) {
-	console.log(turn_time,duration);
   return Math.floor(10080/(turn_time+duration)/2);
 }
 function minutesToHours(minutes) {
@@ -76,11 +85,17 @@ function minutesToHours(minutes) {
   return hours + ":" + minutes;
 }
 function maxFlights(route, aircraft) {
-	var hours = (route.distance/aircraft.speed)
+	var hours = (route.distance/aircraft.speed);
 	var minutes = hours*60;
 	var totalFlight = (minutes+aircraft.turn_time);
 	var frequencies = (10080/(totalFlight*2));
-	return frequencies;
+	return Math.floor(frequencies);
+}
+function configurationInfo(cabin){
+	var variables = selectedFlight.attributes;
+	variables.cabin = cabin;
+	var template = _.template($('#cabinInfoTemplate').html(),variables);
+	return template
 }
 
 var cabinType = {

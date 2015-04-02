@@ -24,7 +24,6 @@
 .row input.frequencies {
   width: 125px;
 }
-
 .route-panel {
   z-index: 1009;
   position: absolute;
@@ -116,17 +115,9 @@
   padding: 8px 12px !important;
   width: 100%;
 }
-.route-panel .flight-list .step:first-child {
-  -webkit-border-top-left-radius: 0 !important;
-  -moz-border-top-left-radius: 0 !important;
-  -ms-border-top-left-radius: 0 !important;
-  -o-border-top-left-radius: 0 !important;
-  border-top-left-radius: 0 !important;
-  -webkit-border-top-right-radius: 0 !important;
-  -moz-border-top-right-radius: 0 !important;
-  -ms-border-top-right-radius: 0 !important;
-  -o-border-top-right-radius: 0 !important;
-  border-top-right-radius: 0 !important;
+.route-panel .flight-list .content {
+	float: left;
+	width: 225px;
 }
 .route-panel .flight-info {
   height: 100%;
@@ -142,8 +133,13 @@
   text-align: center;
   font-weight: bold;
 }
+.flight-info input[type="range"] {
+	position: absolute;
+	top: 2px;
+	right: 10px;
+}
 .route-panel .flight-info .tab > .menu {
-  margin: 4px 0 4px 2px;
+  margin: 4px 0 4px 0;
 }
 .route-panel .flight-info .secondary.menu .item {
   padding: 6px 7px 6px 6px !important;
@@ -151,10 +147,10 @@
   margin: 2px;
 }
 .route-panel .flight-info .buttons {
-  margin: 0 0 6px 6px;
+  margin: 0 0 6px 0px;
 }
 .route-panel .flight-info .segment[data-tab] {
-  margin: 0px 6px 6px 6px;
+  margin: 0 0 6px 0;
   padding: 10px;
 }
 .route-panel .flight-info .row-container {
@@ -169,4 +165,8 @@
   text-align: center;
   line-height: 91px !important;
   font-weight: bold;
+}
+.route-panel .ui.segment.tab {
+	max-height: 112px;
+	min-height: 112px;
 }

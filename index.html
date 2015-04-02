@@ -392,11 +392,12 @@
 		</script>
 		<script id="cabinInfoTemplate" type="text/template">
 			<div class="ui tab segment" data-tab="<%= cabin %>">
+			<% console.log(cabin) %>
 				<% if(userAircraft.configuration.config[cabin].count > 0) { %>
-		      <div class="row" data-rowtype="capacity"><span class="label">Capacity:</span> <span><%= userAircraft.configuration.config[cabin].count %></span></div>
-		      <div class="row" data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span><%= load[cabin] %>%</span></div>
-		      <div class="row" data-rowtype="weeklyprofit"><span class="label">Weekly Revenue:</span> $<span><%= (fare[cabin]*passengers[cabin]) %></span></div>
-		      <div class="row" data-rowtype="fare"><span class="label">Fare:</span> $<span id="<%= cabin %>fare"></span><input name="<%= cabin %>fare" type="range" value="<%= fare[cabin] %>" class="fareRange" min="<%= fare.route.minfare[cabin] %>" max="<%= fare.route.maxfare[cabin] %>"></div>
+		      <div class="row" data-rowtype="capacity"><span class="label">Capacity:</span> <span> <%= userAircraft.configuration.config[cabin].count %> passengers</span></div>
+		      <div class="row" data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span> <%= load[cabin] %>%</span></div>
+		      <div class="row" data-rowtype="weeklyprofit"><span class="label">Weekly Revenue:</span> <span> $<%= (fare[cabin]*passengers[cabin]) %></span></div>
+		      <div class="row" data-rowtype="fare"><span class="label">Fare:</span> <span id="<%= cabin %>fare"> $</span><input name="<%= cabin %>fare" type="range" value="<%= fare[cabin] %>" class="fareRange" min="<%= route.minfare[cabin] %>" max="<%= route.maxfare[cabin] %>"></div>
 				<% } else { %>
 		      <div class="row noclass" style="display:block;" data-rowtype="noclass">This aircraft has no <%= cabinType[cabin] %> class</div>
 				<% } %>
@@ -415,7 +416,7 @@
 		        </div
 		      </div>
 		    </div>
-		    <div class="row" data-rowtype="flight-length"><span class="label">Flight Length:</span> <span><%= comma(route.distance) %></span> Miles</div>
+		    <div class="row" data-rowtype="flight-length"><span class="label">Flight Length:</span> <span><%= comma(route.distance) %> Miles</span></div>
 		    <div class="row" data-rowtype="flight-duration"><span class="label">Flight Time:</span> <span><%= minutesToHours(duration) %></span></div>
 				<div class="row">
 				<% if(profit > 0) { %>
@@ -430,6 +431,9 @@
 		  </div>
 		  <div class="tab">
 				<div class="ui secondary menu" id="classMenu"><a class="item active" data-tab="f">First</a><a class="item" data-tab="j">Business</a><a class="item" data-tab="p">Premium Economy</a><a class="item" data-tab="y">Economy</a></div>
+				<% _.each(['f','j','p','y'],function(cabin){ %>
+					<%= configurationInfo(cabin) %>
+				<% }) %>
 		  </div>
 		  <div class="ui buttons">
 		    <div class="ui button" id="cancelButton">Cancel</div>
@@ -443,69 +447,64 @@
 			
 		</script>
 		<script id="routeModalTemplate" type="text/template">
-			<i class="icon remove"></i>
-			<div class="route-info" data-routeid="<%= id %>">
-			  <div class="info">
-			    <div class="ui statistic">
-			      <div class="value"><%= origin.iata %></div>
-			      <div class="label"><%= origin.name %></div>
-			    </div>
-			    <i class="resize horizontal icon"></i>
-			    <div class="ui statistic">
-			      <div class="value"><%= destination.iata %></div>
-			      <div class="label"><%= destination.name %></div>
-			    </div>
-			  </div>
-			  <div class="ui unordered steps flight-list vertical" id="route<%= id %>">
-					<div class="ui one bottom attached buttons create">
-			      <div class="ui button primary">
-			        <i class="add icon"></i>
-			        Create New Flight
-						</div>
+		  <div class="info">
+		    <div class="ui statistic">
+		      <div class="value"><%= origin.iata %></div>
+		      <div class="label"><%= origin.name %></div>
+		    </div>
+		    <i class="resize horizontal icon"></i>
+		    <div class="ui statistic">
+		      <div class="value"><%= destination.iata %></div>
+		      <div class="label"><%= destination.name %></div>
+		    </div>
+		  </div>
+		  <div class="ui unordered steps flight-list vertical" id="route<%= id %>">
+				<div class="ui one bottom attached buttons create">
+		      <div class="ui button primary">
+		        <i class="add icon"></i>
+		        Create New Flight
 					</div>
-					<% _.each(flights.own,function(flight){ %>
-						<% flight = flightList.get(flight.id).attributes %>
-						<div class="ui dividing header airport alliance" id="flight<%= flight.id %>" data-flightid="<%= flight.id %>" data-routeid="<%= id %>">
-						  <div class="content">
-								<div class="ui statistic tiny alliance">
-									<div class="value route"><%= flight.userAircraft.aircraft.name %> x <%= flight.frequencies %>/w</div>
-								  <div class="label">
-										<% if(flight.load&&flight.load.average&&flight.profit) { %>
-								    	<%= flight.load.average %>% Load Factor 
-											<% if(flight.profit > 0) { %>
-												(<span class="greenColor">$<%= comma(flight.profit) %> Profit</span>)
-											<% } else if(flight.profit < 0) { %>
-												(<span class="redColor">$<%= comma(flight.profit) %> Loss</span>)
-											<% } else { %>
-												(<span>Breakeven</span>)
-											<% } %>
+				</div>
+				<% _.each(flights.own,function(flight){ %>
+					<% flight = flightList.get(flight.id).attributes %>
+					<div class="ui dividing header airport alliance" id="flight<%= flight.id %>" data-flightid="<%= flight.id %>" data-routeid="<%= id %>">
+					  <div class="content">
+							<div class="ui statistic tiny alliance">
+								<div class="value route"><%= flight.userAircraft.aircraft.name %> x <%= flight.frequencies %>/w</div>
+							  <div class="label">
+									<% if(flight.load&&flight.load.average&&flight.profit) { %>
+							    	<%= flight.load.average %>% Load Factor 
+										<% if(flight.profit > 0) { %>
+											(<span class="greenColor">$<%= comma(flight.profit) %> Profit</span>)
+										<% } else if(flight.profit < 0) { %>
+											(<span class="redColor">$<%= comma(flight.profit) %> Loss</span>)
 										<% } else { %>
-								    	Just Launched
+											(<span>Breakeven</span>)
 										<% } %>
-									</div>
+									<% } else { %>
+							    	Just Launched
+									<% } %>
 								</div>
 							</div>
-							<div class="ui button blue micro alliance airline single">View</div>
 						</div>
-					<% }) %>
-					<% _.each(flights.comp,function(flight){ %>
-						<% flight = flight.attributes %>
-						<div class="ui dividing header airport alliance" id="flight<%= flight.id %>" data-flightid="<%= flight.id %>" data-routeid="<%= id %>">
-						  <div class="content">
-								<div class="ui statistic tiny alliance">
-									<div class="value route"><%= airline.name %></div>
-								  <div class="label">
-									<%= flight.aircraft.name %> x <%= flight.frequencies %>/w @ <%= flight.load.average %>% load factor</span>
-									</div>
+						<div class="ui button blue micro alliance airline single">View</div>
+					</div>
+				<% }) %>
+				<% _.each(flights.comp,function(flight){ %>
+					<% flight = flight.attributes %>
+					<div class="ui dividing header airport alliance" id="flight<%= flight.id %>" data-flightid="<%= flight.id %>" data-routeid="<%= id %>">
+					  <div class="content">
+							<div class="ui statistic tiny alliance">
+								<div class="value route"><%= airline.name %></div>
+							  <div class="label">
+								<%= flight.aircraft.name %> x <%= flight.frequencies %>/w @ <%= flight.load.average %>% load factor</span>
 								</div>
 							</div>
-							<div class="ui button blue micro alliance airline single">View</div>
 						</div>
-					<% }) %>
-			  </div>
+						<div class="ui button blue micro alliance airline single">View</div>
+					</div>
+				<% }) %>
 			</div>
-			<div class="line" style="height: 316px;"></div>
-			<div class="flight-info"></div>
 		</script>
 		<script id="routeFlightTemplate" type="text/template">
 		
@@ -554,7 +553,12 @@
       </div>
     </div>
 		<div id="map"></div>
-		<div class="route-panel open" id="routePanel"></div>
+		<div class="route-panel open" id="routePanel" style="display:none;">
+			<i class="icon remove"></i>
+			<div class="route-info"></div>
+			<div class="line" style="height: 316px;"></div>
+			<div class="flight-info"></div>
+		</div>
     <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/arc.js/v0.1.0/arc.js'></script>
     <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
     <script src="js/json2.js"></script>
