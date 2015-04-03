@@ -100,6 +100,17 @@ function changeFlightAircraft(id) {
 		$('input[name="weeklyFrequencies"]').attr('value',maxFreq);
 		$('#weeklyFrequencies').html(maxFreq);
 	}
+	_.each(newAircraft.get('configuration').config,function(cabin,code){
+		console.log(cabin,code);
+		if(cabin.count > 0) {
+			$('.ui.tab.segment[data-tab="' + code + '"] .row:not(.noclass)').css({display:'block'});
+			$('.ui.tab.segment[data-tab="' + code + '"] .row[data-rowtype="capacity"] span:not(.label)').html(cabin.count);
+			$('.ui.tab.segment[data-tab="' + code + '"] .row.noclass').css({display:'none'});
+		} else {
+			$('.ui.tab.segment[data-tab="' + code + '"] .row:not(.noclass)').css({display:'none'});
+			$('.ui.tab.segment[data-tab="' + code + '"] .row.noclass').css({display:'block'});
+		}
+	});
 }
 function calculateDuration(distance, speed) {
   var duration = 40;

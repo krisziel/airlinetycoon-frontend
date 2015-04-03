@@ -376,7 +376,6 @@
 						</div>
 					</div>
 				</div>
-				<div class="ui button blue micro alliance airline single">View</div>
 			</div>
 		</script>
 		<script id="flightListTemplate" type="text/template">
@@ -397,8 +396,13 @@
 		      <div class="row" data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span> <%= load[cabin] %>%</span></div>
 		      <div class="row" data-rowtype="weeklyprofit"><span class="label">Weekly Revenue:</span> <span> $<%= comma(fare[cabin]*passengers[cabin]) %></span></div>
 		      <div class="row" data-rowtype="fare"><span class="label">Fare:</span> <span id="<%= cabin %>fare"> $</span><input name="<%= cabin %>fare" type="range" value="<%= fare[cabin] %>" class="fareRange" min="<%= route.minfare[cabin] %>" max="<%= route.maxfare[cabin] %>"></div>
+		      <div class="row noclass" style="display:none;" data-rowtype="noclass">This aircraft has no <%= cabinType[cabin] %> class</div>
 				<% } else { %>
 		      <div class="row noclass" style="display:block;" data-rowtype="noclass">This aircraft has no <%= cabinType[cabin] %> class</div>
+		      <div class="row" data-rowtype="capacity" style="display:none;"><span class="label">Capacity:</span> <span></span></div>
+		      <div class="row" data-rowtype="loadfactor" style="display:none;"><span class="label">Load Factor:</span> <span>---</span></div>
+		      <div class="row" data-rowtype="weeklyprofit" style="display:none;"><span class="label">Weekly Revenue:</span> <span>---</span></div>
+		      <div class="row" data-rowtype="fare" style="display:none;"><span class="label">Fare:</span> <span id="<%= cabin %>fare"> $</span><input name="<%= cabin %>fare" type="range" value="<%= ((route.maxfare[cabin]+route.minfare[cabin])/2) %>" class="fareRange" min="<%= route.minfare[cabin] %>" max="<%= route.maxfare[cabin] %>"></div>
 				<% } %>
 			</div>
 		</script>
@@ -492,7 +496,6 @@
 								</div>
 							</div>
 						</div>
-						<div class="ui button blue micro alliance airline single">View</div>
 					</div>
 				<% }) %>
 				<% _.each(flights.comp,function(flight){ %>
@@ -506,7 +509,6 @@
 								</div>
 							</div>
 						</div>
-						<div class="ui button blue micro alliance airline single">View</div>
 					</div>
 				<% }) %>
 			</div>
