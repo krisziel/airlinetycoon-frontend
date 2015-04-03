@@ -24,6 +24,12 @@
 .row input.frequencies {
   width: 125px;
 }
+#routePanel {
+	top: 50%;
+	left: 50%;
+	margin-left: -300px;
+	margin-top: -200px;
+}
 .route-panel {
   z-index: 1009;
   position: absolute;
@@ -158,6 +164,8 @@
 }
 .route-panel .dropdown {
   width: 100%;
+}
+.selection.dropdown .menu {
 }
 .route-panel .noclass {
   display: none;

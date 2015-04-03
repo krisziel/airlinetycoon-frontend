@@ -126,7 +126,7 @@ var AircraftView = Backbone.View.extend({
 	loadAircraftPurchase:function(){
 		selectedAircraft = this.model;
 		var template = _.template($('#aircraftPurchaseModalTemplate').html());
-		if($('.route-panel').length > 0) {
+		if($('#aircraftPanel').length > 0) {
 		} else {
 			$('body').append(template);
 			$('.aircraft-list.vertical').on('click','.step.own',function(e){
@@ -137,7 +137,6 @@ var AircraftView = Backbone.View.extend({
 		showPurchaseModal();
 	},
 	loadAircraftList:function(){
-		console.log(this);
 		var el = $('#list' + this.model.get('iata'));
 		var hidden = el.hasClass('hide')
 		$('.aircraft.compressed').removeClass('show').addClass('hide');

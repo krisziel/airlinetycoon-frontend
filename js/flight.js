@@ -69,6 +69,9 @@ function showFlight(flight) {
 	    $(this).closest('.tab').find('div').addClass('open').not('[data-tab="' + $(this).data('tab') + '"]').removeClass('open');
 	  });
 		$('.route-panel .tab .segment[data-tab="f"]').addClass('open');
+		$('.ui.selection.dropdown').dropdown().onChange(function(value,text){
+			console.log(value, text);
+		});
 	});
 }
 function calculateDuration(distance, speed) {
