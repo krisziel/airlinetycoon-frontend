@@ -166,6 +166,7 @@
   width: 100%;
 }
 .selection.dropdown .menu {
+	max-height: 270px !important;
 }
 .route-panel .noclass {
   display: none;

@@ -69,10 +69,37 @@ function showFlight(flight) {
 	    $(this).closest('.tab').find('div').addClass('open').not('[data-tab="' + $(this).data('tab') + '"]').removeClass('open');
 	  });
 		$('.route-panel .tab .segment[data-tab="f"]').addClass('open');
-		$('.ui.selection.dropdown').dropdown().onChange(function(value,text){
-			console.log(value, text);
+		$('.flight-info').on('input change','input[type="range"]',function(){
+			var el = $(this);
+			var dollar = '';
+			if(el.attr('name').match(/fare/)) {
+				dollar = '$';
+			}
+			$('#' + el.attr('name')).html(dollar + comma(el.val()));
+		});
+		$('.flight-info input[type="range"]').each(function(){
+			var el = $(this);
+			var dollar = '';
+			if(el.attr('name').match(/fare/)) {
+				dollar = '$';
+			}
+			$('#' + el.attr('name')).html(dollar + comma(el.val()));
+		});
+		$('.ui.selection.dropdown').dropdown().find('#aircraftInput').on('input change',function(){
+			changeFlightAircraft($(this).val());
 		});
 	});
+}
+function changeFlightAircraft(id) {
+	var newAircraft = userAircraftList.get(id);
+	var duration = calculateDuration(selectedRoute.get('distance'),newAircraft.get('aircraft').speed);
+	var maxFreq = maxFrequencies(duration, newAircraft.get('aircraft').turn_time);
+	$('.row[data-rowtype="flight-duration"] span:not(.label)').html(minutesToHours(duration));
+	$('input[name="weeklyFrequencies"]').attr('max',maxFreq);
+	if(maxFreq < $('input[name="weeklyFrequencies"]').val()) {
+		$('input[name="weeklyFrequencies"]').attr('value',maxFreq);
+		$('#weeklyFrequencies').html(maxFreq);
+	}
 }
 function calculateDuration(distance, speed) {
   var duration = 40;
@@ -80,6 +107,7 @@ function calculateDuration(distance, speed) {
   return Math.round(duration);
 }
 function maxFrequencies(duration,turn_time) {
+	console.log(duration, turn_time)
   return Math.floor(10080/(turn_time+duration)/2);
 }
 function minutesToHours(minutes) {
