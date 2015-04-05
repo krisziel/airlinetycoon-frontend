@@ -1,5 +1,11 @@
 var flightList = [];
 var selectedFlight;
+var cabinType = {
+	f:"first",
+	j:"business",
+	p:"premium economy",
+	y:"economy"
+}
 
 function loadFlights() {
 	$.getJSON(base + 'flight' + cookies.url).done(function(data){
@@ -140,9 +146,3 @@ function configurationInfo(cabin){
 	return template
 }
 
-var cabinType = {
-	f:"first",
-	j:"business",
-	p:"premium economy",
-	y:"economy"
-}
