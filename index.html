@@ -393,8 +393,13 @@
 			<div class="ui tab segment" data-tab="<%= cabin %>">
 				<% if((userAircraft)&&(userAircraft.configuration.config[cabin].count > 0)) { %>
 		      <div class="row" data-rowtype="capacity"><span class="label">Capacity:</span> <span> <%= userAircraft.configuration.config[cabin].count %> passengers</span></div>
-		      <div class="row" data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span> <%= load[cabin] %>%</span></div>
-		      <div class="row" data-rowtype="weeklyprofit"><span class="label">Weekly Revenue:</span> <span> $<%= comma(fare[cabin]*passengers[cabin]) %></span></div>
+		      <% if(load){ %>
+			      <div class="row" data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span> <%= load[cabin] %>%</span></div>
+			      <div class="row" data-rowtype="weeklyprofit"><span class="label">Weekly Revenue:</span> <span> $<%= comma(fare[cabin]*passengers[cabin]) %></span></div>
+			    <% } else { %>
+			      <div class="row" data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span> ---</span></div>
+			      <div class="row" data-rowtype="weeklyprofit"><span class="label">Weekly Revenue:</span> <span> ---</span></div>
+			    <% } %>
 		      <div class="row" data-rowtype="fare"><span class="label">Fare:</span> <span id="<%= cabin %>fare"> $</span><input name="<%= cabin %>fare" type="range" value="<%= fare[cabin] %>" class="fareRange" min="<%= route.minfare[cabin] %>" max="<%= route.maxfare[cabin] %>"></div>
 		      <div class="row noclass" style="display:none;" data-rowtype="noclass">This aircraft has no <%= cabinType[cabin] %> class</div>
 				<% } else { %>

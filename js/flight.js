@@ -73,6 +73,7 @@ function showFlight(flight) {
 	});
 }
 function createFlightInfoView(flight) {
+	selectedFlight = flight;
 	var template = _.template($('#flightInfoTemplate').html(),flight.attributes);
 	$('.flight-info').html(template);
   $('#classMenu').on('click','a',function(){
@@ -101,7 +102,7 @@ function createFlightInfoView(flight) {
 	});
 	$('.flight-list .ui.dividing.header.airport.alliance').removeClass('active');
 	if(flight.attributes.userAircraft) {
-		$('.ui.dividing.header.airport.alliance[data-flightid="' + flight.id + '"]').addClass('active');
+		$('.flight-list .ui.dividing.header.airport.alliance[data-flightid="' + flight.id + '"]').addClass('active');
 		$('#saveFlightButton').on('click',function(){
 			updateFlight();
 		});
@@ -192,16 +193,17 @@ function updateFlight() {
 	$.post(base + 'flight/' + id + cookies.url, {_method:'PUT',flight:data}).done(function(data){
 		if(data.userAircraft){
 			var updatedFlight = new Flight(data);
+			var index = selectedRoute.get('flights').own.indexOf(selectedFlight);
 			userAircraftList.get(data.userAircraft.id).set('flight',updatedFlight).set('inuse',true);
 			userAircraftList.get(oldAircraft.id).set('flight',null).set('inuse',false);
 			flightList.remove(selectedFlight);
 			flightList.add(updatedFlight);
+			selectedRoute.get('flights').own.splice(index, 1);
+			selectedRoute.get('flights').own.push(updatedFlight);
 			selectedFlight = updatedFlight;
 			$('#flight' + id + ' .value.route').html(data.userAircraft.aircraft.name + ' (' + data.frequencies + '/week)');
 		} else if(Array.isArray(data)) {
-			if(data.indexOf('aircraft is already in use') >= 0) {
-				$('.ui.selection.dropdown').addClass('error').attr('data-html','Selected aircraft is in use').popup('show');
-			}
+			flightErrors(data);
 		}
 	});
 }
@@ -228,14 +230,27 @@ function createFlight() {
 				userAircraftList.get(data.userAircraft.id).set('flight',newFlight).set('inuse',true);
 				flightList.add(newFlight);
 				selectedFlight = newFlight;
+				selectedRoute.get('flights').own.push(newFlight);
 				var variables = data;
 				var newFlightView = new FlightView({model:newFlight});
 				$('.ui.one.bottom.attached.buttons.create').after(newFlightView);
 			} else if(Array.isArray(data)) {
-				if(data.indexOf('aircraft is already in use') >= 0) {
-					$('.ui.selection.dropdown').addClass('error').attr('data-html','Selected aircraft is in use').popup('show');
-				}
+				flightErrors(data);
 			}
 		});
 	}
+}
+function flightErrors(data) {
+	$('.ui.selection.dropdown').addClass('error').attr('data-html','');
+	var errors = []
+	if(data.indexOf('aircraft is already in use') >= 0) {
+		errors.push('Selected aircraft is in use');
+	}
+	if(data.indexOf('flight is longer than aircraft range') >= 0) {
+		errors.push('Selected aircraft does not have suitable range');
+	}
+	if(data.indexOf('more frequencies than aircraft can fly') >= 0) {
+		errors.push('Selected aircraft cannot fly that many frequencies');
+	}
+	$('.ui.selection.dropdown').attr('data-html',errors.join('<br>')).popup('show');
 }
