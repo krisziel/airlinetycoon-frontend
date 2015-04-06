@@ -18,6 +18,10 @@ function showRoute(id) {
 		selectedRoute = new Route(data);
 		$('#routePanel').on('click','.create',function(){
 			newFlight();
+		}).on('click','.header.airport',function(){
+			var flight = flightList.get($(this).data('flightid'));
+			console.log(flight);
+			createFlightInfoView(flight);
 		});
 		return new RouteView({model:selectedRoute});
 	});

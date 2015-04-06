@@ -146,6 +146,31 @@ function configurationInfo(cabin){
 	var template = _.template($('#cabinInfoTemplate').html(),variables);
 	return template
 }
+//(flight:{route_id:int,user_aircraft_id:int,frequencies:int,flight:{f:int,j:int,p:int,y:int}})
+function serializeFlight() {
+	var flight = {
+		route_id:0,
+		user_aircraft_id:0,
+		frequencies:0,
+		fares:{
+			f:0,
+			j:0,
+			p:0,
+			y:0
+		}
+	}
+	flight.route_id = parseInt(selectedRoute.get('id'));
+	flight.user_aircraft_id = parseInt($('#aircraftInput').val());
+	flight.frequencies = parseInt($('input[name="weeklyFrequencies"]').val());
+	_.each(flight.fares,function(value,key){
+		flight.fares[key] = parseInt($('div[data-rowtype="fare"] input[name="' + key + 'fare"]').val());
+	});
+	console.log(flight);
+	return flight;
+}
+function updateFlight() {
+
+}
 function newFlight() {
 	var routeId = $('.route-info').data('routeid');
 }

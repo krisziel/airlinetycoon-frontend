@@ -65,6 +65,6 @@
 * get 'flight' : all of an airlines' flights
 * get 'flight/aircraft/:iata' : all flights with a specific aircraft type
 * get 'flight/:id' : get details for a flight
-* put 'flight/:id' (flight:{route_id:int,user_aircraft_id:int,frequencies:int,flight:{f:int,j:int,p:int,y:int}}) : update a flight
-* post 'flight/' (flight:{route_id:int,user_aircraft_id:int,frequencies:int,flight:{f:int,j:int,p:int,y:int}}) : create a new flight
+* put 'flight/:id' (flight:{route_id:int,user_aircraft_id:int,frequencies:int,fare:{f:int,j:int,p:int,y:int}},id:int) : update a flight
+* post 'flight/' (flight:{route_id:int,user_aircraft_id:int,frequencies:int,fare:{f:int,j:int,p:int,y:int}}) : create a new flight
 * delete 'flight/:id' : delete a flight
