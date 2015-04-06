@@ -254,3 +254,6 @@ function flightErrors(data) {
 	}
 	$('.ui.selection.dropdown').attr('data-html',errors.join('<br>')).popup('show');
 }
+function cancelFlightView() {
+	createFlightInfoView(selectedFlight);
+}

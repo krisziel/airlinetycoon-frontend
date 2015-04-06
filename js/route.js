@@ -2,6 +2,9 @@ var routeList = {}
 var selectedRoute;
 
 function showRoute(id) {
+	if(id.constructor === Array) {
+		id = id.join('/');
+	}
 	$.getJSON(base + 'route/' + id + cookies.url).done(function(data){
 		var flights = {
 			own:[],
@@ -16,6 +19,7 @@ function showRoute(id) {
 		});
 		data.flights = flights
 		selectedRoute = new Route(data);
+		$('.flight-info').html('');
 		$('#routePanel').on('click','.create',function(){
 			newFlight();
 		}).on('click','.header.airport',function(){
