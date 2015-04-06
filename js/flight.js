@@ -65,6 +65,7 @@ var FlightListView = Backbone.View.extend({
   }
 });
 function showFlight(flight) {
+	selectedFlight = flight;
 	(function(){
     return Q.all(_.map(showRoute(flight.get('route').id)));
 	})().then(function(){
@@ -97,6 +98,9 @@ function createFlightInfoView(flight) {
 	});
 	$('.ui.selection.dropdown').dropdown().find('#aircraftInput').on('input change',function(){
 		changeFlightAircraft($(this).val());
+	});
+	$('.flight-info').on('click','#saveFlightButton',function(){
+		updateFlight();
 	});
 }
 function changeFlightAircraft(id) {
@@ -146,13 +150,12 @@ function configurationInfo(cabin){
 	var template = _.template($('#cabinInfoTemplate').html(),variables);
 	return template
 }
-//(flight:{route_id:int,user_aircraft_id:int,frequencies:int,flight:{f:int,j:int,p:int,y:int}})
 function serializeFlight() {
 	var flight = {
 		route_id:0,
 		user_aircraft_id:0,
 		frequencies:0,
-		fares:{
+		fare:{
 			f:0,
 			j:0,
 			p:0,
@@ -162,18 +165,37 @@ function serializeFlight() {
 	flight.route_id = parseInt(selectedRoute.get('id'));
 	flight.user_aircraft_id = parseInt($('#aircraftInput').val());
 	flight.frequencies = parseInt($('input[name="weeklyFrequencies"]').val());
-	_.each(flight.fares,function(value,key){
-		flight.fares[key] = parseInt($('div[data-rowtype="fare"] input[name="' + key + 'fare"]').val());
+	_.each(flight.fare,function(value,key){
+		flight.fare[key] = parseInt($('div[data-rowtype="fare"] input[name="' + key + 'fare"]').val());
 	});
-	console.log(flight);
 	return flight;
 }
+var flt;
 function updateFlight() {
-
+	var data = serializeFlight();
+	var id = selectedFlight.get('id');
+	var oldAircraft = selectedFlight.get('userAircraft')
+	$.post(base + 'flight/' + id + cookies.url, {_method:'PUT',flight:data}).done(function(data){
+		if(data.userAircraft){
+			updatedFlight = new Flight(data);
+			flt = updatedFlight;
+			userAircraftList.get(data.userAircraft.id).set('flight',updatedFlight).set('inuse',true);
+			userAircraftList.get(oldAircraft.id).set('flight',null).set('inuse',false);
+			flightList.remove(selectedFlight);
+			flightList.add(updatedFlight);
+			selectedFlight = updatedFlight;
+			$('#flight' + id + ' .value.route').html(data.userAircraft.aircraft.name + ' (' + data.frequencies + '/week)');
+		}
+	});
 }
 function newFlight() {
 	var routeId = $('.route-info').data('routeid');
+	createFlightInfoView();
 }
 function createFlight() {
-	createFlightInfoView();
+	var data = serializeFlight();
+	var id = selectedFlight.get('id');
+	$.post(base + 'flight' + cookies.id, data).done(function(data){
+		console.log(data);
+	});
 }

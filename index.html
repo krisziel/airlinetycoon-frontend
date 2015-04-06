@@ -418,7 +418,7 @@
 							<% _.each(userAircraftList.models,function(aircraft){ %>
 								<% aircraft = aircraft.attributes %>
 								<% config = aircraft.configuration.config %>
-								<% if((aircraft.inuse == false)&&(aircraft.aircraft.range >= route.distance)) { %>
+								<% if((aircraft.aircraft.range >= route.distance)&&(!aircraft.flight)) { %>
 									<div class="item" data-value="<%= aircraft.id  %>"><%= aircraft.aircraft.full_name %> (<%= config.f.count + '/' + config.j.count + '/' + config.p.count + '/' + config.y.count %>)</div>
 								<% } %>
 							<% }) %>
