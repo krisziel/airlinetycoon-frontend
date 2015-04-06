@@ -68,32 +68,35 @@ function showFlight(flight) {
 	(function(){
     return Q.all(_.map(showRoute(flight.get('route').id)));
 	})().then(function(){
-		var template = _.template($('#flightInfoTemplate').html(),flight.attributes);
-  	$('.flight-info').html(template);
-	  $('#classMenu').on('click','a',function(){
-	    $(this).addClass('active').closest('.ui.menu').find('.item').not($(this)).removeClass('active');
-	    $(this).closest('.tab').find('div').addClass('open').not('[data-tab="' + $(this).data('tab') + '"]').removeClass('open');
-	  });
-		$('.route-panel .tab .segment[data-tab="f"]').addClass('open');
-		$('.flight-info').on('input change','input[type="range"]',function(){
-			var el = $(this);
-			var dollar = '';
-			if(el.attr('name').match(/fare/)) {
-				dollar = '$';
-			}
-			$('#' + el.attr('name')).html(dollar + comma(el.val()));
-		});
-		$('.flight-info input[type="range"]').each(function(){
-			var el = $(this);
-			var dollar = '';
-			if(el.attr('name').match(/fare/)) {
-				dollar = '$';
-			}
-			$('#' + el.attr('name')).html(dollar + comma(el.val()));
-		});
-		$('.ui.selection.dropdown').dropdown().find('#aircraftInput').on('input change',function(){
-			changeFlightAircraft($(this).val());
-		});
+		createFlightInfoView(flight);
+	});
+}
+function createFlightInfoView(flight) {
+	var template = _.template($('#flightInfoTemplate').html(),flight.attributes);
+	$('.flight-info').html(template);
+  $('#classMenu').on('click','a',function(){
+    $(this).addClass('active').closest('.ui.menu').find('.item').not($(this)).removeClass('active');
+    $(this).closest('.tab').find('div').addClass('open').not('[data-tab="' + $(this).data('tab') + '"]').removeClass('open');
+  });
+	$('.route-panel .tab .segment[data-tab="f"]').addClass('open');
+	$('.flight-info').on('input change','input[type="range"]',function(){
+		var el = $(this);
+		var dollar = '';
+		if(el.attr('name').match(/fare/)) {
+			dollar = '$';
+		}
+		$('#' + el.attr('name')).html(dollar + comma(el.val()));
+	});
+	$('.flight-info input[type="range"]').each(function(){
+		var el = $(this);
+		var dollar = '';
+		if(el.attr('name').match(/fare/)) {
+			dollar = '$';
+		}
+		$('#' + el.attr('name')).html(dollar + comma(el.val()));
+	});
+	$('.ui.selection.dropdown').dropdown().find('#aircraftInput').on('input change',function(){
+		changeFlightAircraft($(this).val());
 	});
 }
 function changeFlightAircraft(id) {
@@ -107,7 +110,6 @@ function changeFlightAircraft(id) {
 		$('#weeklyFrequencies').html(maxFreq);
 	}
 	_.each(newAircraft.get('configuration').config,function(cabin,code){
-		console.log(cabin,code);
 		if(cabin.count > 0) {
 			$('.ui.tab.segment[data-tab="' + code + '"] .row:not(.noclass)').css({display:'block'});
 			$('.ui.tab.segment[data-tab="' + code + '"] .row[data-rowtype="capacity"] span:not(.label)').html(cabin.count);
@@ -124,7 +126,6 @@ function calculateDuration(distance, speed) {
   return Math.round(duration);
 }
 function maxFrequencies(duration,turn_time) {
-	console.log(duration, turn_time)
   return Math.floor(10080/(turn_time+duration)/2);
 }
 function minutesToHours(minutes) {
@@ -145,4 +146,9 @@ function configurationInfo(cabin){
 	var template = _.template($('#cabinInfoTemplate').html(),variables);
 	return template
 }
-
+function newFlight() {
+	var routeId = $('.route-info').data('routeid');
+}
+function createFlight() {
+	createFlightInfoView();
+}
