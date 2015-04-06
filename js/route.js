@@ -20,7 +20,6 @@ function showRoute(id) {
 			newFlight();
 		}).on('click','.header.airport',function(){
 			var flight = flightList.get($(this).data('flightid'));
-			console.log(flight);
 			createFlightInfoView(flight);
 		});
 		return new RouteView({model:selectedRoute});

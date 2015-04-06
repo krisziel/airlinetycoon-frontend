@@ -391,7 +391,7 @@
 		</script>
 		<script id="cabinInfoTemplate" type="text/template">
 			<div class="ui tab segment" data-tab="<%= cabin %>">
-				<% if(userAircraft.configuration.config[cabin].count > 0) { %>
+				<% if((userAircraft)&&(userAircraft.configuration.config[cabin].count > 0)) { %>
 		      <div class="row" data-rowtype="capacity"><span class="label">Capacity:</span> <span> <%= userAircraft.configuration.config[cabin].count %> passengers</span></div>
 		      <div class="row" data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span> <%= load[cabin] %>%</span></div>
 		      <div class="row" data-rowtype="weeklyprofit"><span class="label">Weekly Revenue:</span> <span> $<%= comma(fare[cabin]*passengers[cabin]) %></span></div>
@@ -407,14 +407,20 @@
 			</div>
 		</script>
 		<script id="flightInfoTemplate" type="text/template">
-			<% config = userAircraft.configuration.config %>
+			<% userAircraft ? config = userAircraft.configuration.config : config = {} %>
 		  <div class="row-container">
 		    <div class="row" data-rowtype="aircraft">
 		      <div class="ui selection dropdown" tabindex="0">
-		        <div class="text"><%= userAircraft.aircraft.full_name %> (<%= config.f.count + '/' + config.j.count + '/' + config.p.count + '/' + config.y.count %>)</div>
-		        <i class="dropdown icon"></i><input name="aircraft-id" id="aircraftInput" value="<%= userAircraft.id %>" type="hidden">
-		        <div class="menu" style="max-height: 300px;" tabindex="-1">
-		          <div class="item active selected" data-value="<%= userAircraft.id %>"><%= userAircraft.aircraft.full_name %> (<%= config.f.count + '/' + config.j.count + '/' + config.p.count + '/' + config.y.count %>)</div>
+		      	<% if(userAircraft) { %>
+			        <div class="text"><%= userAircraft.aircraft.full_name %> (<%= config.f.count + '/' + config.j.count + '/' + config.p.count + '/' + config.y.count %>)</div>
+			        <i class="dropdown icon"></i><input name="aircraft-id" id="aircraftInput" value="<%= userAircraft.id %>" type="hidden">
+			        <div class="menu" style="max-height: 300px;" tabindex="-1">
+			          <div class="item active selected" data-value="<%= userAircraft.id %>"><%= userAircraft.aircraft.full_name %> (<%= config.f.count + '/' + config.j.count + '/' + config.p.count + '/' + config.y.count %>)</div>
+		        <% } else { %>
+			        <div class="text">No Aircraft Selected</div>
+			        <i class="dropdown icon"></i><input name="aircraft-id" id="aircraftInput" value="" type="hidden">
+			        <div class="menu" style="max-height: 300px;" tabindex="-1">
+		        <% } %>
 							<% _.each(userAircraftList.models,function(aircraft){ %>
 								<% aircraft = aircraft.attributes %>
 								<% config = aircraft.configuration.config %>
@@ -436,7 +442,13 @@
 					<span class="label">Profit: Breakeven</span>
 				<% } %>
 				</div>
-		    <div class="row" data-rowtype="weekly-frequencies"><span class="label">Weekly Frequencies:</span> <span id="weeklyFrequencies"><%= frequencies %></span><input name="weeklyFrequencies" type="range" class="frequencies" min="1" max="<%= maxFlights(route, userAircraft.aircraft) %>" value="<%= frequencies %>"></div>
+		    <div class="row" data-rowtype="weekly-frequencies"><span class="label">Weekly Frequencies:</span> <span id="weeklyFrequencies"><%= frequencies %></span>
+		    	<% if(userAircraft) { %>
+		    		<input name="weeklyFrequencies" type="range" class="frequencies" min="1" max="<%= maxFlights(route, userAircraft.aircraft) %>" value="<%= frequencies %>">
+		    	<% } else { %>
+		    		<input name="weeklyFrequencies" type="range" class="frequencies" min="1" max="1" value="1">
+		    	<% } %>
+		    </div>
 		  </div>
 		  <div class="tab">
 				<div class="ui secondary menu" id="classMenu"><a class="item active" data-tab="f">First</a><a class="item" data-tab="j">Business</a><a class="item" data-tab="p">Premium Economy</a><a class="item" data-tab="y">Economy</a></div>
@@ -445,11 +457,17 @@
 				<% }) %>
 		  </div>
 		  <div class="ui buttons">
-		    <div class="ui button" id="cancelButton">Cancel</div>
-		    <div class="or"></div>
-		    <div class="ui positive button" id="saveFlightButton">Save</div>
-		    <div class="or"></div>
-		    <div class="ui red button" id="cancelFlightButton">Cancel Flight</div>
+		  	<% if(userAircraft) { %>
+			    <div class="ui button" id="cancelButton">Cancel</div>
+			    <div class="or"></div>
+			    <div class="ui positive button" id="saveFlightButton">Save</div>
+			    <div class="or"></div>
+			    <div class="ui red button" id="cancelFlightButton">Cancel Flight</div>
+		    <% } else { %>
+			    <div class="ui button" id="cancelButton">Cancel</div>
+			    <div class="or"></div>
+			    <div class="ui positive button" id="launchFlightButton">Launch Flight</div>
+		    <% } %>
 			</div>	
 		</script>
 		<script id="newFlightTemplate" type="text/template">
@@ -476,7 +494,7 @@
 				</div>
 				<% _.each(flights.own,function(flight){ %>
 					<% flight = flightList.get(flight.id).attributes %>
-					<div class="ui dividing header airport alliance" id="flight<%= flight.id %>" data-flightid="<%= flight.id %>" data-routeid="<%= id %>">
+					<div class="ui dividing header airport alliance own-flight" id="flight<%= flight.id %>" data-flightid="<%= flight.id %>" data-routeid="<%= id %>">
 					  <div class="content">
 							<div class="ui statistic tiny alliance">
 								<div class="value route"><%= flight.userAircraft.aircraft.name %> (<%= flight.frequencies %>/week)</div>
@@ -514,7 +532,16 @@
 			</div>
 		</script>
 		<script id="routeFlightTemplate" type="text/template">
-		
+			<div class="ui dividing header airport alliance" id="flight<%= id %>" data-flightid="<%= id %>" data-routeid="<%= route.id %>">
+			  <div class="content">
+					<div class="ui statistic tiny alliance">
+						<div class="value route"><%= userAircraft.aircraft.name %> (<%= frequencies %>/week)</div>
+					  <div class="label">
+					   	Just Launched
+						</div>
+					</div>
+				</div>
+			</div>
 		</script>
 		<div id="leftColumn">
 		</div>

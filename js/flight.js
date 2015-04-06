@@ -99,8 +99,22 @@ function createFlightInfoView(flight) {
 	$('.ui.selection.dropdown').dropdown().find('#aircraftInput').on('input change',function(){
 		changeFlightAircraft($(this).val());
 	});
-	$('.flight-info').on('click','#saveFlightButton',function(){
-		updateFlight();
+	$('.flight-list .ui.dividing.header.airport.alliance').removeClass('active');
+	if(flight.attributes.userAircraft) {
+		$('.ui.dividing.header.airport.alliance[data-flightid="' + flight.id + '"]').addClass('active');
+		$('#saveFlightButton').on('click',function(){
+			updateFlight();
+		});
+		$('#cancelFlightButton').on('click',function(){
+			cancelFlight();
+	});
+	} else {
+		$('#launchFlightButton').on('click',function(){
+			createFlight();
+		});
+	}
+	$('#cancelButton').on('click',function(){
+		cancelFlightView();
 	});
 }
 function changeFlightAircraft(id) {
@@ -123,6 +137,7 @@ function changeFlightAircraft(id) {
 			$('.ui.tab.segment[data-tab="' + code + '"] .row.noclass').css({display:'block'});
 		}
 	});
+		$('.ui.selection.dropdown').removeClass('error').removeAttr('data-html');
 }
 function calculateDuration(distance, speed) {
   var duration = 40;
@@ -170,32 +185,57 @@ function serializeFlight() {
 	});
 	return flight;
 }
-var flt;
 function updateFlight() {
 	var data = serializeFlight();
 	var id = selectedFlight.get('id');
-	var oldAircraft = selectedFlight.get('userAircraft')
+	var oldAircraft = selectedFlight.get('userAircraft');
 	$.post(base + 'flight/' + id + cookies.url, {_method:'PUT',flight:data}).done(function(data){
 		if(data.userAircraft){
-			updatedFlight = new Flight(data);
-			flt = updatedFlight;
+			var updatedFlight = new Flight(data);
 			userAircraftList.get(data.userAircraft.id).set('flight',updatedFlight).set('inuse',true);
 			userAircraftList.get(oldAircraft.id).set('flight',null).set('inuse',false);
 			flightList.remove(selectedFlight);
 			flightList.add(updatedFlight);
 			selectedFlight = updatedFlight;
 			$('#flight' + id + ' .value.route').html(data.userAircraft.aircraft.name + ' (' + data.frequencies + '/week)');
+		} else if(Array.isArray(data)) {
+			if(data.indexOf('aircraft is already in use') >= 0) {
+				$('.ui.selection.dropdown').addClass('error').attr('data-html','Selected aircraft is in use').popup('show');
+			}
 		}
 	});
 }
 function newFlight() {
 	var routeId = $('.route-info').data('routeid');
-	createFlightInfoView();
+	var emptyFlight = {
+		route:selectedRoute.attributes,
+		profit:0,
+		duration:0,
+		frequencies:1,
+		userAircraft:null
+	}
+	selectedFlight = {attributes:emptyFlight};
+	createFlightInfoView({attributes:emptyFlight});
 }
 function createFlight() {
 	var data = serializeFlight();
-	var id = selectedFlight.get('id');
-	$.post(base + 'flight' + cookies.id, data).done(function(data){
-		console.log(data);
-	});
+	if(!userAircraftList.get(data.user_aircraft_id)) {
+		$('.ui.selection.dropdown').addClass('error').attr('data-html','Please select an aircraft').popup('show');
+	} else {
+		$.post(base + 'flight' + cookies.url, {flight:data}).done(function(data){
+			if(data.userAircraft) {
+				var newFlight = new Flight(data);
+				userAircraftList.get(data.userAircraft.id).set('flight',newFlight).set('inuse',true);
+				flightList.add(newFlight);
+				selectedFlight = newFlight;
+				var variables = data;
+				var newFlightView = new FlightView({model:newFlight});
+				$('.ui.one.bottom.attached.buttons.create').after(newFlightView);
+			} else if(Array.isArray(data)) {
+				if(data.indexOf('aircraft is already in use') >= 0) {
+					$('.ui.selection.dropdown').addClass('error').attr('data-html','Selected aircraft is in use').popup('show');
+				}
+			}
+		});
+	}
 }

@@ -112,7 +112,9 @@
 .route-panel .flight-list {
   width: 298px;
   height: auto;
-  overflow: hidden;
+  max-height: 245px;
+  overflow-y: auto !important;
+  overflow-x: hidden;
   z-index: 7;
   position: relative;
 	margin-top: 5px;
@@ -178,4 +180,21 @@
 .route-panel .ui.segment.tab {
 	max-height: 112px;
 	min-height: 112px;
+}
+.flight-list .airport:last-child {
+  border-bottom: none;
+}
+.loading-window.segment {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  width: 300px;
+  height: 316px;
+  z-index: 42;
+  margin: 0 !important;
+  padding: 0;
+  background: rgba(255,255,255,.5) !important;
+}
+.ui.active.dimmer.inverted {
+  background: rgba(255,255,255,.5) !important;
 }
