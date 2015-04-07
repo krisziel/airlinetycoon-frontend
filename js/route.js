@@ -19,6 +19,11 @@ function showRoute(id, flight) {
 		});
 		data.flights = flights
 		selectedRoute = new Route(data);
+    var route = data;
+    route.origin = airportList.get(route.origin.id).attributes;
+    route.destination = airportList.get(route.destination.id).attributes;
+    activeRoutes[route.id] = route;
+    drawRoute({origin:route.origin,dest:route.destination,type:'highlight'});
 		$('.flight-info').html('');
 		$('#routePanel').on('click','.create',function(){
 			newFlight();
@@ -62,15 +67,16 @@ var RouteFlightView = Backbone.View.extend({
 });
 
 var activeRoutes = {};
+var allRoutes = {};
 var selectedFlight, selectedRoute;
 
 function drawRoutes() {
-  $.getJSON('routes/').done(function(data) {
-    _.each(data,function(i,value){
-      var route = value;
-      activeRoutes[route.id] = route;
-      drawRoute({origin:airports[route.origin_id],dest:airports[route.destination_id],type:'normal'});
-    });
+  flightList.each(function(value){
+    var route = value.get('route');
+    route.origin = airportList.get(route.origin.id).attributes;
+    route.destination = airportList.get(route.destination.id).attributes;
+    activeRoutes[route.id] = route;
+    drawRoute({origin:route.origin,dest:route.destination,type:'normal'});
   });
 }
 function highlightRoutes(id) {

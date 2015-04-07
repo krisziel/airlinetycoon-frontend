@@ -346,14 +346,25 @@
 		</script>
 		<script id="airportPopupTemplate" type="text/template">
 			<% if(selectedAirport.origin.iata === iata){ %>
-				<i class="icon lock selected" id="lock<%= id %>" data-id="<%= id %>"></i>
+				<div class="star selected airport-option" id="star<%= id %>" data-id="<%= id %>"><i class="icon star selected"></i> unset origin</div>
 			<% } else if(selectedAirport.selected){ %>
-				<i class="icon horizontal resize" id="airportroute<%= id %>" data-id="<%= id %>"></i>
+				<div class="resize airport-option" id="airportroute<%= id %>" data-id="<%= id %>"><i class="icon horizontal resize"></i> view route</div>
 			<% } else { %>
-				<i class="icon lock" id="lock<%= id %>" data-id="<%= id %>"></i>
+				<div class="star airport-option" id="star<%= id %>" data-id="<%= id %>"><i class="icon star"></i> set origin</div>
 			<% } %>
-			<span><%= name + ' (' + iata + ')' %></span>
-			<span><%= city + ', ' + country %></span>
+			<div class="content airport">
+				<div class="ui horizontal statistics mini airport">
+				  <div class="ui statistic">
+						<div class="value">
+							 <%= iata %>
+						</div>
+					</div>
+				</div>
+				<div class="airport data">
+					<span><%= name %><br>
+					<%= city + ', ' + country %></span>
+				</div>
+			</div>
 		</script>
 		<script id="flightTemplate" type="text/template">
 			<div class="ui dividing header airport alliance" id="flight<%= id %>" data-flightid="<%= id %>" data-routeid="<%= route.id %>">

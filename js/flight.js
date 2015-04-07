@@ -16,6 +16,7 @@ function loadFlights() {
 			routeList[route] = flight.route;
 		});
 		flightList = new FlightList(flightList);
+		drawRoutes();
 		new FlightListView({el:'#flightList'});
 	});
 }

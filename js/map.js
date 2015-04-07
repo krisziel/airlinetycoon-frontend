@@ -50,18 +50,9 @@ function addAirportMarkers(airports) {
 	  airportLayer.json.push(createAirportMarker({data:airport,coordinates:latlonarr(airport.coordinates),markerId:airport.id}));
 	});
 	airportLayer.markers = L.mapbox.featureLayer().addTo(globalMap);
-	$('#map').on('click','.icon',function(e){
+	$('#map').on('click','.leaflet-popup-content > div:not(.content.airport)',function(e){
 		popupAction(e);
 	});
-	/*$('#map').on('click','.icon.unlock',function(e){
-		unlockAirportMarker(e);
-	});
-	$('#map').on('click','.icon.lock',function(e){
-		lockAirportMarker(e);
-	});
-	$('#map').on('click','.icon.horizontal.resize',function(e){
-		openAirportRoute(id);
-	});*/
   airportLayer.markers.setGeoJSON(airportLayer.json);
   airportLayer.markers.on('click', function(e) {
   	selectAirportMarker(e);
@@ -95,17 +86,23 @@ function selectAirportMarker(e) {
 	$('.leaflet-popup-close-button').on('click',function(e){
 		closeAirportPopup(e);
 	});
+	_.each(airportLayer.json.get('marker-color','#aa0114'),function(marker){
+		console.log(marker.properties.data.iata, selectedAirport.origin.iata);
+		if(marker.properties.data.iata !== selectedAirport.origin.iata) {
+			marker.properties['marker-color'] = '#548cba';
+		}
+	});
 	feature = e.layer.feature;
 	feature.properties['marker-color'] = '#aa0114';
 	airportLayer.markers.setGeoJSON(airportLayer.json);
 }
 function popupAction(e) {
 	var el = $(e.currentTarget);
-	var id = el.attr('id');
-	var marker = airportLayer.json.get('id',el.data('id'));
-	if((el.hasClass('lock'))&&(el.hasClass('selected'))) {
+	var id = el.data('id');
+	var marker = airportLayer.json.get('id',id)[0];
+	if((el.hasClass('star'))&&(el.hasClass('selected'))) {
 		unlockAirportMarker(marker);
-	} else if(el.hasClass('lock')) {
+	} else if(el.hasClass('star')) {
 		lockAirportMarker(marker);
 	} else if(el.hasClass('resize')) {
 		openAirportRoute(marker);
@@ -114,21 +111,23 @@ function popupAction(e) {
 function lockAirportMarker(marker) {
 	selectedAirport.origin = marker.properties.data;
 	selectedAirport.selected = true;
-	$('#lock' + marker.properties.id).addClass('selected');
+	$('#star' + marker.properties.id).addClass('selected');
+	highlightRoutes(selectedAirport.origin.id);
 }
 function unlockAirportMarker(marker) {
-	console.log(marker);
 	selectedAirport.origin = {};
 	selectedAirport.selected = false;
-	$('#lock' + marker.properties.id).removeClass('selected');
+	$('#star' + marker.properties.id).removeClass('selected');
+	unhighlightRoutes();
 }
 function openAirportRoute(marker) {
 	selectedAirport.destination = marker.properties.data;
 	$('#airportroute' + marker.properties.id).addClass('selected');
+	showRoute([selectedAirport.origin.id,selectedAirport.destination.id]);
 }
 function closeAirportPopup(e) {
 	var id = $(e.currentTarget).parent().find('.icon').data('id');
-	var layer = airportLayer.json.get('id',id);
+	var layer = airportLayer.json.get('id',id)[0];
 	layer.properties['marker-color'] = '#548cba';
 	airportLayer.markers.setGeoJSON(airportLayer.json);
 	if(selectedAirport.destination.id === id) {
@@ -140,7 +139,7 @@ function closeAirportPopup(e) {
 			selectedAirport.destination = {iata:''};
 			$('.leaflet-marker-icon[title="' + selectedAirport.origin.name + ' (' + selectedAirport.origin.iata + ')"]').click();
 		} else {
-			selectedAirport.origin = {iata:''}
+			selectedAirport.origin = {iata:''};
 			selectedAirport.locked = false;
 		}
 	} else {
@@ -150,4 +149,4 @@ function closeAirportPopup(e) {
 	}
 }
 
-Array.prototype.get = function(key,value){ var result; _.each(this,function(item){ if(item.properties[key] === value){ result = item; } }); return result; }
+Array.prototype.get = function(key,value){ var result = []; _.each(this,function(item){ if(item.properties[key] === value){ result.push(item); } }); return result; }
