@@ -136,14 +136,18 @@ function closeAirportPopup(e) {
 		if(selectedAirport.destination.id) {
 			selectedAirport.origin = selectedAirport.destination;
 			selectedAirport.destination = {iata:''};
+			unhighlightRoutes();
+			highlightRoutes(selectedAirport.origin.id);
 			$('.leaflet-marker-icon[title="' + selectedAirport.origin.name + ' (' + selectedAirport.origin.iata + ')"]').click();
 		} else {
 			selectedAirport.origin = {iata:''};
+			unhighlightRoutes();
 			selectedAirport.locked = false;
 		}
 	} else {
 		selectedAirport.origin = {iata:''}
 		selectedAirport.destination = {iata:''};
+		unhighlightRoutes();
 		selectedAirport.locked = false;
 	}
 }

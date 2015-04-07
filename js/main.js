@@ -1,5 +1,5 @@
-var base = 'http://localhost:3000/'
-//var base = 'http://52.11.179.216:3000/'
+// var base = 'http://localhost:3000/'
+var base = 'http://52.11.179.216:3000/'
 
 $(document).ready(function(){
 	startApp();
