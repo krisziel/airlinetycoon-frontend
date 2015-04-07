@@ -15,9 +15,13 @@ var GameView = Backbone.View.extend({
 			return number === 1 ? number + ' ' + word : number + ' ' + word + 's';
 		}
     var variables = this.model.attributes;
-    var template = _.template($('#gameTemplate').html(),variables);
-    this.$el.html(template);
-    return this;
+    if(variables.name) {
+	    var template = _.template($('#gameTemplate').html(),variables);
+	    this.$el.html(template);
+	    return this;
+    } else if(variables.game) {
+    	this.selectGame(this.model);
+    }
   },
 	events:{
 		'click .game.button.green':'selectGame',
@@ -40,7 +44,7 @@ var GameView = Backbone.View.extend({
 	},
 	loadGame:function(){
 		var id = this.model.attributes.id;
-		launchGame(id);
+		loadGame(id);
 	}
 });
 
@@ -89,7 +93,7 @@ var NewAirlineView = Backbone.View.extend({
 				if(data.cookie) {
 					setCookie({key:'game_id',value:data.cookie});
 					parseCookie();
-					launchGame(this.model.attributes.id);
+					loadGame(this.model.attributes.id);
 				}
 			});
 		}
@@ -132,13 +136,17 @@ var games = [];
 var gameList;
 function loadGames() {
 	$.getJSON(base + 'game' + cookies.url).done(function(data){
-		$('.login-window').modal('hide');
-		$('.game-window').modal({closable:false}).modal('show');
-	  _.each(data,function(game){
-	    gameItem = new Game(game);
-			games.push(gameItem);
-		});
-	  gameList = new GameList(games);
-	  new GameListView({el:'#gameList'});
+		if(data[data.length-1].game) {
+			loadGame(data[data.length-1].gameid);
+		} else {
+			$('.login-window').modal('hide');
+			$('.game-window').modal({closable:false}).modal('show');
+		  _.each(data,function(game){
+		    gameItem = new Game(game);
+				games.push(gameItem);
+			});
+		  gameList = new GameList(games);
+		  new GameListView({el:'#gameList'});
+		}
 	});
 }

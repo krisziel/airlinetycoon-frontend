@@ -5,23 +5,23 @@
 .value.route {
 	margin-bottom: -3px;
 }
-.row {
+.flight.row {
   display: block;
   font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   font-size: 13px;
   line-height: 18px;
   position: relative;
 }
-.row .label {
+.flight.row .label {
   font-weight: bold;
 }
-.row input {
+.flight.row input {
   float: right;
   margin-top: 2px;
   margin-left: 10px;
   width: 170px;
 }
-.row input.frequencies {
+.flight.row input.frequencies {
   width: 125px;
 }
 #routePanel {

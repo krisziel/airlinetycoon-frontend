@@ -1,6 +1,5 @@
 function launchGame(id) {
 	$('.game-window').modal('hide');
-	loadGame(id);
 	loadAirports();
 	loadFlights();
 	loadUserAircraft();
@@ -36,6 +35,8 @@ function loadGame(id) {
 	$.getJSON(base + 'game/' + id + cookies.url).done(function(data){
 		airline = data.own;
 		setCookie({key:'game_id',value:data.cookie});
+		launchGame();
+		return false;
 	});
 }
 function loadMore() {

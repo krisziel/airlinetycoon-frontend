@@ -67,7 +67,7 @@ var FlightListView = Backbone.View.extend({
 function showFlight(flight) {
 	selectedFlight = flight;
 	(function(){
-    return Q.all(_.map(showRoute(flight.get('route').id)));
+    return Q.all(_.map(showRoute(flight.get('route').id,flight)));
 	})().then(function(){
 		createFlightInfoView(flight);
 	});

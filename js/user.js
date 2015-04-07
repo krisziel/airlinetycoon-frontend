@@ -6,7 +6,6 @@ function activateLogin() {
 		$('*[data-tab="' + $(this).data('tab') + '"]:not(.item)').css({display:'block'});
 	});
 	$('input[name="[user]email"]').on('blur',function(){
-		console.log($(this).val());
 		if(!validEmail($(this).val())) {
 			$('input[name="[user]email"]:eq(0)').attr('data-content','Please enter a valid email').popup({
 				on:'focus',
@@ -41,7 +40,6 @@ function signUp() {
 		}
 		if(data.cookie) {
 			setCookie({key:'user_id',value:data.cookie});
-			document.cookie = "airtycoon_user=" + data.cookie + expires;
 			loadGames();
 		}
 	}, "json");

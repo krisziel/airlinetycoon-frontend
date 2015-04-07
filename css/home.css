@@ -12,6 +12,9 @@ html, body {
 .ui.grid {
 	margin-top: 100px;
 }
+.center-modal {
+	margin-top: 100px !important;
+}
 form {
 	margin: 0;
 }

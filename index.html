@@ -392,29 +392,29 @@
 		<script id="cabinInfoTemplate" type="text/template">
 			<div class="ui tab segment" data-tab="<%= cabin %>">
 				<% if((userAircraft)&&(userAircraft.configuration.config[cabin].count > 0)) { %>
-		      <div class="row" data-rowtype="capacity"><span class="label">Capacity:</span> <span> <%= userAircraft.configuration.config[cabin].count %> passengers</span></div>
+		      <div class="row flight" data-rowtype="capacity"><span class="label">Capacity:</span> <span> <%= userAircraft.configuration.config[cabin].count %> passengers</span></div>
 		      <% if(load){ %>
-			      <div class="row" data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span> <%= load[cabin] %>%</span></div>
-			      <div class="row" data-rowtype="weeklyprofit"><span class="label">Weekly Revenue:</span> <span> $<%= comma(fare[cabin]*passengers[cabin]) %></span></div>
+			      <div class="row flight" data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span> <%= load[cabin] %>%</span></div>
+			      <div class="row flight" data-rowtype="weeklyprofit"><span class="label">Weekly Revenue:</span> <span> $<%= comma(fare[cabin]*passengers[cabin]) %></span></div>
 			    <% } else { %>
-			      <div class="row" data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span> ---</span></div>
-			      <div class="row" data-rowtype="weeklyprofit"><span class="label">Weekly Revenue:</span> <span> ---</span></div>
+			      <div class="row flight" data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span> ---</span></div>
+			      <div class="row flight" data-rowtype="weeklyprofit"><span class="label">Weekly Revenue:</span> <span> ---</span></div>
 			    <% } %>
-		      <div class="row" data-rowtype="fare"><span class="label">Fare:</span> <span id="<%= cabin %>fare"> $</span><input name="<%= cabin %>fare" type="range" value="<%= fare[cabin] %>" class="fareRange" min="<%= route.minfare[cabin] %>" max="<%= route.maxfare[cabin] %>"></div>
-		      <div class="row noclass" style="display:none;" data-rowtype="noclass">This aircraft has no <%= cabinType[cabin] %> class</div>
+		      <div class="row flight" data-rowtype="fare"><span class="label">Fare:</span> <span id="<%= cabin %>fare"> $</span><input name="<%= cabin %>fare" type="range" value="<%= fare[cabin] %>" class="fareRange" min="<%= route.minfare[cabin] %>" max="<%= route.maxfare[cabin] %>"></div>
+		      <div class="row flight noclass" style="display:none;" data-rowtype="noclass">This aircraft has no <%= cabinType[cabin] %> class</div>
 				<% } else { %>
-		      <div class="row noclass" style="display:block;" data-rowtype="noclass">This aircraft has no <%= cabinType[cabin] %> class</div>
-		      <div class="row" data-rowtype="capacity" style="display:none;"><span class="label">Capacity:</span> <span></span></div>
-		      <div class="row" data-rowtype="loadfactor" style="display:none;"><span class="label">Load Factor:</span> <span>---</span></div>
-		      <div class="row" data-rowtype="weeklyprofit" style="display:none;"><span class="label">Weekly Revenue:</span> <span>---</span></div>
-		      <div class="row" data-rowtype="fare" style="display:none;"><span class="label">Fare:</span> <span id="<%= cabin %>fare"> $</span><input name="<%= cabin %>fare" type="range" value="<%= ((route.maxfare[cabin]+route.minfare[cabin])/2) %>" class="fareRange" min="<%= route.minfare[cabin] %>" max="<%= route.maxfare[cabin] %>"></div>
+		      <div class="row flight noclass" style="display:block;" data-rowtype="noclass">This aircraft has no <%= cabinType[cabin] %> class</div>
+		      <div class="row flight" data-rowtype="capacity" style="display:none;"><span class="label">Capacity:</span> <span></span></div>
+		      <div class="row flight" data-rowtype="loadfactor" style="display:none;"><span class="label">Load Factor:</span> <span>---</span></div>
+		      <div class="row flight" data-rowtype="weeklyprofit" style="display:none;"><span class="label">Weekly Revenue:</span> <span>---</span></div>
+		      <div class="row flight" data-rowtype="fare" style="display:none;"><span class="label">Fare:</span> <span id="<%= cabin %>fare"> $</span><input name="<%= cabin %>fare" type="range" value="<%= ((route.maxfare[cabin]+route.minfare[cabin])/2) %>" class="fareRange" min="<%= route.minfare[cabin] %>" max="<%= route.maxfare[cabin] %>"></div>
 				<% } %>
 			</div>
 		</script>
 		<script id="flightInfoTemplate" type="text/template">
 			<% userAircraft ? config = userAircraft.configuration.config : config = {} %>
 		  <div class="row-container">
-		    <div class="row" data-rowtype="aircraft">
+		    <div class="row flight" data-rowtype="aircraft">
 		      <div class="ui selection dropdown" tabindex="0">
 		      	<% if(userAircraft) { %>
 			        <div class="text"><%= userAircraft.aircraft.full_name %> (<%= config.f.count + '/' + config.j.count + '/' + config.p.count + '/' + config.y.count %>)</div>
@@ -436,9 +436,9 @@
 		        </div
 		      </div>
 		    </div>
-		    <div class="row" data-rowtype="flight-length"><span class="label">Flight Length:</span> <span><%= comma(route.distance) %> Miles</span></div>
-		    <div class="row" data-rowtype="flight-duration"><span class="label">Flight Time:</span> <span><%= minutesToHours(duration) %></span></div>
-				<div class="row">
+		    <div class="row flight" data-rowtype="flight-length"><span class="label">Flight Length:</span> <span><%= comma(route.distance) %> Miles</span></div>
+		    <div class="row flight" data-rowtype="flight-duration"><span class="label">Flight Time:</span> <span><%= minutesToHours(duration) %></span></div>
+				<div class="row flight">
 				<% if(profit > 0) { %>
 					<span class="label">Weekly Profit:</span> <span class="greenColor">$<%= comma(profit) %></span>
 				<% } else if(profit < 0) { %>
@@ -447,7 +447,7 @@
 					<span class="label">Profit: Breakeven</span>
 				<% } %>
 				</div>
-		    <div class="row" data-rowtype="weekly-frequencies"><span class="label">Weekly Frequencies:</span> <span id="weeklyFrequencies"><%= frequencies %></span>
+		    <div class="row flight" data-rowtype="weekly-frequencies"><span class="label">Weekly Frequencies:</span> <span id="weeklyFrequencies"><%= frequencies %></span>
 		    	<% if(userAircraft) { %>
 		    		<input name="weeklyFrequencies" type="range" class="frequencies" min="1" max="<%= maxFlights(route, userAircraft.aircraft) %>" value="<%= frequencies %>">
 		    	<% } else { %>
@@ -554,7 +554,7 @@
 			<div class="column" id="gameList"></div>
 		</div>
     <div class="shaded grid login-window" style="display:none;">
-      <div class="ui grid">
+      <div class="ui grid center-modal">
         <div class="three column row">
           <div class="ui column"></div>
           <div class="ui raised segment column form login-form">
@@ -595,7 +595,7 @@
 		<div class="route-panel open" id="routePanel" style="display:none;">
 			<i class="icon remove"></i>
 			<div class="route-info"></div>
-			<div class="line" style="height: 316px;"></div>
+			<div class="line" style="height: 330px;"></div>
 			<div class="flight-info"></div>
 		</div>
     <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/arc.js/v0.1.0/arc.js'></script>

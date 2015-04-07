@@ -1,6 +1,6 @@
 var socket, host;
 function connect() {
-	host = 'ws://localhost:3001' + cookies.url;
+	host = 'ws://52.11.179.216:3001' + cookies.url;
   try {
     socket = new WebSocket(host);
     addMessage("Socket State: " + socket.readyState);

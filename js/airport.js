@@ -1,5 +1,3 @@
-var base = 'http://localhost:3000/'
-
 var Airport = Backbone.Model.extend({
   initialize:function(){
 		this.on("change:name",function(model){
