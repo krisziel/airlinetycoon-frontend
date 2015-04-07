@@ -93,7 +93,7 @@ var NewAirlineView = Backbone.View.extend({
 				if(data.cookie) {
 					setCookie({key:'game_id',value:data.cookie});
 					parseCookie();
-					loadGame(this.model.attributes.id);
+					loadGame(data.id);
 				}
 			});
 		}
