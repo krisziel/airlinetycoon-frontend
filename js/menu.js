@@ -60,8 +60,3 @@ function prepareTab(tab) {
 		loadAlliance();
 	}
 }
-function logout() {
-	destroyCookie('user_id');
-	destroyCookie('game_id');
-	window.location('http://kziel.com/airlinetycoon');
-}
