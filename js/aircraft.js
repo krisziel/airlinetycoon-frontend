@@ -384,6 +384,7 @@ function purchaseAircraft() {
 				var newAircraft = new UserAircraft(aircraft);
 				updatedUser.aircraft.add(newAircraft);
 				userAircraft[aircraft.id] = newAircraft;
+				useraircraftList.push(newAircraft);
 			});
 			updatedUser.unused += data.length;
 			selectedAircraft.set('user',updatedUser);
@@ -394,19 +395,4 @@ function purchaseAircraft() {
 			
 		}
 	});
-}
-function pA() {
-	var data = [{"id":59,"aircraft":{"name":"737-800","manufacturer":"Boeing","iata":"738","full_name":"Boeing 737-800","capacity":"189","range":3400,"sqft":"851","id":2},"inuse":false,"configuration":{"id":19,"name":"domestic","config":{"f":{"count":0,"seat":8},"j":{"count":7,"seat":5},"p":{"count":22,"seat":2},"y":{"count":133,"seat":1}}},"flight":null}];
-	if(data.length > 0) {
-		var updatedUser = selectedAircraft.get('user');
-		_.each(data,function(aircraft){
-			var newAircraft = new UserAircraft(aircraft);
-			updatedUser.aircraft.add(newAircraft);
-			userAircraft[aircraft.id] = newAircraft;
-		});
-		updatedUser.unused += data.length;
-		selectedAircraft.set('user',updatedUser);
-	} else {
-		
-	}
 }

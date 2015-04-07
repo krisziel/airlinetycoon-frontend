@@ -87,7 +87,6 @@ function selectAirportMarker(e) {
 		closeAirportPopup(e);
 	});
 	_.each(airportLayer.json.get('marker-color','#aa0114'),function(marker){
-		console.log(marker.properties.data.iata, selectedAirport.origin.iata);
 		if(marker.properties.data.iata !== selectedAirport.origin.iata) {
 			marker.properties['marker-color'] = '#548cba';
 		}
@@ -126,7 +125,7 @@ function openAirportRoute(marker) {
 	showRoute([selectedAirport.origin.id,selectedAirport.destination.id]);
 }
 function closeAirportPopup(e) {
-	var id = $(e.currentTarget).parent().find('.icon').data('id');
+	var id = $(e.currentTarget).parent().find('.airport-option').data('id');
 	var layer = airportLayer.json.get('id',id)[0];
 	layer.properties['marker-color'] = '#548cba';
 	airportLayer.markers.setGeoJSON(airportLayer.json);

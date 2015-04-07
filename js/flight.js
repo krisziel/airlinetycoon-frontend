@@ -234,7 +234,8 @@ function createFlight() {
 				selectedRoute.get('flights').own.push(newFlight);
 				var variables = data;
 				var newFlightView = new FlightView({model:newFlight});
-				$('.ui.one.bottom.attached.buttons.create').after(newFlightView);
+				$('.ui.one.bottom.attached.buttons.create').after(newFlightView.$el.html());
+				createFlightInfoView(selectedFlight);
 			} else if(Array.isArray(data)) {
 				flightErrors(data);
 			}
