@@ -375,11 +375,11 @@
 							<% if(load&&load.average&&profit) { %>
 					    	<%= load.average %>% Load Factor 
 								<% if(profit > 0) { %>
-									(<span class="greenColor">$<%= comma(profit) %> Profit (<%= load.average %>% load factor)</span>)
+									($<%= comma(profit) %> Profit)
 								<% } else if(profit < 0) { %>
-									(<span class="redColor">$<%= comma(profit) %> Loss (<%= load.average %>% load factor)</span>)
+									($<%= comma(profit) %> Loss)
 								<% } else { %>
-									(<span>Breakeven (<%= load.average %>% load factor)</span>)
+									(Breakeven)
 								<% } %>
 							<% } else { %>
 					    	Just Launched
@@ -515,11 +515,11 @@
 									<% if(flight.load&&flight.load.average&&flight.profit) { %>
 							    	<%= flight.load.average %>% Load Factor 
 										<% if(flight.profit > 0) { %>
-											(<span class="greenColor">$<%= comma(flight.profit) %> Profit</span>)
+											($<%= comma(flight.profit) %> Profit)
 										<% } else if(flight.profit < 0) { %>
-											(<span class="redColor">$<%= comma(flight.profit) %> Loss</span>)
+											($<%= comma(flight.profit) %> Loss)
 										<% } else { %>
-											(<span>Breakeven</span>)
+											(Breakeven)
 										<% } %>
 									<% } else { %>
 							    	Just Launched
@@ -534,7 +534,7 @@
 					<div class="ui dividing header airport alliance" id="flight<%= flight.id %>" data-flightid="<%= flight.id %>" data-routeid="<%= id %>">
 					  <div class="content">
 							<div class="ui statistic tiny alliance">
-								<div class="value route"><%= airline.name %></div>
+								<div class="value route"><%= flight.airline.name %></div>
 							  <div class="label">
 									<%= flight.aircraft.name %> (<%= flight.frequencies %>/week) @ <%= flight.load.average %>% load factor</span>
 								</div>

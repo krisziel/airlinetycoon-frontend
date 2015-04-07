@@ -384,7 +384,7 @@ function purchaseAircraft() {
 				var newAircraft = new UserAircraft(aircraft);
 				updatedUser.aircraft.add(newAircraft);
 				userAircraft[aircraft.id] = newAircraft;
-				useraircraftList.push(newAircraft);
+				userAircraftList.push(newAircraft);
 			});
 			updatedUser.unused += data.length;
 			selectedAircraft.set('user',updatedUser);
