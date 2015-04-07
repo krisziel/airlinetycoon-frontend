@@ -1,13 +1,15 @@
 function launchGame(id) {
 	$('.game-window').modal('hide');
+	sizeMap();
+	loadMap();
 	loadAirports();
 	loadFlights();
 	loadUserAircraft();
-	loadMore();
 	loadMsc();
 	connect();
 	var menu = new MenuView({el:'#leftColumn'});
-	$('#leftColumn .column').css({height:$('#leftColumn').height()-35})
+	$('#leftColumn').css({display:'block'}).find('.column').css({height:$('#leftColumn').height()-35});
+	loadMore();
 }
 var MenuView = Backbone.View.extend({
 	initialize:function(){
@@ -40,7 +42,12 @@ function loadGame(id) {
 	});
 }
 function loadMore() {
-	
+	console.log('moar')
+	var template = _.template($('#moreColumnTemplate').html());
+  $('#moreList').html(template);
+  $('#moreList').on('click','.logout',function(){
+  	logout();
+  });
 }
 function loadMsc() {
 	$('body').on('keyup','textarea',function(){
@@ -52,4 +59,9 @@ function prepareTab(tab) {
 	if(tab === 'alliance') {
 		loadAlliance();
 	}
+}
+function logout() {
+	destroyCookie('user_id');
+	destroyCookie('game_id');
+	window.location('http://kziel.com/airlinetycoon');
 }

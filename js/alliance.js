@@ -284,3 +284,6 @@ var AllianceInfoView = Backbone.View.extend({ // The view that displays the alli
 		}
 	}
 });
+plural = function(number, word){
+	return number === 1 ? number + ' ' + word : number + ' ' + word + 's';
+}

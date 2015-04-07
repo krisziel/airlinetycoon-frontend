@@ -38,6 +38,9 @@ function signUp() {
 		if(data.password) {
 			loginErrorHandler({inputName:'[user]password',fieldName:'Password',value:data.password});
 		}
+		if((data.error)&&(data.error === 'invalid password')) {
+			loginErrorHandler({inputName:'[user]password',fieldName:'Password',value:['Incorrect email/password combination']});
+		}
 		if(data.cookie) {
 			setCookie({key:'user_id',value:data.cookie});
 			loadGames();
@@ -52,6 +55,9 @@ function login() {
 		if(data.password) {
 			loginErrorHandler({inputName:'password',fieldName:'Password',value:data.password});
 		}
+		if((data.error)&&(data.error === 'invalid password')) {
+			loginErrorHandler({inputName:'password',fieldName:'Password',value:['Incorrect email/password combination']});
+		}
 		if(data.cookie) {
 			setCookie({key:'user_id',value:data.cookie});
 			loadGames();
@@ -59,12 +65,13 @@ function login() {
 	}, "json");
 }
 function loginErrorHandler(args) {
+	console.log(args);
 	$('input[name="' + args.inputName + '"]').parent().removeClass('error');
 	if($.isArray(args.value)) {
 		$('input[name="' + args.inputName + '"]').attr('data-content',args.fieldName + ' ' + args.value[0]).popup({
 			on:'focus',
 	    position : 'bottom left',
-		}).parent().addClass('error').on('keyup',function(){
+		}).popup('show').parent().addClass('error').on('keyup',function(){
 			$(this).removeClass('error').find('input').popup('destroy');
 		});
 	}

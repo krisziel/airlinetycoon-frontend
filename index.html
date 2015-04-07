@@ -240,11 +240,10 @@
 										<span>Unused</span>
 									<% } %>
 								</div>
-								<div class="ui button blue micro alliance airline">Edit</div>
 							</div>
 						</div>
 					<% } else { %>
-						<div class="ui dividing header airport game flight">
+						<div class="ui dividing header airport game flight" data-flightid="<%= aircraft.flight.id %>" data-routeid="<%= aircraft.flight.route.id %>">
 							<div class="content airport aircraft flight">
 								<div class="ui horizontal statistics mini airport aircraft flight">
 								  <div class="ui statistic">
@@ -555,6 +554,13 @@
 				</div>
 			</div>
 		</script>
+		<script id="moreColumnTemplate" type="text/tamplate">
+			<div class="ui one bottom attached buttons create">
+	      <div class="ui button primary logout">
+	      	Log out
+				</div>
+			</div>
+		</script>
 		<div id="leftColumn">
 		</div>
     <div class="shaded grid game-window">
@@ -565,7 +571,7 @@
         <div class="three column row">
           <div class="ui column"></div>
           <div class="ui raised segment column form login-form">
-            <div class="ui header center aligned">Welcome to Air Tycoon</div>
+            <div class="ui header center aligned">Welcome to Airline Tycoon</div>
             <div class="ui two item blue menu" id="loginMenu">
               <a class="active item" data-tab="sign-up">Sign Up</a>
               <a class="item" data-tab="login">Login</a>

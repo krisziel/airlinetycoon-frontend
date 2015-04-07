@@ -199,3 +199,9 @@
 .ui.active.dimmer.inverted {
   background: rgba(255,255,255,.5) !important;
 }
+#cancelButton {
+  width: 84px;
+}
+#saveFlightButton {
+  width: 71px;
+}

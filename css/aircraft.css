@@ -17,16 +17,16 @@
 .ui.button.micro.airline.aircraft.configs {
 }
 .ui.horizontal.statistics.mini.airport.aircraft.flight {
-	width: 100px;
+	width: 105px;
 }
 .ui.dividing.header.airport.aircraft {
 	margin-bottom: 0;
 }
 .airport.aircraft.data.flight { 
-	max-width: 100px;
+	max-width: 105px;
 }
 .aircraft.compressed .content {
-	padding-left: 20px;
+	padding-left: 15px;
 }
 .aircraft.compressed .ui.button {
 	margin-right: 4px;
@@ -116,7 +116,7 @@
 }
 .route-panel {
   z-index: 1009;
-  position: absolute;
+  position: absolute !important;
   overflow: hidden;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.3);

@@ -46,6 +46,10 @@ function loadUserAircraft() {
 			userAircraftList.push(new UserAircraft(aircraft));
 		});
 		userAircraftList = new UserAircraftList(userAircraftList);
+		$('#aircraftList').on('click','.ui.dividing.header.airport.game.flight',function(){
+			var id = $(this).data('flightid');
+			showFlight(flightList.get(id));
+		});
 	});
 }
 function loadSeats() {
@@ -114,13 +118,16 @@ var AircraftView = Backbone.View.extend({
 	},
 	checkAircraft:function(e){
 		var el = $(e.currentTarget);
-		e.stopPropagation();
+		if(!el.hasClass('compressed')) {
+			e.stopPropagation();
+		}
 		if(el.hasClass('purchase')) {
 			this.loadAircraftPurchase();
-		} else if(el.hasClass('configs')) {
-			this.loadAircraftConfigs();
-		} else {
+		} else if((el.hasClass('airport'))&&(el.hasClass('aircraft'))&&(!el.hasClass('flight'))) {
 			this.loadAircraftList();
+		} else if(el.hasClass('flight')) {
+			var id = el.data('flightid');
+			showFlight(flightList.get(id));
 		}
 	},
 	loadAircraftPurchase:function(){

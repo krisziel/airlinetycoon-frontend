@@ -10,10 +10,6 @@ var selectedAirport = {
 };
 
 var globalMap;
-(function(){
-	sizeMap();
-	loadMap();
-})();
 
 function sizeMap() {
   $('#map').css({width:$(window).width()-300});
