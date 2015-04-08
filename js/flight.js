@@ -151,7 +151,8 @@ function maxFrequencies(duration,turn_time) {
 }
 function minutesToHours(minutes) {
   var hours = Math.floor(minutes/60);
-  var minutes = (minutes%60);
+  var minutes = '00' + (minutes%60);
+  minutes = minutes.substr(-2,2)
   return hours + ":" + minutes;
 }
 function maxFlights(route, aircraft) {
