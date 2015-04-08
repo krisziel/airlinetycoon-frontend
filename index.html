@@ -534,7 +534,11 @@
 							<div class="ui statistic tiny alliance">
 								<div class="value route"><%= flight.airline.name %></div>
 							  <div class="label">
-									<%= flight.aircraft.name %> (<%= flight.frequencies %>/week) @ <%= flight.load.average %>% load factor</span>
+									<% if(flight.load&&flight.load.average) { %>
+										<%= flight.aircraft.name %> (<%= flight.frequencies %>/week) @ <%= flight.load.average %>% load factor</span>
+									<% } else { %>
+										<%= flight.aircraft.name %> (<%= flight.frequencies %>/week) (Just Launched)</span>
+									<% } %>
 								</div>
 							</div>
 						</div>

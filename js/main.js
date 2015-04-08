@@ -1,10 +1,10 @@
 var base = 'http://localhost:3000/'
 
 $(document).ready(function(){
-	startApp();
 	if(window.document.location.origin === 'http://kziel.com') {
-		var base = 'http://52.11.179.216:3000/'
+		base = 'http://52.11.179.216:3000/'
 	}
+	startApp();
 });
 var cookies = {};
 function startApp() {
