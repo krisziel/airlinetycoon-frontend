@@ -73,7 +73,6 @@ var selectedFlight, selectedRoute;
 function drawRoutes() {
   flightList.each(function(value){
     var route = value.get('route');
-    console.log(route);
     route.origin = airportList.get(route.origin.id).attributes;
     route.destination = airportList.get(route.destination.id).attributes;
     activeRoutes[route.id] = route;

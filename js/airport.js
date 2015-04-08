@@ -83,6 +83,7 @@ function loadAirports(){
 		});
 	  airportList = new AirportList(airports);
 	  new AirportListView({el:'#airportList'});
+		loadFlights();
 	});
 }
 function loadAirport(e) {

@@ -6,7 +6,8 @@ var routeLayer = {};
 var selectedAirport = {
 	origin:{iata:''},
 	destination:{iata:''},
-	locked:false
+	locked:false,
+	selected:false
 };
 
 var globalMap;
@@ -105,13 +106,13 @@ function popupAction(e) {
 }
 function lockAirportMarker(marker) {
 	selectedAirport.origin = marker.properties.data;
-	selectedAirport.selected = true;
+	selectedAirport.locked = true;
 	$('#star' + marker.properties.id).addClass('selected');
 	highlightRoutes(selectedAirport.origin.id);
 }
 function unlockAirportMarker(marker) {
 	selectedAirport.origin = {};
-	selectedAirport.selected = false;
+	selectedAirport.locked = false;
 	$('#star' + marker.properties.id).removeClass('selected');
 	unhighlightRoutes();
 }

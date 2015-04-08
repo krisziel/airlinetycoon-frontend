@@ -345,7 +345,7 @@
 		<script id="airportPopupTemplate" type="text/template">
 			<% if(selectedAirport.origin.iata === iata){ %>
 				<div class="star selected airport-option" id="star<%= id %>" data-id="<%= id %>"><i class="icon star selected"></i> unset origin</div>
-			<% } else if(selectedAirport.selected){ %>
+			<% } else if(selectedAirport.locked){ %>
 				<div class="resize airport-option" id="airportroute<%= id %>" data-id="<%= id %>"><i class="icon horizontal resize"></i> view route</div>
 			<% } else { %>
 				<div class="star airport-option" id="star<%= id %>" data-id="<%= id %>"><i class="icon star"></i> set origin</div>
@@ -553,6 +553,18 @@
 						<div class="value route"><%= userAircraft.aircraft.name %> (<%= frequencies %>/week)</div>
 					  <div class="label">
 					   	Just Launched
+						</div>
+					</div>
+				</div>
+			</div>
+		</script>
+		<script id="routePanelFlightTemplate" type="text/template">
+			<div class="ui dividing header airport alliance own-flight" id="flight<%= id %>" data-flightid="<%= id %>" data-routeid="<%= route.id %>">
+			  <div class="content">
+					<div class="ui statistic tiny alliance">
+						<div class="value route"><%= userAircraft.aircraft.name %> (<%= frequencies %>/week)</div>
+					  <div class="label">
+					    Just Launched
 						</div>
 					</div>
 				</div>
