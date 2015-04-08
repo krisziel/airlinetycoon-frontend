@@ -373,9 +373,9 @@
 							<% if(load&&load.average&&profit) { %>
 					    	<%= load.average %>% Load Factor 
 								<% if(profit > 0) { %>
-									($<%= comma(profit) %> Profit)
+									(<text class="green">$<%= comma(profit) %> Profit</text>)
 								<% } else if(profit < 0) { %>
-									($<%= comma(profit) %> Loss)
+									(<text class="red">$<%= comma(profit) %> Loss</text>)
 								<% } else { %>
 									(Breakeven)
 								<% } %>
@@ -449,9 +449,9 @@
 		    <div class="row flight" data-rowtype="flight-duration"><span class="label">Flight Time:</span> <span><%= minutesToHours(duration) %></span></div>
 				<div class="row flight">
 				<% if(profit > 0) { %>
-					<span class="label">Weekly Profit:</span> <span class="greenColor">$<%= comma(profit) %></span>
+					<span class="label">Weekly Profit:</span> <text class="green">$<%= comma(profit) %></text>
 				<% } else if(profit < 0) { %>
-					<span class="label">Weekly Loss:</span> <span class="redColor">$<%= comma(profit) %></span>
+					<span class="label">Weekly Loss:</span> <text class="red">$<%= comma(profit) %></text>
 				<% } else { %>
 					<span class="label">Profit: Breakeven</span>
 				<% } %>
@@ -513,9 +513,9 @@
 									<% if(flight.load&&flight.load.average&&flight.profit) { %>
 							    	<%= flight.load.average %>% Load Factor 
 										<% if(flight.profit > 0) { %>
-											($<%= comma(flight.profit) %> Profit)
+											(<text class="green">$<%= comma(flight.profit) %> Profit</text>)
 										<% } else if(flight.profit < 0) { %>
-											($<%= comma(flight.profit) %> Loss)
+											(<text class="red">$<%= comma(flight.profit) %> Loss</text>)
 										<% } else { %>
 											(Breakeven)
 										<% } %>
