@@ -196,6 +196,7 @@ function updateFlight() {
 		if(data.userAircraft){
 			var updatedFlight = new Flight(data);
 			var index = selectedRoute.get('flights').own.indexOf(selectedFlight);
+			$('#flight' + id + ':not(.own-flight)').remove();
 			userAircraftList.get(data.userAircraft.id).set('flight',updatedFlight).set('inuse',true);
 			userAircraftList.get(oldAircraft.id).set('flight',null).set('inuse',false);
 			flightList.remove(selectedFlight);
@@ -203,7 +204,7 @@ function updateFlight() {
 			selectedRoute.get('flights').own.splice(index, 1);
 			selectedRoute.get('flights').own.push(updatedFlight);
 			selectedFlight = updatedFlight;
-			$('#flight' + id + ' .value.route').html(data.userAircraft.aircraft.name + ' (' + data.frequencies + '/week)');
+			$('#flight' + id + '.own-flight .value.route').html(data.userAircraft.aircraft.name + ' (' + data.frequencies + '/week)');
 		} else if(Array.isArray(data)) {
 			flightErrors(data);
 		}

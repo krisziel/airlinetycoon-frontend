@@ -449,9 +449,9 @@
 		    <div class="row flight" data-rowtype="flight-duration"><span class="label">Flight Time:</span> <span><%= minutesToHours(duration) %></span></div>
 				<div class="row flight">
 				<% if(profit > 0) { %>
-					<span class="label">Weekly Profit:</span> <text class="green">$<%= comma(profit) %></text>
+					<span class="label">Weekly Profit:</span> <span class="green">$<%= comma(profit) %></span>
 				<% } else if(profit < 0) { %>
-					<span class="label">Weekly Loss:</span> <text class="red">$<%= comma(profit) %></text>
+					<span class="label">Weekly Loss:</span> <span class="red">$<%= comma(profit) %></span>
 				<% } else { %>
 					<span class="label">Profit: Breakeven</span>
 				<% } %>
