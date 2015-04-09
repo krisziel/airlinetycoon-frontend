@@ -397,7 +397,9 @@ function purchaseAircraft() {
 			selectedAircraft.set('user',updatedUser);
 			aircraftList.add(selectedAircraft);
 			aircraftList.sort();
+			$('#purchaseButton').after('<h3 class="header center aligned purchase-success">Purchase Successful!</h3>');
 			new AircraftListView({el:'#aircraftList'});
+			setTimeout(function(){ $('.purchase-success').remove(); },3000);
 		} else {
 			
 		}
