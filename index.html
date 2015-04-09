@@ -345,7 +345,7 @@
 		<script id="airportPopupTemplate" type="text/template">
 			<% if(selectedAirport.origin.iata === iata){ %>
 				<div class="star selected airport-option" id="star<%= id %>" data-id="<%= id %>"><i class="icon star selected"></i> unset origin</div>
-			<% } else if(selectedAirport.selected){ %>
+			<% } else if(selectedAirport.locked){ %>
 				<div class="resize airport-option" id="airportroute<%= id %>" data-id="<%= id %>"><i class="icon horizontal resize"></i> view route</div>
 			<% } else { %>
 				<div class="star airport-option" id="star<%= id %>" data-id="<%= id %>"><i class="icon star"></i> set origin</div>
@@ -373,9 +373,9 @@
 							<% if(load&&load.average&&profit) { %>
 					    	<%= load.average %>% Load Factor 
 								<% if(profit > 0) { %>
-									($<%= comma(profit) %> Profit)
+									(<text class="green">$<%= comma(profit) %> Profit</text>)
 								<% } else if(profit < 0) { %>
-									($<%= comma(profit) %> Loss)
+									(<text class="red">$<%= comma(profit) %> Loss</text>)
 								<% } else { %>
 									(Breakeven)
 								<% } %>
@@ -449,9 +449,9 @@
 		    <div class="row flight" data-rowtype="flight-duration"><span class="label">Flight Time:</span> <span><%= minutesToHours(duration) %></span></div>
 				<div class="row flight">
 				<% if(profit > 0) { %>
-					<span class="label">Weekly Profit:</span> <span class="greenColor">$<%= comma(profit) %></span>
+					<span class="label">Weekly Profit:</span> <span class="green">$<%= comma(profit) %></span>
 				<% } else if(profit < 0) { %>
-					<span class="label">Weekly Loss:</span> <span class="redColor">$<%= comma(profit) %></span>
+					<span class="label">Weekly Loss:</span> <span class="red">$<%= comma(profit) %></span>
 				<% } else { %>
 					<span class="label">Profit: Breakeven</span>
 				<% } %>
@@ -513,9 +513,9 @@
 									<% if(flight.load&&flight.load.average&&flight.profit) { %>
 							    	<%= flight.load.average %>% Load Factor 
 										<% if(flight.profit > 0) { %>
-											($<%= comma(flight.profit) %> Profit)
+											(<text class="green">$<%= comma(flight.profit) %> Profit</text>)
 										<% } else if(flight.profit < 0) { %>
-											($<%= comma(flight.profit) %> Loss)
+											(<text class="red">$<%= comma(flight.profit) %> Loss</text>)
 										<% } else { %>
 											(Breakeven)
 										<% } %>
@@ -553,6 +553,18 @@
 						<div class="value route"><%= userAircraft.aircraft.name %> (<%= frequencies %>/week)</div>
 					  <div class="label">
 					   	Just Launched
+						</div>
+					</div>
+				</div>
+			</div>
+		</script>
+		<script id="routePanelFlightTemplate" type="text/template">
+			<div class="ui dividing header airport alliance own-flight" id="flight<%= id %>" data-flightid="<%= id %>" data-routeid="<%= route.id %>">
+			  <div class="content">
+					<div class="ui statistic tiny alliance">
+						<div class="value route"><%= userAircraft.aircraft.name %> (<%= frequencies %>/week)</div>
+					  <div class="label">
+					    Just Launched
 						</div>
 					</div>
 				</div>

@@ -72,3 +72,12 @@ span {
 .icon.selected {
 	color: #009fda;
 }
+text {
+	margin: 0 !important;
+}
+.green {
+	color: #007F00;
+}
+.red {
+	color: #E50000;
+}

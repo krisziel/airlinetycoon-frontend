@@ -2,8 +2,7 @@ function launchGame(id) {
 	$('.game-window').modal('hide');
 	sizeMap();
 	loadMap();
-	loadAirports();
-	loadFlights();
+	loadAirports(); // loadFlights moved to loadAirports in leiu of promise for it to complete
 	loadUserAircraft();
 	loadMsc();
 	connect();
@@ -42,7 +41,6 @@ function loadGame(id) {
 	});
 }
 function loadMore() {
-	console.log('moar')
 	var template = _.template($('#moreColumnTemplate').html());
   $('#moreList').html(template);
   $('#moreList').on('click','.logout',function(){

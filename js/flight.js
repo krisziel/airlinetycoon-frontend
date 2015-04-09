@@ -151,7 +151,8 @@ function maxFrequencies(duration,turn_time) {
 }
 function minutesToHours(minutes) {
   var hours = Math.floor(minutes/60);
-  var minutes = (minutes%60);
+  var minutes = '00' + (minutes%60);
+  minutes = minutes.substr(-2,2)
   return hours + ":" + minutes;
 }
 function maxFlights(route, aircraft) {
@@ -195,6 +196,7 @@ function updateFlight() {
 		if(data.userAircraft){
 			var updatedFlight = new Flight(data);
 			var index = selectedRoute.get('flights').own.indexOf(selectedFlight);
+			$('#flight' + id + ':not(.own-flight)').remove();
 			userAircraftList.get(data.userAircraft.id).set('flight',updatedFlight).set('inuse',true);
 			userAircraftList.get(oldAircraft.id).set('flight',null).set('inuse',false);
 			flightList.remove(selectedFlight);
@@ -202,7 +204,7 @@ function updateFlight() {
 			selectedRoute.get('flights').own.splice(index, 1);
 			selectedRoute.get('flights').own.push(updatedFlight);
 			selectedFlight = updatedFlight;
-			$('#flight' + id + ' .value.route').html(data.userAircraft.aircraft.name + ' (' + data.frequencies + '/week)');
+			$('#flight' + id + '.own-flight .value.route').html(data.userAircraft.aircraft.name + ' (' + data.frequencies + '/week)');
 		} else if(Array.isArray(data)) {
 			flightErrors(data);
 		}
@@ -233,8 +235,8 @@ function createFlight() {
 				selectedFlight = newFlight;
 				selectedRoute.get('flights').own.push(newFlight);
 				var variables = data;
-				var newFlightView = new FlightView({model:newFlight});
-				$('.ui.one.bottom.attached.buttons.create').after(newFlightView.$el.html());
+				var template = _.template($('#routePanelFlightTemplate').html(),variables);
+				$('.ui.one.bottom.attached.buttons.create').after(template);
 				createFlightInfoView(selectedFlight);
 			} else if(Array.isArray(data)) {
 				flightErrors(data);
