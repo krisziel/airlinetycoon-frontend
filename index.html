@@ -370,12 +370,12 @@
 					<div class="ui statistic tiny alliance">
 						<div class="value route"><%= route.origin.iata %>-<%= route.destination.iata %> <span>(<%= userAircraft.aircraft.name %> x <%= frequencies %>)</span></div>
 					  <div class="label">
-							<% if(load&&load.average&&profit) { %>
+							<% if(load&&(load.average >= 0)&&profit) { %>
 					    	<%= load.average %>% Load Factor 
 								<% if(profit > 0) { %>
 									(<text class="green">$<%= comma(profit) %> Profit</text>)
 								<% } else if(profit < 0) { %>
-									(<text class="red">$<%= comma(profit) %> Loss</text>)
+									(<text class="red">$<%= comma(Math.abs(profit)) %> Loss</text>)
 								<% } else { %>
 									(Breakeven)
 								<% } %>
@@ -451,7 +451,7 @@
 				<% if(profit > 0) { %>
 					<span class="label">Weekly Profit:</span> <span class="green">$<%= comma(profit) %></span>
 				<% } else if(profit < 0) { %>
-					<span class="label">Weekly Loss:</span> <span class="red">$<%= comma(profit) %></span>
+					<span class="label">Weekly Loss:</span> <span class="red">$<%= comma(Math.abs(profit)) %></span>
 				<% } else { %>
 					<span class="label">Profit: Breakeven</span>
 				<% } %>
@@ -515,7 +515,7 @@
 										<% if(flight.profit > 0) { %>
 											(<text class="green">$<%= comma(flight.profit) %> Profit</text>)
 										<% } else if(flight.profit < 0) { %>
-											(<text class="red">$<%= comma(flight.profit) %> Loss</text>)
+											(<text class="red">$<%= comma(Math.abs(flight.profit)) %> Loss</text>)
 										<% } else { %>
 											(Breakeven)
 										<% } %>

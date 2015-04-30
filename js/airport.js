@@ -1,8 +1,5 @@
 var Airport = Backbone.Model.extend({
   initialize:function(){
-		this.on("change:name",function(model){
-			console.log("new equipment " + this.get('name'));
-		});
   },
 	equipmentSwap:function(newEquipment){
 		this.set({name:newEquipment});
