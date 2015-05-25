@@ -68,7 +68,7 @@ $('body').on('keyup','textarea',function(){
 	$(this).height(this.scrollHeight);
 });
 function comma(number){
-	if(parseInt(number) > 0) {
+	if(parseInt(number)) {
 		return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	} else {
 		return '';

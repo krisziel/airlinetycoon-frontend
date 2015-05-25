@@ -71,12 +71,21 @@ var allRoutes = {};
 var selectedFlight, selectedRoute;
 
 function drawRoutes() {
+  clearRoutes();
   flightList.each(function(value){
+    console.log(value);
     var route = value.get('route');
-    route.origin = airportList.get(route.origin.id).attributes;
-    route.destination = airportList.get(route.destination.id).attributes;
-    activeRoutes[route.id] = route;
-    drawRoute({origin:route.origin,dest:route.destination,type:'normal'});
+    if(route) {
+      route.origin = airportList.get(route.origin.id).attributes;
+      route.destination = airportList.get(route.destination.id).attributes;
+      activeRoutes[route.id] = route;
+      drawRoute({origin:route.origin,dest:route.destination,type:'normal'});
+    }
+  });
+}
+function clearRoutes() {
+  $.each(allRoutes,function(key,value){
+    globalMap.removeLayer(value);
   });
 }
 function highlightRoutes(id) {

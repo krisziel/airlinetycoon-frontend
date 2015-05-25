@@ -9,6 +9,8 @@ var cabinType = {
 
 function loadFlights() {
 	$.getJSON(base + 'flight' + cookies.url).done(function(data){
+        flightList = [];
+        routeList = [];
 		_.each(data,function(flight){
 			var newFlight = new Flight(flight);
 			flightList.push(newFlight);
@@ -33,7 +35,7 @@ var FlightView = Backbone.View.extend({
     this.render();
   },
   render:function(){
-		selectedFlight = this.model;
+	selectedFlight = this.model;
     var variables = this.model.attributes;
     var template = _.template($('#flightTemplate').html(),variables);
     this.$el.html(template);
@@ -60,7 +62,7 @@ var FlightListView = Backbone.View.extend({
     this.$el.append(view.$el);
   },
   addAll:function(){
-		var template = _.template($('#flightListTemplate').html());
+	var template = _.template($('#flightListTemplate').html());
     this.$el.html(template);
     flightList.each(this.addOne,this);
   }
@@ -68,7 +70,7 @@ var FlightListView = Backbone.View.extend({
 function showFlight(flight) {
 	selectedFlight = flight;
 	(function(){
-    return Q.all(_.map(showRoute(flight.get('route').id,flight)));
+    	return Q.all(_.map(showRoute(flight.get('route').id,flight)));
 	})().then(function(){
 		createFlightInfoView(flight);
 	});
