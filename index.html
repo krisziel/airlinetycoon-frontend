@@ -589,10 +589,10 @@
           <div class="ui raised segment column form login-form">
             <div class="ui header center aligned">Welcome to Airline Tycoon</div>
             <div class="ui two item blue menu" id="loginMenu">
-              <a class="active item" data-tab="sign-up">Sign Up</a>
-              <a class="item" data-tab="login">Login</a>
+              <a class="item" data-tab="sign-up">Sign Up</a>
+              <a class="active item" data-tab="login">Login</a>
             </div>
-            <form data-tab="sign-up" id="signupForm">
+            <form data-tab="sign-up" style="display:none;" id="signupForm">
               <div class="field">
                 <input placeholder="Username" type="text" name="[user]username" data-variation="inverted">
               </div>
@@ -607,12 +607,12 @@
               </div>
               <input type="submit" class="button blue ui full" value="Sign Up" />
             </form>
-            <form data-tab="login" style="display:none;" id="loginForm">
+            <form data-tab="login" style="display:block;" id="loginForm">
               <div class="field">
-                <input placeholder="Username" type="text" name="username">
+                <input placeholder="Username ('ual' for demo)" type="text" name="username">
               </div>
               <div class="field">
-                <input placeholder="Password" type="password" name="password">
+                <input placeholder="Password ('ual' for demo)" type="password" name="password">
               </div>
               <input type="submit" class="button blue ui full" value="Login" />
             </form>
