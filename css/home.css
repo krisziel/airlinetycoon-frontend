@@ -81,3 +81,22 @@ text {
 .red {
 	color: #E50000;
 }
+.game-info {
+	z-index: 99999;
+	position: absolute;
+	margin: 10px 0 0 48px;
+	background: #ffffff;
+	border: 1px solid rgba(0,0,0,.4);
+	padding: 5px 0;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+.game-info > div {
+	float: left;
+	padding: 0 10px;
+	border-right: 1px solid #999999;
+}
+.game-info > div:last-child {
+	border-right: none;
+}
