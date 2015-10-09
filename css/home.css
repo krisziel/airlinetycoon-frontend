@@ -82,7 +82,7 @@ text {
 	color: #E50000;
 }
 .game-info {
-	z-index: 99999;
+	z-index: 9;
 	position: absolute;
 	margin: 10px 0 0 48px;
 	background: #ffffff;

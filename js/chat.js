@@ -1,67 +1,57 @@
-var messageInterval;
-
-function launchChat() {
-	closeChat();
-	$('.message.list').css({height:$('.chat.window').height()-54});
-	$('body').on('click','.ui.button.blue.super.small',function(e){
-		e.preventDefault();
-		sendChatMessage();
-	});
-	setTimeout(function(){ checkMessages({scroll:true}); },20);
-	messageInterval = setInterval(function(){ checkMessages(); },3000);
+var socket, host;
+function connect() {
+	host = 'ws://52.11.179.216:3001' + cookies.url;
+  try {
+    socket = new WebSocket(host);
+    socket.onopen = function() {
+    }
+    socket.onclose = function() {
+    }
+    socket.onmessage = function(msg) {
+		parseMessage(msg);
+    }
+  } catch(exception) {
+    addMessage("Error: " + exception);
+  }
 }
-function closeChat() {
-	$('.chat.window').css({display:'none'});
-	clearInterval(messageInterval);
+function sendChatMessage() {
+	var text = $('#chatMessage').val().replace(/(\r\n|\n|\r)/gm,"  ");
+  if (text === '') {
+    return;
+  }
+  try {
+	var message = '{"type_id":"' + alliance.get('id') + '","message_type":"alliance","body":"' + text + '"}';
+    socket.send(message + 'lIlIlIIlIlIl' + cookies.url);
+  } catch(exception) {
+  }
 }
-function sendChatMessages() {
-	var message = $('#chatMessage').val();
-	var type = $('.ui.button.blue.super.small').attr('name');
-	$.post(base + 'chat/' + type + cookies.url,$('#messageForm').serialize(),function(data,textResponse){
-	},'json');
-	var box = '<div class="message container new self"><div class="message content self">' + message + '</div></div>';
-	//$('.chat.window .message.container:eq(0)').before(box);
-	//setTimeout(function(){ $('.message.container.new').removeClass('new'); });
-	$('#chatMessage').css({height:40}).val('');
-}
-function checkMessages(args) {
-	args = args || {}
-	var chatWindow = $('.chat.window');
-	var type = $('.ui.button.blue.super.small').attr('name');
-	var lastMessage = $('.message.list .message.container:last-child');
-	var scroll = args.scroll || false;
-	if(lastMessage.length > 0) {
-		if($('.message.list').scrollTop() > lastMessage.position().top+lastMessage.height()) {
-			scroll = true;
-		}
-	} else {
-		scroll = true;
-	}
-	$.getJSON(base + 'chat/' + type + cookies.url + '&since=' + chatWindow.attr('since')).done(function(data){
-		var lastAirline = 0;
-		_.each(data,function(message){
+$("#disconnect").click(function() {
+  socket.close()
+});
+function parseMessage(message) {
+	message = JSON.parse(message.data);
+	if(message.type === 'alliance') {
+		if(message.sender.id === airline.id) {
+			var own = ' self';
+		} else {
 			var own = '';
-			if(message.own) {
-				own = ' self';
-			}
-			lastAirline = $('.message.list .message.container:last-child').data('airline');
-			if(message.airline.id === lastAirline) {
-				var box = '<div class="message container continuation new' + own + '" data-airline="' + message.airline.id + '"><div class="message divider author">&nbsp;</div><div class="message content' + own + '">' + message.message + '</div></div>';
-			} else if(message.own) {
-				var box = '<div class="message container new' + own + '" data-airline="' + message.airline.id + '"><div class="message content' + own + '">' + message.message + '</div></div>';
-			} else {
-				var box = '<div class="message container new" data-airline="' + message.airline.id + '"><div class="message author">' + message.airline.name + '</div><div class="message airline"><div class="message content' + own + '">' + message.message + '</div></div>';
-			}
-			chatWindow.find('.message.list').append(box);
-		});
-		chatWindow.attr('since',Math.round(new Date().getTime()/1000));
-		if(data.length > 0) {
-			$('.message.container.new').removeClass('new');
-			if(scroll) {
-				setTimeout(function(){ $('.message.list').scrollTop(10000); }, 1000);
-			} else {
-				
-			}
 		}
-	});
+		if($('.chat.window[data-tab="alliance_chat"] .message.container').length > 0) {
+			var lastAirline = $('.chat.window[data-tab="alliance_chat"] .message.container').last().data('airline');
+		}
+		if(message.sender.id === lastAirline) {
+			var box = '<div class="message container continuation new' + own + '" data-airline="' + message.sender.id + '"><div class="message divider author">&nbsp;</div><div class="message content' + own + '">' + message.body + '</div></div>';
+		} else if(own === ' self') {
+			var box = '<div class="message container new' + own + '" data-airline="' + message.sender.id + '"><div class="message content' + own + '">' + message.body + '</div></div>';
+		} else {
+			var box = '<div class="message container new" data-airline="' + message.sender.id + '"><div class="message author">' + message.sender.name + '</div><div class="message airline"><div class="message content' + own + '">' + message.body + '</div></div>';
+		}
+		$('.chat.window[data-tab="alliance_chat"] .message.list').append(box);
+		$('.chat.window[data-tab="alliance_chat"] .message.list .new').removeClass('new');
+		$('.message.list').scrollTop(10000);
+	} else if(message.type === 'game') {
+		
+	} else if(message.type === 'conversation') {
+		
+	}
 }
