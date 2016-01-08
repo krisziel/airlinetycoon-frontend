@@ -78,7 +78,8 @@ function showFlight(flight) {
 function createFlightInfoView(flight) {
 	selectedFlight = flight;
 	var template = _.template($('#flightInfoTemplate').html(),flight.attributes);
-	$('.flight-info').html(template);
+	$('#routePanel').addClass('flight-open');
+	$('.flight-info').addClass('animating').html(template);
   $('#classMenu').on('click','a',function(){
     $(this).addClass('active').closest('.ui.menu').find('.item').not($(this)).removeClass('active');
     $(this).closest('.tab').find('div').addClass('open').not('[data-tab="' + $(this).data('tab') + '"]').removeClass('open');
@@ -120,6 +121,9 @@ function createFlightInfoView(flight) {
 	$('#cancelButton').on('click',function(){
 		cancelFlightView();
 	});
+	setTimeout(function(){
+		$('.flight-info').removeClass('animating');
+	},750);
 }
 function changeFlightAircraft(id) {
 	var newAircraft = userAircraftList.get(id);

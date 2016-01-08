@@ -371,7 +371,7 @@
 						<div class="value route"><%= route.origin.iata %>-<%= route.destination.iata %> <span>(<%= userAircraft.aircraft.name %> x <%= frequencies %>)</span></div>
 					  <div class="label">
 							<% if(load&&(load.average >= 0)&&profit) { %>
-					    	<%= load.average %>% Load Factor 
+					    	<%= load.average %>% Load Factor
 								<% if(profit > 0) { %>
 									(<text class="green">$<%= comma(profit) %> Profit</text>)
 								<% } else if(profit < 0) { %>
@@ -421,6 +421,137 @@
 			</div>
 		</script>
 		<script id="flightInfoTemplate" type="text/template">
+			<% userAircraft ? config = userAircraft.configuration.config : config = {} %>
+		  <div class="row-container">
+		    <div class="row flight flight-settings" data-rowtype="aircraft">
+		      <div class="ui selection dropdown" tabindex="0">
+		      	<% if(userAircraft) { %>
+			        <div class="text"><%= userAircraft.aircraft.full_name %> (<%= config.f.count + '/' + config.j.count + '/' + config.p.count + '/' + config.y.count %>)</div>
+			        <i class="dropdown icon"></i><input name="aircraft-id" id="aircraftInput" value="<%= userAircraft.id %>" type="hidden">
+			        <div class="menu" style="max-height: 300px;" tabindex="-1">
+			          <div class="item active selected" data-value="<%= userAircraft.id %>"><%= userAircraft.aircraft.full_name %> (<%= config.f.count + '/' + config.j.count + '/' + config.p.count + '/' + config.y.count %>)</div>
+		        <% } else { %>
+			        <div class="text">No Aircraft Selected</div>
+			        <i class="dropdown icon"></i><input name="aircraft-id" id="aircraftInput" value="" type="hidden">
+			        <div class="menu" style="max-height: 300px;" tabindex="-1">
+		        <% } %>
+							<% _.each(userAircraftList.models,function(aircraft){ %>
+								<% aircraft = aircraft.attributes %>
+								<% config = aircraft.configuration.config %>
+								<% if((aircraft.aircraft.range >= route.distance)&&(!aircraft.flight)) { %>
+									<div class="item" data-value="<%= aircraft.id  %>"><%= aircraft.aircraft.full_name %> (<%= config.f.count + '/' + config.j.count + '/' + config.p.count + '/' + config.y.count %>)</div>
+								<% } %>
+							<% }) %>
+		        </div
+		      </div>
+		    </div>
+		    <div class="row flight" data-rowtype="flight-length"><span class="label">Flight Length:</span> <span><%= comma(route.distance) %> Miles</span></div>
+		    <div class="row flight" data-rowtype="flight-duration"><span class="label">Flight Time:</span> <span><%= minutesToHours(duration) %></span></div>
+				<div class="row flight">
+				<% if(profit > 0) { %>
+					<span class="label">Weekly Profit:</span> <span class="green">$<%= comma(profit) %></span>
+				<% } else if(profit < 0) { %>
+					<span class="label">Weekly Loss:</span> <span class="red">$<%= comma(Math.abs(profit)) %></span>
+				<% } else { %>
+					<span class="label">Profit: Breakeven</span>
+				<% } %>
+				</div>
+		    <div class="row flight" data-rowtype="weekly-frequencies"><span class="label">Weekly Frequencies:</span> <span id="weeklyFrequencies"><%= frequencies %></span>
+		    	<% if(userAircraft) { %>
+		    		<input name="weeklyFrequencies" type="range" class="frequencies" min="1" max="<%= maxFlights(route, userAircraft.aircraft) %>" value="<%= frequencies %>">
+		    	<% } else { %>
+		    		<input name="weeklyFrequencies" type="range" class="frequencies" min="1" max="1" value="1">
+		    	<% } %>
+		    </div>
+		  </div>
+		  <div class="flight-settings">
+		  	<% if(userAircraft) { %>
+			    <div class="ui button small" id="cancelButton">Cancel Changes</div>
+			    <div class="ui positive button small" id="saveFlightButton">Save Changes</div>
+			    <div class="ui red button small" id="cancelFlightButton">Cancel Flight</div>
+		    <% } else { %>
+			    <div class="ui button" id="cancelButton">Cancel</div>
+			    <div class="ui positive button" id="launchFlightButton">Launch Flight</div>
+		    <% } %>
+			</div>
+      <table class="ui celled striped table" style="float: left;">
+        <thead>
+          <tr>
+            <th width="2">Routing</th>
+            <th width="1">F Pax/Fare</th>
+            <th width="1">J Pax/Fare</th>
+            <th width="1">PE Pax/Fare</th>
+            <th width="1">E Pax/Fare</th>
+          </tr>
+        </thead>
+        <tbody style="font-size: 12px;">
+          <tr>
+            <td class="collapsing">JFK-FRA-SIN-SYD</td>
+            <td class="aligned collapsing">200 ($8,392)</td>
+            <td class="aligned collapsing">2,000 ($3,392)</td>
+            <td class="aligned collapsing">2,000 ($1,392)</td>
+            <td class="aligned collapsing">22,000 ($992)</td>
+          </tr>
+          <tr>
+            <td class="collapsing">JFK-FRA-SIN-SYD</td>
+            <td class="aligned collapsing">200 ($8,392)</td>
+            <td class="aligned collapsing">2,000 ($3,392)</td>
+            <td class="aligned collapsing">2,000 ($1,392)</td>
+            <td class="aligned collapsing">22,000 ($992)</td>
+          </tr>
+          <tr>
+            <td class="collapsing">JFK-FRA-SIN-SYD</td>
+            <td class="aligned collapsing">200 ($8,392)</td>
+            <td class="aligned collapsing">2,000 ($3,392)</td>
+            <td class="aligned collapsing">2,000 ($1,392)</td>
+            <td class="aligned collapsing">22,000 ($992)</td>
+          </tr>
+          <tr>
+            <td class="collapsing">JFK-FRA-SIN-SYD</td>
+            <td class="aligned collapsing">200 ($8,392)</td>
+            <td class="aligned collapsing">2,000 ($3,392)</td>
+            <td class="aligned collapsing">2,000 ($1,392)</td>
+            <td class="aligned collapsing">22,000 ($992)</td>
+          </tr>
+          <tr>
+            <td class="collapsing">JFK-FRA-SIN-SYD</td>
+            <td class="aligned collapsing">200 ($8,392)</td>
+            <td class="aligned collapsing">2,000 ($3,392)</td>
+            <td class="aligned collapsing">2,000 ($1,392)</td>
+            <td class="aligned collapsing">22,000 ($992)</td>
+          </tr>
+          <tr>
+            <td class="collapsing">JFK-FRA-SIN-SYD</td>
+            <td class="aligned collapsing">200 ($8,392)</td>
+            <td class="aligned collapsing">2,000 ($3,392)</td>
+            <td class="aligned collapsing">2,000 ($1,392)</td>
+            <td class="aligned collapsing">22,000 ($992)</td>
+          </tr>
+          <tr>
+            <td class="collapsing">JFK-FRA-SIN-SYD</td>
+            <td class="aligned collapsing">200 ($8,392)</td>
+            <td class="aligned collapsing">2,000 ($3,392)</td>
+            <td class="aligned collapsing">2,000 ($1,392)</td>
+            <td class="aligned collapsing">22,000 ($992)</td>
+          </tr>
+          <tr>
+            <td class="collapsing">Total</td>
+            <td class="aligned collapsing">900 ($2,545K)</td>
+            <td class="aligned collapsing">2,000 ($3,232K)</td>
+            <td class="aligned collapsing">2,000 ($2,433K)</td>
+            <td class="aligned collapsing">20,000 ($20,000K)</td>
+          </tr>
+          <tr>
+            <td class="collapsing">Capacity</td>
+            <td class="aligned collapsing">1,000 (90%)</td>
+            <td class="aligned collapsing">2,000 (100%)</td>
+            <td class="aligned collapsing">2,000 (100%)</td>
+            <td class="aligned collapsing">22,000 (100%)</td>
+          </tr>
+        </tbody>
+      </table>
+		</script>
+		<script id="fareInfoTemplate" type="text/template">
 			<% userAircraft ? config = userAircraft.configuration.config : config = {} %>
 		  <div class="row-container">
 		    <div class="row flight" data-rowtype="aircraft">
@@ -482,7 +613,7 @@
 			    <div class="or"></div>
 			    <div class="ui positive button" id="launchFlightButton">Launch Flight</div>
 		    <% } %>
-			</div>	
+			</div>
 		</script>
 		<script id="routeModalTemplate" type="text/template">
 		  <div class="info">
@@ -497,11 +628,9 @@
 		    </div>
 		  </div>
 		  <div class="ui unordered steps flight-list vertical" id="route<%= id %>">
-				<div class="ui one bottom attached buttons create">
-		      <div class="ui button primary">
-		        <i class="add icon"></i>
-		        Create New Flight
-					</div>
+				<div class="ui two buttons bottom attached flat primary">
+          <div class="ui button active" data-content="Fares are pprices for routings between any two airports you serve">Fares</div>
+		      <div class="ui button" data-content="Flights provide service between two airports and are independent of prices">Flights</div>
 				</div>
 				<% _.each(flights.own,function(flight){ %>
 					<% flight = flightList.get(flight.id).attributes %>
@@ -511,7 +640,7 @@
 								<div class="value route"><%= flight.userAircraft.aircraft.name %> (<%= flight.frequencies %>/week)</div>
 							  <div class="label">
 									<% if(flight.load&&flight.load.average&&flight.profit) { %>
-							    	<%= flight.load.average %>% Load Factor 
+							    	<%= flight.load.average %>% Load Factor
 										<% if(flight.profit > 0) { %>
 											(<text class="green">$<%= comma(flight.profit) %> Profit</text>)
 										<% } else if(flight.profit < 0) { %>
@@ -570,14 +699,31 @@
 				</div>
 			</div>
 		</script>
-		<script id="moreColumnTemplate" type="text/tamplate">
+		<script id="moreColumnTemplate" type="text/template">
 			<div class="ui one bottom attached buttons create">
 	      <div class="ui button primary logout">
 	      	Log out
 				</div>
 			</div>
 		</script>
+    <script id="fareRouteListTemplate" type="text/template">
+      <table class="ui celled striped table">
+        <thead>
+          <tr>
+            <th>Routing</th>
+            <th>Passengers (F/J/P/Y)</th>
+          </tr>
+        </thead>
+        <tbody style="font-size: 12px;">
+          <tr>
+            <td class="collapsing">DEN-SFO-SFO-SFO</td>
+            <td class="right aligned collapsing">200/2,000/2,000/22,000</td>
+          </tr>
+        </tbody>
+      </table>
+    </script>
 		<div id="leftColumn">
+
 		</div>
     <div class="shaded grid game-window">
 			<div class="column" id="gameList"></div>
@@ -633,8 +779,8 @@
 			<div class="line" style="height: 330px;"></div>
 			<div class="flight-info"></div>
 		</div>
-    <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/arc.js/v0.1.0/arc.js'></script>
-    <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
+    <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/arc.js/v0.1.0/arc.js"></script>
+    <script src="https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js"></script>
     <script src="js/json2.js"></script>
     <script src="js/jquery.js"></script>
     <script src="js/underscore.js"></script>
