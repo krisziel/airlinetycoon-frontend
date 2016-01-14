@@ -27,8 +27,16 @@
 #routePanel {
 	top: 50%;
 	left: 50%;
-	margin-left: -300px;
+	margin-left: -150px;
 	margin-top: -200px;
+}
+#routePanel.flight-open {
+	margin-left: -450px !important;
+	width: 901px !important;
+}
+#routePanel.flight-open > .flight-info.animating {
+	position: absolute;
+	left: 299px;
 }
 .route-panel {
   z-index: 1009;
@@ -59,8 +67,8 @@
   top: 3px;
 }
 .route-panel.open {
-  width: 601px !important;
-  margin-left: -300px !important;
+  width: 301px !important;
+  margin-left: -150px !important;
 }
 .route-panel.open .step {
   -webkit-border-top-right-radius: 0 !important;
@@ -130,7 +138,7 @@
 }
 .route-panel .flight-info {
   height: 100%;
-  width: 300px;
+  width: 600px;
   float: left;
   z-index: 8;
   position: relative;
@@ -204,4 +212,20 @@
 }
 #saveFlightButton {
   width: 71px;
+}
+.flat.ui.buttons {
+	border-radius: 0 !important;
+}
+.flat.ui.buttons > .button {
+	border-radius: 0 !important;
+}
+.flight-settings {
+	width: 50%;
+	float: left;
+}
+.flight-settings > .button {
+	width: 50% !important;
+	margin: 2px auto !important;
+	padding-top: 9px !important;
+	padding-bottom: 9px !important;
 }

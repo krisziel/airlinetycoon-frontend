@@ -83,3 +83,39 @@ span {
 .leaflet-popup-content .airport-option.selected {
 	color: #009fda;
 }
+
+.airport-panel {
+  z-index: 1009;
+  position: absolute !important;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+	width: 900px;
+	height: 600px;
+	left: 50%;
+	top: 50%;
+	margin: -300px 0 0 -450px;
+}
+.airport-panel .airport-metrics {
+	width: 299px;
+	height: auto;
+	float: left;
+}
+.airport-metrics .metric-list {
+	width: 100%;
+  border-radius: none !important;
+}
+.airport-metrics .metric-list * {
+	text-align: left;
+}
+.airport-panel .line {
+	height: 100%;
+	width: 1px;
+	background-color: #eeeeee;
+	float: left;
+}

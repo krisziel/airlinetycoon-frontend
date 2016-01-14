@@ -54,6 +54,9 @@ function addAirportMarkers(airports) {
   airportLayer.markers.on('click', function(e) {
   	selectAirportMarker(e);
   });
+	$('#map').on('click','*[data-airportid]',function(e){
+		loadAirport($(this).data('airportid'));
+	})
 }
 function createAirportMarker(args) {
   var json = {

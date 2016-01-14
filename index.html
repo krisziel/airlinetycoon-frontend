@@ -287,6 +287,7 @@
 							<% }) %>
 						</div>
 					</div>
+          <!-- ' -->
 				<% } else { %>
 					<input type="hidden" name="configuration_id" id="configurationId" value="">
 					<% } %>
@@ -342,6 +343,66 @@
 			  </div>
 			</div>
 		</script>
+		<script id="airportInfoModalTemplate" type="text/template">
+			<div class="airport-panel shaded grid" id="airportPanel">
+			  <div class="airport-metrics">
+          <div class="content airport">
+  					<div class="ui horizontal statistics mini airport">
+  					  <div class="ui statistic">
+  							<div class="value">
+								  HKG
+								</div>
+							</div>
+						</div>
+						<div class="airport data">
+							<span>Hong Kong International Airport<br>
+							Hong Kong, Hong Kong</span>
+						</div>
+					</div>
+			    <div class="ui unordered steps metric-list vertical">
+            <a class="step active" id="1" data-aircraftid="1">
+              <div class="content">
+                <div class="ui mini horizontal statistic">
+                  <div class="value">
+                    22
+                  </div>
+                  <div class="label">
+                    AIRLINES
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a class="step" id="1" data-aircraftid="1">
+              <div class="content">
+                <div class="ui mini horizontal statistic">
+                  <div class="value">
+                    82
+                  </div>
+                  <div class="label">
+                    DESTINATIONS
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a class="step" id="1" data-aircraftid="1">
+              <div class="content">
+                <div class="ui mini horizontal statistic">
+                  <div class="value">
+                    315
+                  </div>
+                  <div class="label">
+                    DAILY FLIGHTS
+                  </div>
+                </div>
+              </div>
+            </a>
+			    </div>
+			  </div>
+			  <div class="line" style="float:right;"></div>
+			  <div class="metric-info">
+			  </div>
+			</div>
+		</script>
 		<script id="airportPopupTemplate" type="text/template">
 			<% if(selectedAirport.origin.iata === iata){ %>
 				<div class="star selected airport-option" id="star<%= id %>" data-id="<%= id %>"><i class="icon star selected"></i> unset origin</div>
@@ -350,7 +411,7 @@
 			<% } else { %>
 				<div class="star airport-option" id="star<%= id %>" data-id="<%= id %>"><i class="icon star"></i> set origin</div>
 			<% } %>
-			<div class="content airport">
+			<div class="content airport" data-airportid="<%= id %>">
 				<div class="ui horizontal statistics mini airport">
 				  <div class="ui statistic">
 						<div class="value">
@@ -371,7 +432,7 @@
 						<div class="value route"><%= route.origin.iata %>-<%= route.destination.iata %> <span>(<%= userAircraft.aircraft.name %> x <%= frequencies %>)</span></div>
 					  <div class="label">
 							<% if(load&&(load.average >= 0)&&profit) { %>
-					    	<%= load.average %>% Load Factor 
+					    	<%= load.average %>% Load Factor
 								<% if(profit > 0) { %>
 									(<text class="green">$<%= comma(profit) %> Profit</text>)
 								<% } else if(profit < 0) { %>
@@ -482,7 +543,7 @@
 			    <div class="or"></div>
 			    <div class="ui positive button" id="launchFlightButton">Launch Flight</div>
 		    <% } %>
-			</div>	
+			</div>
 		</script>
 		<script id="routeModalTemplate" type="text/template">
 		  <div class="info">
@@ -511,7 +572,7 @@
 								<div class="value route"><%= flight.userAircraft.aircraft.name %> (<%= flight.frequencies %>/week)</div>
 							  <div class="label">
 									<% if(flight.load&&flight.load.average&&flight.profit) { %>
-							    	<%= flight.load.average %>% Load Factor 
+							    	<%= flight.load.average %>% Load Factor
 										<% if(flight.profit > 0) { %>
 											(<text class="green">$<%= comma(flight.profit) %> Profit</text>)
 										<% } else if(flight.profit < 0) { %>

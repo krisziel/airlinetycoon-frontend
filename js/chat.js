@@ -50,8 +50,12 @@ function parseMessage(message) {
 		$('.chat.window[data-tab="alliance_chat"] .message.list .new').removeClass('new');
 		$('.message.list').scrollTop(10000);
 	} else if(message.type === 'game') {
-		
+
 	} else if(message.type === 'conversation') {
-		
+
 	}
+}
+
+function closeChat() {
+	
 }

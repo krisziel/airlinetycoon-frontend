@@ -83,6 +83,9 @@ function loadAirports(){
 		loadFlights();
 	});
 }
-function loadAirport(e) {
-	console.log(e);
+function loadAirport(id) {
+  var airportData = airportList.get(id)
+  var template = _.template($('#airportInfoModalTemplate').html(), airportData);
+  $('body').append(template);
+	$('#airportPanel').modal('show');
 }
