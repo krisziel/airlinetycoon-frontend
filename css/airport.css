@@ -102,7 +102,7 @@ span {
 	margin: -300px 0 0 -450px;
 }
 .airport-panel .airport-metrics {
-	width: 299px;
+	width: 297px;
 	height: auto;
 	float: left;
 }
@@ -118,4 +118,17 @@ span {
 	width: 1px;
 	background-color: #eeeeee;
 	float: left;
+}
+.airport-panel .metric-info {
+	width: 600px;
+	height: 100%;
+	float: right;
+	padding: 5px;
+}
+.metric-info .quarter {
+	margin: 5px;
+	height: 285px;
+	width: 285px;
+	float: right;
+	background: #ff0000;
 }
