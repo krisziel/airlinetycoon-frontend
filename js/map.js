@@ -96,9 +96,10 @@ function selectAirportMarker(e) {
 	airportLayer.markers.setGeoJSON(airportLayer.json);
 }
 function popupAction(e) {
+	a = e
 	var el = $(e.currentTarget);
 	var id = el.data('id');
-	var marker = airportLayer.json.get('id',id)[0];
+	var marker = airportLayer.json.get('id', id)[0];
 	if((el.hasClass('star'))&&(el.hasClass('selected'))) {
 		unlockAirportMarker(marker);
 	} else if(el.hasClass('star')) {
