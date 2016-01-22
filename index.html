@@ -350,21 +350,21 @@
   					<div class="ui horizontal statistics mini airport">
   					  <div class="ui statistic">
   							<div class="value">
-								  HKG
+								  <%= iata %>
 								</div>
 							</div>
 						</div>
 						<div class="airport data">
-							<span>Hong Kong International Airport<br>
-							Hong Kong, Hong Kong</span>
+							<span><%= name %><br>
+							<%= city %>, <%= country %></span>
 						</div>
 					</div>
 			    <div class="ui unordered steps metric-list vertical">
-            <a class="step active" id="1" data-aircraftid="1">
+            <a class="step active">
               <div class="content">
                 <div class="ui mini horizontal statistic">
                   <div class="value">
-                    22
+                    <%= marketShares.airport.airlines %>
                   </div>
                   <div class="label">
                     AIRLINES
@@ -372,11 +372,11 @@
                 </div>
               </div>
             </a>
-            <a class="step" id="1" data-aircraftid="1">
+            <a class="step">
               <div class="content">
                 <div class="ui mini horizontal statistic">
                   <div class="value">
-                    82
+                    <%= marketShares.airport.destinations %>
                   </div>
                   <div class="label">
                     DESTINATIONS
@@ -384,14 +384,14 @@
                 </div>
               </div>
             </a>
-            <a class="step" id="1" data-aircraftid="1">
+            <a class="step">
               <div class="content">
                 <div class="ui mini horizontal statistic">
                   <div class="value">
-                    315
+                    <%= marketShares.airport.flights %>
                   </div>
                   <div class="label">
-                    DAILY FLIGHTS
+                    WEEKLY FLIGHTS
                   </div>
                 </div>
               </div>
@@ -400,10 +400,10 @@
 			  </div>
 			  <div class="line" style="float:right;"></div>
 			  <div class="metric-info">
-          <canvas class="quarter" id="chart"></canvas>
-          <div class="quarter"></div>
-          <div class="quarter"></div>
-          <div class="quarter"></div>
+          <canvas class="quarter" id="chart1"></canvas>
+          <canvas class="quarter" id="chart2"></canvas>
+          <canvas class="quarter" id="chart3"></canvas>
+          <canvas class="quarter" id="chart4"></canvas>
 			  </div>
 			</div>
 		</script>
