@@ -367,7 +367,7 @@
                     <%= marketShares.airport.airlines %>
                   </div>
                   <div class="label">
-                    AIRLINES
+                    AIRLINE<%= marketShares.airport.airlines == 1 ? "" : "S" %>
                   </div>
                 </div>
               </div>
@@ -379,7 +379,7 @@
                     <%= marketShares.airport.destinations %>
                   </div>
                   <div class="label">
-                    DESTINATIONS
+                    DESTINATION<%= marketShares.airport.destinations == 1 ? "" : "S" %>
                   </div>
                 </div>
               </div>
@@ -391,7 +391,7 @@
                     <%= marketShares.airport.flights %>
                   </div>
                   <div class="label">
-                    WEEKLY FLIGHTS
+                    WEEKLY FLIGHT<%= marketShares.airport.flights == 1 ? "" : "S" %>
                   </div>
                 </div>
               </div>
