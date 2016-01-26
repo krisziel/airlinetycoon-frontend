@@ -88,6 +88,7 @@ function loadAirport(id) {
     var template = _.template($('#airportInfoModalTemplate').html(), data);
     $('body').append(template);
   	$('#airportPanel').modal('show');
+    loadAirportDestinations(data.marketShares.airlines);
 	});
 }
 function loadAirportAirlines() {
@@ -114,30 +115,31 @@ function loadAirportAirlines() {
   ]
   var myPieChart = new Chart(ctx).Pie(data,{});
 }
-function loadAirportDestinations() {
+function loadAirportDestinations(airlines) {
+  var airlineNames = [];
+  var destinationCount = [];
+  airlines.sort(function(a, b) {
+    return a.destinations - b.destinations;
+  }).reverse();
+  _.each(airlines, function(airline) {
+    airlineNames.push(airline.airline.icao);
+    destinationCount.push(airline.destinations);
+  })
   var ctx = $("#chart2").get(0).getContext("2d");
   var data = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: airlineNames,
     datasets: [
-        {
-            label: "My First dataset",
-            fillColor: "rgba(220,220,220,0.5)",
-            strokeColor: "rgba(220,220,220,0.8)",
-            highlightFill: "rgba(220,220,220,0.75)",
-            highlightStroke: "rgba(220,220,220,1)",
-            data: [65, 59, 80, 81, 56, 55, 40]
-        },
-        {
-            label: "My Second dataset",
-            fillColor: "rgba(151,187,205,0.5)",
-            strokeColor: "rgba(151,187,205,0.8)",
-            highlightFill: "rgba(151,187,205,0.75)",
-            highlightStroke: "rgba(151,187,205,1)",
-            data: [28, 48, 40, 19, 86, 27, 90]
-        }
+      {
+          label: "Destination Count By Airline",
+          fillColor: "rgba(33, 133, 208,0.5)",
+          strokeColor: "rgba(33, 133, 208,0.8)",
+          highlightFill: "rgba(33, 133, 208,0.75)",
+          highlightStroke: "rgba(33, 133, 208,1)",
+          data: destinationCount
+      }
     ]
   };
-  var myBarChart = new Chart(ctx).Bar(data, {});
+  var destinationChart = new Chart(ctx).Bar(data, {});
 }
 function loadAirportFlights() {
 
