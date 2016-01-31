@@ -88,7 +88,46 @@ function loadAirport(id) {
     var template = _.template($('#airportInfoModalTemplate').html(), data);
     $('body').append(template);
   	$('#airportPanel').modal('show');
-    loadAirportDestinations(data.marketShares.airlines);
+    var colors = [
+      {
+        color:"#F7464A",
+        highlight: "#FF5A5E"
+      },
+      {
+        color: "#46BFBD",
+        highlight: "#5AD3D1"
+      },
+      {
+        color: "#FDB45C",
+        highlight: "#FFC870"
+      },
+      {
+        color:"#F7464A",
+        highlight: "#FF5A5E"
+      },
+      {
+        color: "#46BFBD",
+        highlight: "#5AD3D1"
+      },
+      {
+        color: "#FDB45C",
+        highlight: "#FFC870"
+      },
+      {
+        color:"#F7464A",
+        highlight: "#FF5A5E"
+      },
+      {
+        color: "#46BFBD",
+        highlight: "#5AD3D1"
+      },
+      {
+        color: "#FDB45C",
+        highlight: "#FFC870"
+      }
+    ]
+    graphAirportDestinations(data.marketShares.airlines);
+    graphAirportFlights(data.marketShares, colors)
 	});
 }
 function loadAirportAirlines() {
@@ -115,7 +154,7 @@ function loadAirportAirlines() {
   ]
   var myPieChart = new Chart(ctx).Pie(data,{});
 }
-function loadAirportDestinations(airlines) {
+function graphAirportDestinations(airlines, colors) {
   var airlineNames = [];
   var destinationCount = [];
   airlines.sort(function(a, b) {
@@ -124,8 +163,7 @@ function loadAirportDestinations(airlines) {
   _.each(airlines, function(airline) {
     airlineNames.push(airline.airline.icao);
     destinationCount.push(airline.destinations);
-  })
-  var ctx = $("#chart2").get(0).getContext("2d");
+  });
   var data = {
     labels: airlineNames,
     datasets: [
@@ -139,8 +177,72 @@ function loadAirportDestinations(airlines) {
       }
     ]
   };
+  var ctx = $("#chart1").get(0).getContext("2d");
   var destinationChart = new Chart(ctx).Bar(data, {});
 }
-function loadAirportFlights() {
-
+function graphAirportFlights(airport, colors) {
+  var totalFlights = airport.airport.flights;
+  var remainingFlights = totalFlights;
+  var airlines = airport.airlines;
+  airlines.sort(function(a, b) {
+    return a.flights - b.flights;
+  }).reverse();
+  var data = []
+  var i = 0;
+  _.each(airlines, function(airline) {
+    if(airline.flights > (totalFlights/8)) {
+      var airlineData = {
+        value: airline.flights,
+        label: airline.airline.icao,
+        highlight: graphColors[i].highlight,
+        color: graphColors[i].color
+      };
+      data.push(airlineData);
+      i++;
+      remainingFlights -= airline.flights;
+    }
+  });
+  if(remainingFlights > 0) {
+    var airlineData = {
+      value: remaingingFlights,
+      label: "Other",
+      highlight: graphColors[i].highlight,
+      color: graphColors[i].color
+    };
+  }
+  var ctx = $("#chart2").get(0).getContext("2d");
+  var myPieChart = new Chart(ctx).Pie(data,{});
+}
+function graphAirportPassengers(airport, colors) {
+  var totalPassengers = airport.airport.passengers;
+  var remaningPassengers = totalPassengers;
+  var airlines = airport.airlines;
+  airlines.sort(function(a, b) {
+    return a.passengers - b.passengers;
+  }).reverse();
+  var data = []
+  var i = 0;
+  _.each(airlines, function(airline) {
+    if(airline.passengers > (totalPassengers/8)) {
+      var airlineData = {
+        value: airline.passengers,
+        label: airline.airline.icao,
+        highlight: graphColors[i].highlight,
+        color: graphColors[i].color
+      };
+      data.push(airlineData);
+      i++;
+      remaningPassengers -= airline.passengers;
+    }
+  });
+  if(remainingFlights > 0) {
+    var airlineData = {
+      value: remaingingPassengers,
+      label: "Other",
+      highlight: graphColors[i].highlight,
+      color: graphColors[i].color
+    };
+  }
+  var ctx = $("#chart3").get(0).getContext("2d");
+  var myPieChart = new Chart(ctx).Pie(data,{});
 }
