@@ -124,10 +124,43 @@ function loadAirport(id) {
       {
         color: "#FDB45C",
         highlight: "#FFC870"
+      },
+      {
+        color: "#46BFBD",
+        highlight: "#5AD3D1"
+      },
+      {
+        color: "#FDB45C",
+        highlight: "#FFC870"
+      },
+      {
+        color:"#F7464A",
+        highlight: "#FF5A5E"
+      },
+      {
+        color: "#46BFBD",
+        highlight: "#5AD3D1"
+      },
+      {
+        color: "#FDB45C",
+        highlight: "#FFC870"
+      },
+      {
+        color:"#F7464A",
+        highlight: "#FF5A5E"
+      },
+      {
+        color: "#46BFBD",
+        highlight: "#5AD3D1"
+      },
+      {
+        color: "#FDB45C",
+        highlight: "#FFC870"
       }
     ]
     graphAirportDestinations(data.marketShares.airlines);
-    graphAirportFlights(data.marketShares, colors)
+    graphAirportFlights(data.marketShares, colors);
+    graphAirportPassengers(data.marketShares, colors);
 	});
 }
 function loadAirportAirlines() {
@@ -154,7 +187,7 @@ function loadAirportAirlines() {
   ]
   var myPieChart = new Chart(ctx).Pie(data,{});
 }
-function graphAirportDestinations(airlines, colors) {
+function graphAirportDestinations(airlines, graphColors) {
   var airlineNames = [];
   var destinationCount = [];
   airlines.sort(function(a, b) {
@@ -180,7 +213,7 @@ function graphAirportDestinations(airlines, colors) {
   var ctx = $("#chart1").get(0).getContext("2d");
   var destinationChart = new Chart(ctx).Bar(data, {});
 }
-function graphAirportFlights(airport, colors) {
+function graphAirportFlights(airport, graphColors) {
   var totalFlights = airport.airport.flights;
   var remainingFlights = totalFlights;
   var airlines = airport.airlines;
@@ -190,7 +223,7 @@ function graphAirportFlights(airport, colors) {
   var data = []
   var i = 0;
   _.each(airlines, function(airline) {
-    if(airline.flights > (totalFlights/8)) {
+    if(i <= 10) {
       var airlineData = {
         value: airline.flights,
         label: airline.airline.icao,
@@ -204,18 +237,19 @@ function graphAirportFlights(airport, colors) {
   });
   if(remainingFlights > 0) {
     var airlineData = {
-      value: remaingingFlights,
+      value: remainingFlights,
       label: "Other",
       highlight: graphColors[i].highlight,
       color: graphColors[i].color
     };
+    data.push(airlineData);
   }
   var ctx = $("#chart2").get(0).getContext("2d");
   var myPieChart = new Chart(ctx).Pie(data,{});
 }
-function graphAirportPassengers(airport, colors) {
+function graphAirportPassengers(airport, graphColors) {
   var totalPassengers = airport.airport.passengers;
-  var remaningPassengers = totalPassengers;
+  var remainingPassengers = totalPassengers;
   var airlines = airport.airlines;
   airlines.sort(function(a, b) {
     return a.passengers - b.passengers;
@@ -223,7 +257,7 @@ function graphAirportPassengers(airport, colors) {
   var data = []
   var i = 0;
   _.each(airlines, function(airline) {
-    if(airline.passengers > (totalPassengers/8)) {
+    if(i <= 10) {
       var airlineData = {
         value: airline.passengers,
         label: airline.airline.icao,
@@ -232,16 +266,17 @@ function graphAirportPassengers(airport, colors) {
       };
       data.push(airlineData);
       i++;
-      remaningPassengers -= airline.passengers;
+      remainingPassengers -= airline.passengers;
     }
   });
-  if(remainingFlights > 0) {
+  if(remainingPassengers > 0) {
     var airlineData = {
-      value: remaingingPassengers,
+      value: remainingPassengers,
       label: "Other",
       highlight: graphColors[i].highlight,
       color: graphColors[i].color
     };
+    data.push(airlineData);
   }
   var ctx = $("#chart3").get(0).getContext("2d");
   var myPieChart = new Chart(ctx).Pie(data,{});
