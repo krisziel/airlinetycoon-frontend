@@ -360,7 +360,7 @@
 						</div>
 					</div>
 			    <div class="ui unordered steps metric-list vertical">
-            <a class="step active">
+            <a class="step">
               <div class="content">
                 <div class="ui mini horizontal statistic">
                   <div class="value">
@@ -388,7 +388,7 @@
               <div class="content">
                 <div class="ui mini horizontal statistic">
                   <div class="value">
-                    <%= marketShares.airport.flights %>
+                    <%= comma(marketShares.airport.flights) %>
                   </div>
                   <div class="label">
                     WEEKLY FLIGHT<%= marketShares.airport.flights == 1 ? "" : "S" %>
@@ -398,12 +398,39 @@
             </a>
 			    </div>
 			  </div>
-			  <div class="line" style="float:right;"></div>
-			  <div class="metric-info">
-          <canvas class="quarter" id="chart1"></canvas>
-          <canvas class="quarter" id="chart2"></canvas>
-          <canvas class="quarter" id="chart3"></canvas>
-          <canvas class="quarter" id="chart4"></canvas>
+			  <div class="metric-info" style="height: 100%; overflow: auto;">
+          <table class="ui sortable celled table" id="airlineMarketShareTable">
+            <thead>
+              <tr>
+                <th>Airline</th>
+                <th class="default-sort descending">Flights</th>
+                <th>Passengers</th>
+                <th>Destinations</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% _.each(marketShares.airlines,function(airline){ %>
+                <tr>
+                  <td><%= airline.airline.name %></td>
+                  <td data-sort-value="<%= airline.flights %>"><%= comma(airline.flights) %> (<%= Math.round((airline.flights/marketShares.airport.flights)*1000)/10 %>%)</td>
+                  <td data-sort-value="<%= airline.passengers %>"><%= comma(airline.passengers) %> (<%= Math.round((airline.passengers/marketShares.airport.passengers)*1000)/10 %>%)</td>
+                  <td data-sort-value="<%= airline.destinations %>"><%= comma(airline.destinations) %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>Total</th>
+                <th><%= comma(marketShares.airport.flights) %></th>
+                <th><%= comma(marketShares.airport.passengers) %></th>
+                <th><%= comma(marketShares.airport.destinations) %></th>
+              </tr>
+            </tfoot>
+          </table>
+          <canvas class="quarter" id="chart1" style="display:none"></canvas>
+          <canvas class="quarter" id="chart2" style="display:none"></canvas>
+          <canvas class="quarter" id="chart3" style="display:none"></canvas>
+          <canvas class="quarter" id="chart4" style="display:none"></canvas>
 			  </div>
 			</div>
 		</script>
@@ -706,6 +733,7 @@
     <script src="js/q.js"></script>
     <script src="js/backbone.js"></script>
     <script src="js/backbone.localStorage.js"></script>
+    <script src="js/jquery.tablesort.js"></script>
     <script src="js/airline.js"></script>
     <script src="js/airport.js"></script>
     <script src="js/aircraft.js"></script>
