@@ -1,32 +1,32 @@
 var socket, host;
 function connect() {
-	host = 'ws://52.11.179.216:3001' + cookies.url;
-  try {
-    socket = new WebSocket(host);
-    socket.onopen = function() {
-    }
-    socket.onclose = function() {
-    }
-    socket.onmessage = function(msg) {
-		parseMessage(msg);
-    }
-  } catch(exception) {
-    addMessage("Error: " + exception);
-  }
+	host = 'ws://localhost:3001' + cookies.url;
+	try {
+		socket = new WebSocket(host);
+		socket.onopen = function() {
+		}
+		socket.onclose = function() {
+		}
+		socket.onmessage = function(msg) {
+			parseMessage(msg);
+		}
+	} catch(exception) {
+		addMessage("Error: " + exception);
+	}
 }
 function sendChatMessage() {
 	var text = $('#chatMessage').val().replace(/(\r\n|\n|\r)/gm,"  ");
-  if (text === '') {
-    return;
-  }
-  try {
-	var message = '{"type_id":"' + alliance.get('id') + '","message_type":"alliance","body":"' + text + '"}';
-    socket.send(message + 'lIlIlIIlIlIl' + cookies.url);
-  } catch(exception) {
-  }
+	if (text === '') {
+		return;
+	}
+	try {
+		var message = '{"type_id":"' + alliance.get('id') + '","message_type":"alliance","body":"' + text + '"}';
+		socket.send(message + 'lIlIlIIlIlIl' + cookies.url);
+	} catch(exception) {
+	}
 }
 $("#disconnect").click(function() {
-  socket.close()
+	socket.close()
 });
 function parseMessage(message) {
 	message = JSON.parse(message.data);
@@ -57,5 +57,5 @@ function parseMessage(message) {
 }
 
 function closeChat() {
-	
+
 }
