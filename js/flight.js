@@ -78,7 +78,8 @@ function showFlight(flight) {
 function createFlightInfoView(flight) {
 	selectedFlight = flight;
 	var template = _.template($('#flightInfoTemplate').html(),flight.attributes);
-	$('.flight-info').html(template);
+	$(".flight-info#marketShares").css({display:'none'});
+	$('.flight-info#flightInfo').css({display:'block'}).html(template);
   $('#classMenu').on('click','a',function(){
     $(this).addClass('active').closest('.ui.menu').find('.item').not($(this)).removeClass('active');
     $(this).closest('.tab').find('div').addClass('open').not('[data-tab="' + $(this).data('tab') + '"]').removeClass('open');

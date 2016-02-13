@@ -420,17 +420,17 @@
             </tbody>
             <tfoot>
               <tr>
-                <th>Total</th>
-                <th><%= comma(marketShares.airport.flights) %></th>
-                <th><%= comma(marketShares.airport.passengers) %></th>
-                <th><%= comma(marketShares.airport.destinations) %></th>
+                <% if(marketShares.airport.flights > 0) { %>
+                  <th>Total</th>
+                  <th><%= comma(marketShares.airport.flights) %></th>
+                  <th><%= comma(marketShares.airport.passengers) %></th>
+                  <th><%= comma(marketShares.airport.destinations) %></th>
+                <% } else { %>
+                  <th>No airline current serve <%= airport.iata %></th>
+                <% } %>
               </tr>
             </tfoot>
           </table>
-          <canvas class="quarter" id="chart1" style="display:none"></canvas>
-          <canvas class="quarter" id="chart2" style="display:none"></canvas>
-          <canvas class="quarter" id="chart3" style="display:none"></canvas>
-          <canvas class="quarter" id="chart4" style="display:none"></canvas>
 			  </div>
 			</div>
 		</script>
@@ -639,7 +639,7 @@
     			</div>
   			</div>
   			<div class="line"></div>
-        <div class="route-market-shares">
+        <div class="route-market-shares" style="display: none;">
           <div class="market-share">
             <h4 class="label">Capacity by Airline</h4>
             <canvas id="routeCapacity"></canvas>
@@ -649,7 +649,10 @@
             <canvas id="routePassengers"></canvas>
           </div>
         </div>
-  			<div class="flight-info"></div>
+  			<div class="flight-info" id="marketShares">
+  			</div>
+  			<div class="flight-info" id="flightInfo" style="display: none;">
+  			</div>
   		</div>
 		</script>
 		<script id="routeFlightTemplate" type="text/template">
@@ -676,6 +679,28 @@
 				</div>
 			</div>
 		</script>
+    <script type="text/template" id ="routeMarketShareTemplate">
+      <table class="ui sortable celled table" id="routeMarketShareTable">
+        <thead>
+          <tr>
+            <th>Airline</th>
+            <th class="default-sort">Flights</th>
+            <th>Capacity</th>
+            <th>Passengers</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% _.each(marketShares,function(airline){ %>
+            <tr>
+              <td><%= airline.airline.name %></td>
+              <td data-sort-value="<%= airline.flights %>"><%= comma(airline.flights) %></td>
+              <td data-sort-value="<%= airline.capacity %>"><%= comma(airline.capacity) %></td>
+              <td data-sort-value="<%= airline.passengers %>"><%= comma(airline.passengers) %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </script>
 		<script id="moreColumnTemplate" type="text/tamplate">
 			<div class="ui one bottom attached buttons create">
 	      <div class="ui button primary logout">

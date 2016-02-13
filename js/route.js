@@ -49,6 +49,11 @@ var RouteView = Backbone.View.extend({
 		$('#routePanel').remove();
 		$('body').append(template);
 		$('#routePanel').modal('show');
+		drawRouteMarketShare(variables.marketShares);
+		$('.route-info').on('click','.info',function(){
+			$(".flight-info#marketShares").css({display:'block'});
+			$('.flight-info#flightInfo').css({display:'none'});
+		});
 		return true;
   },
   events:{
@@ -64,9 +69,20 @@ var RouteFlightView = Backbone.View.extend({
     var template = _.template($('#routeModalTemplate').html(),variables);
   }
 });
+function drawRouteMarketShare(marketShares) {
+	var template = _.template($('#routeMarketShareTemplate').html(),{marketShares: marketShares});
+	$(".flight-info#marketShares").html(template);
+	$('table#routeMarketShareTable').tablesort().data('tablesort').sort($("th.default-sort"));
+}
 function graphRouteShares(route) {
+	console.log(route);
 	var graphColors = [{color:"#058DC7",highlight: "#FF5A5E"},{color: "#50B432",highlight: "#5AD3D1"},{color: "#ED561B",highlight: "#FFC870"},{color:"#DDDF00",highlight: "#FF5A5E"},{color: "#24CBE5",highlight: "#5AD3D1"},{color: "#64E572",highlight: "#FFC870"},{color:"#FF9655",highlight: "#FF5A5E"},{color: "#FFF263",highlight: "#5AD3D1"},{color: "#6AF9C4",highlight: "#FFC870"},{color: "#46BFBD",highlight: "#5AD3D1"},{color: "#FDB45C",highlight: "#FFC870"},{color:"#F7464A",highlight: "#FF5A5E"},{color: "#46BFBD",highlight: "#5AD3D1"},{color: "#FDB45C",highlight: "#FFC870"},{color:"#F7464A",highlight: "#FF5A5E"},{color: "#46BFBD",highlight: "#5AD3D1"},{color: "#FDB45C",highlight: "#FFC870"}];
 	var airlines = route.marketShares;
+	if(airlines.length > 0) {
+		$('.route-market-shares').css({display:'block'});
+	} else {
+		$('.route-market-shares').css({display:'block'}).html('<h2 class="ui header">No airlines serve this route</h2>');
+	}
   var totalCapacity = 0;
   var totalPassengers = 0;
   airlines.sort(function(a, b) {

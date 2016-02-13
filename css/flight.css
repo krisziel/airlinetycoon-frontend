@@ -135,6 +135,8 @@
   z-index: 8;
   position: relative;
   background: #ffffff;
+	overflow: auto;
+	padding: 0 5px;
 }
 .route-panel .flight-info .empty {
   min-height: 112px;
@@ -225,9 +227,9 @@
 	float: left;
 }
 .flight-buttons {
-	width: 39%;
+	width: 40%;
 	float: left;
-	padding-left: 15%;
+	padding-left: 10%;
 	height: 110px;
 }
 .flight-buttons .button {
