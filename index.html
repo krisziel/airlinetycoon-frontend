@@ -371,7 +371,7 @@
 						<div class="value route"><%= route.origin.iata %>-<%= route.destination.iata %> <span>(<%= userAircraft.aircraft.name %> x <%= frequencies %>)</span></div>
 					  <div class="label">
 							<% if(load&&(load.average >= 0)&&profit) { %>
-					    	<%= load.average %>% Load Factor 
+					    	<%= load.average %>% Load Factor
 								<% if(profit > 0) { %>
 									(<text class="green">$<%= comma(profit) %> Profit</text>)
 								<% } else if(profit < 0) { %>
@@ -482,7 +482,7 @@
 			    <div class="or"></div>
 			    <div class="ui positive button" id="launchFlightButton">Launch Flight</div>
 		    <% } %>
-			</div>	
+			</div>
 		</script>
 		<script id="routeModalTemplate" type="text/template">
 		  <div class="info">
@@ -511,7 +511,7 @@
 								<div class="value route"><%= flight.userAircraft.aircraft.name %> (<%= flight.frequencies %>/week)</div>
 							  <div class="label">
 									<% if(flight.load&&flight.load.average&&flight.profit) { %>
-							    	<%= flight.load.average %>% Load Factor 
+							    	<%= flight.load.average %>% Load Factor
 										<% if(flight.profit > 0) { %>
 											(<text class="green">$<%= comma(flight.profit) %> Profit</text>)
 										<% } else if(flight.profit < 0) { %>
@@ -646,7 +646,6 @@
     <script src="js/aircraft.js"></script>
     <script src="js/flight.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/sockets.js"></script>
     <script src="js/route.js"></script>
     <script src="js/map.js"></script>
     <script src="js/game.js"></script>

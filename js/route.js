@@ -39,7 +39,7 @@ function showRoute(id, flight) {
 }
 
 var Route = Backbone.Model.extend({
-	
+
 });
 var RouteView = Backbone.View.extend({
   initialize:function(){
@@ -73,7 +73,6 @@ var selectedFlight, selectedRoute;
 function drawRoutes() {
   clearRoutes();
   flightList.each(function(value){
-    console.log(value);
     var route = value.get('route');
     if(route) {
       route.origin = airportList.get(route.origin.id).attributes;

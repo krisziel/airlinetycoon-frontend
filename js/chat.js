@@ -1,6 +1,6 @@
 var socket, host;
 function connect() {
-	host = 'ws://52.11.179.216:3001' + cookies.url;
+	host = 'ws://localhost:3001' + cookies.url;
   try {
     socket = new WebSocket(host);
     socket.onopen = function() {
@@ -20,8 +20,15 @@ function sendChatMessage() {
     return;
   }
   try {
-	var message = '{"type_id":"' + alliance.get('id') + '","message_type":"alliance","body":"' + text + '"}';
-    socket.send(message + 'lIlIlIIlIlIl' + cookies.url);
+		var data = {
+			game_id: cookies.game_id,
+			user_id: cookies.user_id,
+			message: {
+				body: text,
+				type: "alliance"
+			}
+		}
+    socket.send(JSON.stringify(data));
   } catch(exception) {
   }
 }
@@ -30,6 +37,7 @@ $("#disconnect").click(function() {
 });
 function parseMessage(message) {
 	message = JSON.parse(message.data);
+	console.log(message);
 	if(message.type === 'alliance') {
 		if(message.sender.id === airline.id) {
 			var own = ' self';
@@ -50,8 +58,8 @@ function parseMessage(message) {
 		$('.chat.window[data-tab="alliance_chat"] .message.list .new').removeClass('new');
 		$('.message.list').scrollTop(10000);
 	} else if(message.type === 'game') {
-		
+
 	} else if(message.type === 'conversation') {
-		
+
 	}
 }
