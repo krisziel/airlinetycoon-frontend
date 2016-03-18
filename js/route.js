@@ -24,22 +24,20 @@ function showRoute(id, flight) {
     route.destination = airportList.get(route.destination.id).attributes;
     activeRoutes[route.id] = route;
     drawRoute({origin:route.origin,dest:route.destination,type:'highlight'});
-		$('.flight-info').html('');
+		new RouteView({model:selectedRoute});
 		$('#routePanel').on('click','.create',function(){
 			newFlight();
 		}).on('click','.header.airport',function(){
 			var flight = flightList.get($(this).data('flightid'));
 			createFlightInfoView(flight);
 		});
-		new RouteView({model:selectedRoute});
 		if(flight) {
 			createFlightInfoView(flight);
 		}
+		graphRouteShares(data)
 	});
 }
-
 var Route = Backbone.Model.extend({
-	
 });
 var RouteView = Backbone.View.extend({
   initialize:function(){
@@ -48,8 +46,14 @@ var RouteView = Backbone.View.extend({
   render:function(){
     var variables = this.model.attributes;
     var template = _.template($('#routeModalTemplate').html(),variables);
-		$('.route-info').attr('data-routeid',variables.id).html(template);
+		$('#routePanel').remove();
+		$('body').append(template);
 		$('#routePanel').modal('show');
+		drawRouteMarketShare(variables.marketShares);
+		$('.route-info').on('click','.info',function(){
+			$(".flight-info#marketShares").css({display:'block'});
+			$('.flight-info#flightInfo').css({display:'none'});
+		});
 		return true;
   },
   events:{
@@ -65,6 +69,69 @@ var RouteFlightView = Backbone.View.extend({
     var template = _.template($('#routeModalTemplate').html(),variables);
   }
 });
+function drawRouteMarketShare(marketShares) {
+	var template = _.template($('#routeMarketShareTemplate').html(),{marketShares: marketShares});
+	$(".flight-info#marketShares").html(template);
+	$('table#routeMarketShareTable').tablesort().data('tablesort').sort($("th.default-sort"));
+}
+function graphRouteShares(route) {
+	console.log(route);
+	var graphColors = [{color:"#058DC7",highlight: "#FF5A5E"},{color: "#50B432",highlight: "#5AD3D1"},{color: "#ED561B",highlight: "#FFC870"},{color:"#DDDF00",highlight: "#FF5A5E"},{color: "#24CBE5",highlight: "#5AD3D1"},{color: "#64E572",highlight: "#FFC870"},{color:"#FF9655",highlight: "#FF5A5E"},{color: "#FFF263",highlight: "#5AD3D1"},{color: "#6AF9C4",highlight: "#FFC870"},{color: "#46BFBD",highlight: "#5AD3D1"},{color: "#FDB45C",highlight: "#FFC870"},{color:"#F7464A",highlight: "#FF5A5E"},{color: "#46BFBD",highlight: "#5AD3D1"},{color: "#FDB45C",highlight: "#FFC870"},{color:"#F7464A",highlight: "#FF5A5E"},{color: "#46BFBD",highlight: "#5AD3D1"},{color: "#FDB45C",highlight: "#FFC870"}];
+	var airlines = route.marketShares;
+	if(airlines.length > 0) {
+		$('.route-market-shares').css({display:'block'});
+	} else {
+		$('.route-market-shares').css({display:'block'}).html('<h2 class="ui header">No airlines serve this route</h2>');
+	}
+  var totalCapacity = 0;
+  var totalPassengers = 0;
+  airlines.sort(function(a, b) {
+    return a.capacity - b.capacity;
+  }).reverse();
+  var capacityData = [];
+	var passengerData = [];
+  var i = 0;
+	var otherCapacityData = {
+		value: 0,
+		label: "Others",
+		highlight: graphColors[11].color,
+		color: graphColors[11].color
+	};
+	var otherPassengerData = {
+		value: 0,
+		label: "Others",
+		highlight: graphColors[11].color,
+		color: graphColors[11].color
+	};
+  _.each(airlines, function(airline) {
+    if(i <= 10) {
+      var capacity = {
+        value: airline.capacity,
+        label: airline.airline.name,
+        highlight: graphColors[i].color,
+        color: graphColors[i].color
+      };
+      var passenger = {
+        value: airline.passengers,
+        label: airline.airline.name,
+        highlight: graphColors[i].color,
+        color: graphColors[i].color
+      };
+      capacityData.push(capacity);
+      passengerData.push(passenger);
+      i++;
+    } else {
+			otherCapacityData["value"] += airline.capacity;
+			otherPassengerData["value"] += airline.passengers;
+		}
+  });
+	capacityData.push(otherCapacityData);
+	passengerData.push(otherPassengerData);
+  var capacityChart = $("#routeCapacity").get(0).getContext("2d");
+  var passengerChart = $("#routePassengers").get(0).getContext("2d");
+  var capacityPieChart = new Chart(capacityChart).Pie(capacityData,{animation:false});
+  var passengerPieChart = new Chart(passengerChart).Pie(passengerData,{animation:false});
+}
 
 var activeRoutes = {};
 var allRoutes = {};
@@ -73,7 +140,6 @@ var selectedFlight, selectedRoute;
 function drawRoutes() {
   clearRoutes();
   flightList.each(function(value){
-    console.log(value);
     var route = value.get('route');
     if(route) {
       route.origin = airportList.get(route.origin.id).attributes;

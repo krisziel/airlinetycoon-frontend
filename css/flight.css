@@ -25,20 +25,24 @@
   width: 125px;
 }
 #routePanel {
-	top: 50%;
 	left: 50%;
-	margin-left: -300px;
-	margin-top: -200px;
+	top: 50%;
+	margin-left: -450px;
+}
+#routePanel.flight-open {
+	margin-left: -450px !important;
+	width: 901px !important;
+}
+#routePanel.flight-open > .flight-info.animating {
+	position: absolute;
+	left: 299px;
 }
 .route-panel {
   z-index: 1009;
   position: absolute;
   -webkit-transition: all .7s;
   overflow: hidden;
-  width: 301px;
-  margin: 0 0 0 -150px;
-  top: 150px;
-  left: 50%;
+  width: 900px;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.3);
   -webkit-border-radius: 5px;
@@ -46,10 +50,11 @@
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
+	height: 575px;
 }
 .route-panel .line {
   width: 1px;
-  height: 100%;
+  height: 580px;
   float: left;
   background: rgba(0, 0, 0, 0.3);
 }
@@ -57,10 +62,6 @@
   position: absolute;
   left: 3px;
   top: 3px;
-}
-.route-panel.open {
-  width: 601px !important;
-  margin-left: -300px !important;
 }
 .route-panel.open .step {
   -webkit-border-top-right-radius: 0 !important;
@@ -111,9 +112,8 @@
 }
 .route-panel .flight-list {
   width: 298px;
-  height: auto;
-  max-height: 245px;
-  height: 245px;
+  max-height: 490px;
+  height: 490px;
   overflow-y: auto !important;
   overflow-x: hidden;
   z-index: 7;
@@ -129,12 +129,14 @@
 	width: 225px;
 }
 .route-panel .flight-info {
-  height: 100%;
-  width: 300px;
+  height: 275px;
+  width: 599px;
   float: left;
   z-index: 8;
   position: relative;
   background: #ffffff;
+	overflow: auto;
+	padding: 0 5px;
 }
 .route-panel .flight-info .empty {
   min-height: 112px;
@@ -199,9 +201,38 @@
 .ui.active.dimmer.inverted {
   background: rgba(255,255,255,.5) !important;
 }
-#cancelButton {
-  width: 84px;
+.flat.ui.buttons {
+	border-radius: 0 !important;
 }
-#saveFlightButton {
-  width: 71px;
+.flat.ui.buttons > .button {
+	border-radius: 0 !important;
+}
+.route-market-shares {
+	width: 599px;
+	height: 305px;
+	float: left;
+}
+.route-market-shares > .market-share {
+	margin: 5px;
+	height: 280px;
+	width: 289px;
+	float: left;
+}
+.route-market-shares > .market-share > canvas {
+	height: 265px;
+	width: 265px;
+}
+.flight-settings {
+	width: 60%;
+	float: left;
+}
+.flight-buttons {
+	width: 40%;
+	float: left;
+	padding-left: 10%;
+	height: 110px;
+}
+.flight-buttons .button {
+	margin-bottom: 3px !important;
+	width: 100%;
 }

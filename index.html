@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/airline.css">
     <link rel="stylesheet" href="css/chat.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.4/semantic.min.css">
-    <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
+    <link href="https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css" rel="stylesheet" />
   </head>
   <body>
     <script id="airportTemplate" type="text/template">
@@ -287,6 +287,7 @@
 							<% }) %>
 						</div>
 					</div>
+          <!-- ' -->
 				<% } else { %>
 					<input type="hidden" name="configuration_id" id="configurationId" value="">
 					<% } %>
@@ -342,6 +343,97 @@
 			  </div>
 			</div>
 		</script>
+		<script id="airportInfoModalTemplate" type="text/template">
+			<div class="airport-panel shaded grid" id="airportPanel">
+			  <div class="airport-metrics">
+          <div class="content airport">
+  					<div class="ui horizontal statistics mini airport">
+  					  <div class="ui statistic">
+  							<div class="value">
+								  <%= iata %>
+								</div>
+							</div>
+						</div>
+						<div class="airport data">
+							<span><%= name %><br>
+							<%= city %>, <%= country %></span>
+						</div>
+					</div>
+			    <div class="ui unordered steps metric-list vertical">
+            <a class="step">
+              <div class="content">
+                <div class="ui mini horizontal statistic">
+                  <div class="value">
+                    <%= marketShares.airport.airlines %>
+                  </div>
+                  <div class="label">
+                    AIRLINE<%= marketShares.airport.airlines == 1 ? "" : "S" %>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a class="step">
+              <div class="content">
+                <div class="ui mini horizontal statistic">
+                  <div class="value">
+                    <%= marketShares.airport.destinations %>
+                  </div>
+                  <div class="label">
+                    DESTINATION<%= marketShares.airport.destinations == 1 ? "" : "S" %>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a class="step">
+              <div class="content">
+                <div class="ui mini horizontal statistic">
+                  <div class="value">
+                    <%= comma(marketShares.airport.flights) %>
+                  </div>
+                  <div class="label">
+                    WEEKLY FLIGHT<%= marketShares.airport.flights == 1 ? "" : "S" %>
+                  </div>
+                </div>
+              </div>
+            </a>
+			    </div>
+			  </div>
+			  <div class="metric-info" style="height: 100%; overflow: auto;">
+          <table class="ui sortable celled table" id="airlineMarketShareTable">
+            <thead>
+              <tr>
+                <th>Airline</th>
+                <th class="default-sort descending">Flights</th>
+                <th>Passengers</th>
+                <th>Destinations</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% _.each(marketShares.airlines,function(airline){ %>
+                <tr>
+                  <td><%= airline.airline.name %></td>
+                  <td data-sort-value="<%= airline.flights %>"><%= comma(airline.flights) %> (<%= Math.round((airline.flights/marketShares.airport.flights)*1000)/10 %>%)</td>
+                  <td data-sort-value="<%= airline.passengers %>"><%= comma(airline.passengers) %> (<%= Math.round((airline.passengers/marketShares.airport.passengers)*1000)/10 %>%)</td>
+                  <td data-sort-value="<%= airline.destinations %>"><%= comma(airline.destinations) %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+            <tfoot>
+              <tr>
+                <% if(marketShares.airport.flights > 0) { %>
+                  <th>Total</th>
+                  <th><%= comma(marketShares.airport.flights) %></th>
+                  <th><%= comma(marketShares.airport.passengers) %></th>
+                  <th><%= comma(marketShares.airport.destinations) %></th>
+                <% } else { %>
+                  <th>No airline current serve <%= airport.iata %></th>
+                <% } %>
+              </tr>
+            </tfoot>
+          </table>
+			  </div>
+			</div>
+		</script>
 		<script id="airportPopupTemplate" type="text/template">
 			<% if(selectedAirport.origin.iata === iata){ %>
 				<div class="star selected airport-option" id="star<%= id %>" data-id="<%= id %>"><i class="icon star selected"></i> unset origin</div>
@@ -350,7 +442,7 @@
 			<% } else { %>
 				<div class="star airport-option" id="star<%= id %>" data-id="<%= id %>"><i class="icon star"></i> set origin</div>
 			<% } %>
-			<div class="content airport">
+			<div class="content airport" data-airportid="<%= id %>">
 				<div class="ui horizontal statistics mini airport">
 				  <div class="ui statistic">
 						<div class="value">
@@ -371,7 +463,7 @@
 						<div class="value route"><%= route.origin.iata %>-<%= route.destination.iata %> <span>(<%= userAircraft.aircraft.name %> x <%= frequencies %>)</span></div>
 					  <div class="label">
 							<% if(load&&(load.average >= 0)&&profit) { %>
-					    	<%= load.average %>% Load Factor 
+					    	<%= load.average %>% Load Factor
 								<% if(profit > 0) { %>
 									(<text class="green">$<%= comma(profit) %> Profit</text>)
 								<% } else if(profit < 0) { %>
@@ -423,7 +515,7 @@
 		<script id="flightInfoTemplate" type="text/template">
 			<% userAircraft ? config = userAircraft.configuration.config : config = {} %>
 		  <div class="row-container">
-		    <div class="row flight" data-rowtype="aircraft">
+		    <div class="row flight-settings" data-rowtype="aircraft">
 		      <div class="ui selection dropdown" tabindex="0">
 		      	<% if(userAircraft) { %>
 			        <div class="text"><%= userAircraft.aircraft.full_name %> (<%= config.f.count + '/' + config.j.count + '/' + config.p.count + '/' + config.y.count %>)</div>
@@ -464,87 +556,104 @@
 		    	<% } %>
 		    </div>
 		  </div>
+      <div class="flight-buttons">
+		  	<% if(userAircraft) { %>
+          <div class="ui positive button" id="saveFlightButton">Save Changes</div>
+			    <div class="ui button" id="cancelButton">Cancel Changes</div>
+			    <div class="ui red button" id="cancelFlightButton">Cancel Flight</div>
+		    <% } else { %>
+          <div class="ui positive button" id="launchFlightButton">Launch Flight</div>
+			    <div class="ui button" id="cancelButton">Cancel</div>
+		    <% } %>
+      </div>
 		  <div class="tab">
 				<div class="ui secondary menu" id="classMenu"><a class="item active" data-tab="f">First</a><a class="item" data-tab="j">Business</a><a class="item" data-tab="p">Premium Economy</a><a class="item" data-tab="y">Economy</a></div>
 				<% _.each(['f','j','p','y'],function(cabin){ %>
 					<%= configurationInfo(cabin) %>
 				<% }) %>
 		  </div>
-		  <div class="ui buttons">
-		  	<% if(userAircraft) { %>
-			    <div class="ui button" id="cancelButton">Cancel</div>
-			    <div class="or"></div>
-			    <div class="ui positive button" id="saveFlightButton">Save</div>
-			    <div class="or"></div>
-			    <div class="ui red button" id="cancelFlightButton">Cancel Flight</div>
-		    <% } else { %>
-			    <div class="ui button" id="cancelButton">Cancel</div>
-			    <div class="or"></div>
-			    <div class="ui positive button" id="launchFlightButton">Launch Flight</div>
-		    <% } %>
-			</div>	
 		</script>
 		<script id="routeModalTemplate" type="text/template">
-		  <div class="info">
-		    <div class="ui statistic">
-		      <div class="value"><%= origin.iata %></div>
-		      <div class="label"><%= origin.name %></div>
-		    </div>
-		    <i class="resize horizontal icon"></i>
-		    <div class="ui statistic">
-		      <div class="value"><%= destination.iata %></div>
-		      <div class="label"><%= destination.name %></div>
-		    </div>
-		  </div>
-		  <div class="ui unordered steps flight-list vertical" id="route<%= id %>">
-				<div class="ui one bottom attached buttons create">
-		      <div class="ui button primary">
-		        <i class="add icon"></i>
-		        Create New Flight
-					</div>
-				</div>
-				<% _.each(flights.own,function(flight){ %>
-					<% flight = flightList.get(flight.id).attributes %>
-					<div class="ui dividing header airport alliance own-flight" id="flight<%= flight.id %>" data-flightid="<%= flight.id %>" data-routeid="<%= id %>">
-					  <div class="content">
-							<div class="ui statistic tiny alliance">
-								<div class="value route"><%= flight.userAircraft.aircraft.name %> (<%= flight.frequencies %>/week)</div>
-							  <div class="label">
-									<% if(flight.load&&flight.load.average&&flight.profit) { %>
-							    	<%= flight.load.average %>% Load Factor 
-										<% if(flight.profit > 0) { %>
-											(<text class="green">$<%= comma(flight.profit) %> Profit</text>)
-										<% } else if(flight.profit < 0) { %>
-											(<text class="red">$<%= comma(Math.abs(flight.profit)) %> Loss</text>)
-										<% } else { %>
-											(Breakeven)
-										<% } %>
-									<% } else { %>
-							    	Just Launched
-									<% } %>
-								</div>
-							</div>
-						</div>
-					</div>
-				<% }) %>
-				<% _.each(flights.comp,function(flight){ %>
-					<% flight = flight.attributes %>
-					<div class="ui dividing header airport alliance" id="flight<%= flight.id %>" data-flightid="<%= flight.id %>" data-routeid="<%= id %>">
-					  <div class="content">
-							<div class="ui statistic tiny alliance">
-								<div class="value route"><%= flight.airline.name %></div>
-							  <div class="label">
-									<% if(flight.load&&flight.load.average) { %>
-										<%= flight.aircraft.name %> (<%= flight.frequencies %>/week) @ <%= flight.load.average %>% load factor</span>
-									<% } else { %>
-										<%= flight.aircraft.name %> (<%= flight.frequencies %>/week) (Just Launched)</span>
-									<% } %>
-								</div>
-							</div>
-						</div>
-					</div>
-				<% }) %>
-			</div>
+  		<div class="route-panel open" id="routePanel" style="display:none;">
+  			<i class="icon remove"></i>
+  			<div class="route-info" data-routeid="<%= id %>">
+    		  <div class="info">
+    		    <div class="ui statistic">
+    		      <div class="value"><%= origin.iata %></div>
+    		      <div class="label"><%= origin.name %></div>
+    		    </div>
+    		    <i class="resize horizontal icon"></i>
+    		    <div class="ui statistic">
+    		      <div class="value"><%= destination.iata %></div>
+    		      <div class="label"><%= destination.name %></div>
+    		    </div>
+    		  </div>
+    		  <div class="ui unordered steps flight-list vertical" id="route<%= id %>">
+    				<div class="ui one bottom attached buttons create">
+    		      <div class="ui button primary">
+    		        <i class="add icon"></i>
+    		        Create New Flight
+    					</div>
+    				</div>
+    				<% _.each(flights.own,function(flight){ %>
+    					<% flight = flightList.get(flight.id).attributes %>
+    					<div class="ui dividing header airport alliance own-flight" id="flight<%= flight.id %>" data-flightid="<%= flight.id %>" data-routeid="<%= id %>">
+    					  <div class="content">
+    							<div class="ui statistic tiny alliance">
+    								<div class="value route"><%= flight.userAircraft.aircraft.name %> (<%= flight.frequencies %>/week)</div>
+    							  <div class="label">
+    									<% if(flight.load&&flight.load.average&&flight.profit) { %>
+    							    	<%= flight.load.average %>% Load Factor
+    										<% if(flight.profit > 0) { %>
+    											(<text class="green">$<%= comma(flight.profit) %> Profit</text>)
+    										<% } else if(flight.profit < 0) { %>
+    											(<text class="red">$<%= comma(Math.abs(flight.profit)) %> Loss</text>)
+    										<% } else { %>
+    											(Breakeven)
+    										<% } %>
+    									<% } else { %>
+    							    	Just Launched
+    									<% } %>
+    								</div>
+    							</div>
+    						</div>
+    					</div>
+    				<% }) %>
+    				<% _.each(flights.comp,function(flight){ %>
+    					<% flight = flight.attributes %>
+    					<div class="ui dividing header airport alliance" id="flight<%= flight.id %>" data-flightid="<%= flight.id %>" data-routeid="<%= id %>">
+    					  <div class="content">
+    							<div class="ui statistic tiny alliance">
+    								<div class="value route"><%= flight.airline.name %></div>
+    							  <div class="label">
+    									<% if(flight.load&&flight.load.average) { %>
+    										<%= flight.aircraft.name %> (<%= flight.frequencies %>/week) @ <%= flight.load.average %>% load factor</span>
+    									<% } else { %>
+    										<%= flight.aircraft.name %> (<%= flight.frequencies %>/week) (Just Launched)</span>
+    									<% } %>
+    								</div>
+    							</div>
+    						</div>
+    					</div>
+    				<% }) %>
+    			</div>
+  			</div>
+  			<div class="line"></div>
+        <div class="route-market-shares" style="display: none;">
+          <div class="market-share">
+            <h4 class="label">Capacity by Airline</h4>
+            <canvas id="routeCapacity"></canvas>
+          </div>
+          <div class="market-share">
+            <h4 class="label">Passengers by Airline</h4>
+            <canvas id="routePassengers"></canvas>
+          </div>
+        </div>
+  			<div class="flight-info" id="marketShares">
+  			</div>
+  			<div class="flight-info" id="flightInfo" style="display: none;">
+  			</div>
+  		</div>
 		</script>
 		<script id="routeFlightTemplate" type="text/template">
 			<div class="ui dividing header airport alliance" id="flight<%= id %>" data-flightid="<%= id %>" data-routeid="<%= route.id %>">
@@ -570,6 +679,28 @@
 				</div>
 			</div>
 		</script>
+    <script type="text/template" id ="routeMarketShareTemplate">
+      <table class="ui sortable celled table" id="routeMarketShareTable">
+        <thead>
+          <tr>
+            <th>Airline</th>
+            <th class="default-sort">Flights</th>
+            <th>Capacity</th>
+            <th>Passengers</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% _.each(marketShares,function(airline){ %>
+            <tr>
+              <td><%= airline.airline.name %></td>
+              <td data-sort-value="<%= airline.flights %>"><%= comma(airline.flights) %></td>
+              <td data-sort-value="<%= airline.capacity %>"><%= comma(airline.capacity) %></td>
+              <td data-sort-value="<%= airline.passengers %>"><%= comma(airline.passengers) %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </script>
 		<script id="moreColumnTemplate" type="text/tamplate">
 			<div class="ui one bottom attached buttons create">
 	      <div class="ui button primary logout">
@@ -627,26 +758,20 @@
         <div class="money">Current Cash: $5,400,444,030</div>
       </div>
     </div>
-		<div class="route-panel open" id="routePanel" style="display:none;">
-			<i class="icon remove"></i>
-			<div class="route-info"></div>
-			<div class="line" style="height: 330px;"></div>
-			<div class="flight-info"></div>
-		</div>
-    <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/arc.js/v0.1.0/arc.js'></script>
-    <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
+    <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/arc.js/v0.1.0/arc.js"></script>
+    <script src="https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js"></script>
     <script src="js/json2.js"></script>
     <script src="js/jquery.js"></script>
     <script src="js/underscore.js"></script>
     <script src="js/q.js"></script>
     <script src="js/backbone.js"></script>
     <script src="js/backbone.localStorage.js"></script>
+    <script src="js/jquery.tablesort.js"></script>
     <script src="js/airline.js"></script>
     <script src="js/airport.js"></script>
     <script src="js/aircraft.js"></script>
     <script src="js/flight.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/sockets.js"></script>
     <script src="js/route.js"></script>
     <script src="js/map.js"></script>
     <script src="js/game.js"></script>
@@ -655,5 +780,6 @@
     <script src="js/menu.js"></script>
     <script src="js/chat.js"></script>
     <script src="js/semantic.min.js"></script>
+    <script src="js/chart.js"></script>
   </body>
 </html>
