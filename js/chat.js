@@ -33,7 +33,7 @@ function sendChatMessage() {
   }
 }
 $("#disconnect").click(function() {
-  socket.close()
+	socket.close()
 });
 function parseMessage(message) {
 	message = JSON.parse(message.data);
