@@ -75,7 +75,6 @@ function drawRouteMarketShare(marketShares) {
 	$('table#routeMarketShareTable').tablesort().data('tablesort').sort($("th.default-sort"));
 }
 function graphRouteShares(route) {
-	console.log(route);
 	var graphColors = [{color:"#058DC7",highlight: "#FF5A5E"},{color: "#50B432",highlight: "#5AD3D1"},{color: "#ED561B",highlight: "#FFC870"},{color:"#DDDF00",highlight: "#FF5A5E"},{color: "#24CBE5",highlight: "#5AD3D1"},{color: "#64E572",highlight: "#FFC870"},{color:"#FF9655",highlight: "#FF5A5E"},{color: "#FFF263",highlight: "#5AD3D1"},{color: "#6AF9C4",highlight: "#FFC870"},{color: "#46BFBD",highlight: "#5AD3D1"},{color: "#FDB45C",highlight: "#FFC870"},{color:"#F7464A",highlight: "#FF5A5E"},{color: "#46BFBD",highlight: "#5AD3D1"},{color: "#FDB45C",highlight: "#FFC870"},{color:"#F7464A",highlight: "#FF5A5E"},{color: "#46BFBD",highlight: "#5AD3D1"},{color: "#FDB45C",highlight: "#FFC870"}];
 	var airlines = route.marketShares;
 	if(airlines.length > 0) {

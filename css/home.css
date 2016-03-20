@@ -100,3 +100,8 @@ text {
 .game-info > div:last-child {
 	border-right: none;
 }
+#notifications {
+  position: absolute;
+  z-index: 99999;
+  background: #ff0000;
+}

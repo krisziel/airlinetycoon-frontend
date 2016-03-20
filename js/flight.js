@@ -9,8 +9,8 @@ var cabinType = {
 
 function loadFlights() {
 	$.getJSON(base + 'flight' + cookies.url).done(function(data){
-        flightList = [];
-        routeList = [];
+    flightList = [];
+    routeList = [];
 		_.each(data,function(flight){
 			var newFlight = new Flight(flight);
 			flightList.push(newFlight);
@@ -62,7 +62,7 @@ var FlightListView = Backbone.View.extend({
     this.$el.append(view.$el);
   },
   addAll:function(){
-	var template = _.template($('#flightListTemplate').html());
+		var template = _.template($('#flightListTemplate').html());
     this.$el.html(template);
     flightList.each(this.addOne,this);
   }

@@ -1,4 +1,6 @@
 var socket, host;
+var notificationList = new NotificationList();
+
 function connect() {
 	host = 'ws://localhost:3001' + cookies.url;
   try {
@@ -7,12 +9,55 @@ function connect() {
     }
     socket.onclose = function() {
     }
-    socket.onmessage = function(msg) {
-		parseMessage(msg);
+    socket.onmessage = function(messages) {
+			messages = JSON.parse(messages.data);
+			routeMessages(messages);
     }
   } catch(exception) {
     addMessage("Error: " + exception);
   }
+}
+function routeMessages(messages) {
+	_.each(messages, function(message) {
+		var notification = new Notification(message);
+		notificationList.push(notification);
+		// routeMessage();
+	});
+}
+function routeMessage(message) {
+	console.log(message);
+	if(message.notificationable_type == "Data") {
+		updateGameTurn(message.notificationable_id);
+	} else if(message.notificationable_type == "Game") {
+		displayGameMessage(message);
+	} else if(message.notificationable_type == "Alliance") {
+		displayAllianceMessage(message);
+	} else if(message.notificationable_type == "Conversation") {
+		displayConversationMessage(message);
+	} else if(message.notificationable_type == "Route") {
+		displayRouteNotification(message);
+	}
+}
+function updateGameTurn(gameId) {
+
+}
+function updateGameMessage(message) {
+
+}
+function updateAllianceMessage(message) {
+
+}
+function updateConversationMessage(message) {
+
+}
+function displayRouteNotification(message) {
+
+}
+function showNotification(title, text, deepLink) {
+
+}
+function routeDeepLink(deepLink) {
+
 }
 function sendChatMessage() {
 	var text = $('#chatMessage').val().replace(/(\r\n|\n|\r)/gm,"  ");

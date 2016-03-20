@@ -708,6 +708,13 @@
 				</div>
 			</div>
 		</script>
+		<script id="notificationItemTemplate" type="text/template">
+      <li class="notification" id="notification<%= id %>">
+        <div class="body"><%= text %></div>
+        <div class="open">Open</div>
+        <div class="close">Close</div>
+      </li>
+		</script>
 		<div id="leftColumn">
 		</div>
     <div class="shaded grid game-window">
@@ -758,6 +765,8 @@
         <div class="money">Current Cash: $5,400,444,030</div>
       </div>
     </div>
+    <ul class="notifications" id="notifications">
+    </ul>
     <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/arc.js/v0.1.0/arc.js"></script>
     <script src="https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js"></script>
     <script src="js/json2.js"></script>
@@ -777,6 +786,7 @@
     <script src="js/game.js"></script>
     <script src="js/alliance.js"></script>
     <script src="js/user.js"></script>
+    <script src="js/notification.js"></script>
     <script src="js/menu.js"></script>
     <script src="js/chat.js"></script>
     <script src="js/semantic.min.js"></script>
