@@ -101,7 +101,16 @@ text {
 	border-right: none;
 }
 #notifications {
-  position: absolute;
+  position: relative;
   z-index: 99999;
-  background: #ff0000;
+  background: rgba(255, 255, 255, .7);
+  border: 1px solid rgba(153, 153, 153, .7);
+  -webkit-border-radius: 5px;
+  float: right;
+  width: 300px;
+  margin: 7px;
+  padding: 0;
+}
+#notifications > .notification {
+  padding: 7px;
 }

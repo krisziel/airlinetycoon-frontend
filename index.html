@@ -709,11 +709,12 @@
 			</div>
 		</script>
 		<script id="notificationItemTemplate" type="text/template">
-      <li class="notification" id="notification<%= id %>">
-        <div class="body"><%= text %></div>
-        <div class="open">Open</div>
-        <div class="close">Close</div>
-      </li>
+      <a class="item notification" id="notification<%= id %>">
+        <div class="content">
+          <div class="header"><%= header %></div>
+          <div class="description"><%= text %></div>
+        </div>
+      </a>
 		</script>
 		<div id="leftColumn">
 		</div>
@@ -765,8 +766,8 @@
         <div class="money">Current Cash: $5,400,444,030</div>
       </div>
     </div>
-    <ul class="notifications" id="notifications">
-    </ul>
+    <div class="ui list notifications divided" id="notifications">
+    </div>
     <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/arc.js/v0.1.0/arc.js"></script>
     <script src="https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js"></script>
     <script src="js/json2.js"></script>

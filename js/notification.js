@@ -5,7 +5,7 @@ var Notification = Backbone.Model.extend({
 var NotificationList = Backbone.Collection.extend({
 	model:Notification,
   add:function(notification){
-    new NotificationView({model:notification});
+    new NotificationView({ model:notification });
   }
 });
 
@@ -15,23 +15,20 @@ var NotificationView = Backbone.View.extend({
   },
   render:function(){
     var variables = this.model.attributes;
+		variables.header = "New airline entrant";
     if(variables.id) {
-      var template = _.template($('#notificationItemTemplate').html(),variables);
+      var template = _.template($('#notificationItemTemplate').html(), variables);
       $("#notifications").prepend(template);
     }
   },
 	events:{
-		'click .close':'closeNotification',
-		'click .open':'openNotification'
+		'click':'openNotification'
 	},
-	openNotification:function(){
+	openNotification:function(e){
+		console.log(e);
 		var model = this.model.attributes;
     if(model.notificationable_type == "Route") {
       showRoute(model.route_id, model.flight_id);
     }
-	},
-	closeNotification:function(){
-		var id = this.model.attributes.id;
-		$('#notification' + id).css({ opacity:0 }).delay(500).css({ display:'none' });
 	}
 });
