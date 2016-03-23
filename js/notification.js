@@ -1,34 +1,26 @@
 var Notification = Backbone.Model.extend({
 	initialize:function(){}
 });
-
 var NotificationList = Backbone.Collection.extend({
-	model:Notification,
-  add:function(notification){
-    new NotificationView({ model:notification });
-  }
+	model:Notification
 });
-
 var NotificationView = Backbone.View.extend({
   initialize:function(){
     this.render();
   },
   render:function(){
     var variables = this.model.attributes;
-		variables.header = "New airline entrant";
-    if(variables.id) {
+    if((variables)&&(variables.id)) {
+			$('#notifications').css({ display:'block', opacity:1 });
       var template = _.template($('#notificationItemTemplate').html(), variables);
       $("#notifications").prepend(template);
+			setTimeout(function(){ $('.notification[data-id="' + variables.id + '"]').css({ opacity:0, height:0 }).delay(500).remove(); }, 7500);
     }
-  },
-	events:{
-		'click':'openNotification'
-	},
-	openNotification:function(e){
-		console.log(e);
-		var model = this.model.attributes;
-    if(model.notificationable_type == "Route") {
-      showRoute(model.route_id, model.flight_id);
-    }
-	}
+  }
 });
+function openNotification(id) {
+	var model = notificationList.get(id).attributes;
+	if(model.type == "Route") {
+	  showRoute(model.typeId);
+	}
+}

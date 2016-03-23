@@ -5,11 +5,9 @@ var Airport = Backbone.Model.extend({
 		this.set({name:newEquipment});
 	}
 });
-
 var AirportList = Backbone.Collection.extend({
   model:Airport
 });
-
 var AirportView = Backbone.View.extend({
   initialize:function(){
     this.render();
@@ -28,7 +26,6 @@ var AirportView = Backbone.View.extend({
 		$('.leaflet-marker-icon[title="' + this.model.attributes.name + ' (' + this.model.attributes.iata + ')"]').click();
 	}
 });
-
 var AirportListView = Backbone.View.extend({
   initialize:function(){
     this.render();
@@ -68,7 +65,6 @@ var AirportListView = Backbone.View.extend({
 		}
 	}
 });
-
 var airports = [];
 var airportList;
 function loadAirports(){

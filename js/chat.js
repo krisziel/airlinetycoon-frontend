@@ -1,11 +1,16 @@
 var socket, host;
-var notificationList = new NotificationList();
+var notificationList;
+var hideNotifications;
 
 function connect() {
 	host = 'ws://localhost:3001' + cookies.url;
   try {
     socket = new WebSocket(host);
     socket.onopen = function() {
+			notificationList = new NotificationList();
+			$('#notifications').on('click', '.notification', function(e) {
+				openNotification(e.currentTarget.attributes["data-id"].value);
+			});
     }
     socket.onclose = function() {
     }
@@ -19,8 +24,11 @@ function connect() {
 }
 function routeMessages(messages) {
 	_.each(messages, function(message) {
+		clearTimeout(hideNotifications);
 		var notification = new Notification(message);
 		notificationList.push(notification);
+	  var notificationView = new NotificationView({ model:notification });
+		hideNotifications = setTimeout(function(){ $('#notifications').css({ opacity:0 }).delay(500).css({ display:'none' }) }, 8000);
 		// routeMessage();
 	});
 }
