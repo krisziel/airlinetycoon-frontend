@@ -28,7 +28,9 @@ function routeMessages(messages) {
 		var notification = new Notification(message);
 		notificationList.push(notification);
 	  var notificationView = new NotificationView({ model:notification });
-		hideNotifications = setTimeout(function(){ $('#notifications').css({ opacity:0 }).delay(500).css({ display:'none' }) }, 8000);
+		hideNotifications = setTimeout(function(){
+			$('#notifications').css({ opacity:0 }).delay(2000).css({ display:'none' });
+		}, 9900);
 		// routeMessage();
 	});
 }

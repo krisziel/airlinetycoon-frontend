@@ -110,12 +110,14 @@ text {
   width: 300px;
   margin: 7px;
   padding: 0;
-  display: none;
   opacity: 0;
-  -webkit-transition: all .5s;
+  display: none;
+  -webkit-transition: all 2s;
 }
 #notifications > .notification {
-  padding: 7px;
-  -webkit-transition: all .5s;
-  transition: all .5s;
+  padding: 0;
+  -webkit-transition: all 2s;
+}
+.notification > .content {
+  margin: 7px;
 }

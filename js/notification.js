@@ -11,10 +11,14 @@ var NotificationView = Backbone.View.extend({
   render:function(){
     var variables = this.model.attributes;
     if((variables)&&(variables.id)) {
-			$('#notifications').css({ display:'block', opacity:1 });
+			$('#notifications').css({ display:'block' });
+			setTimeout(function(){ $('#notifications').css({ opacity:1 }); }, 50);
       var template = _.template($('#notificationItemTemplate').html(), variables);
       $("#notifications").prepend(template);
-			setTimeout(function(){ $('.notification[data-id="' + variables.id + '"]').css({ opacity:0, height:0 }).delay(500).remove(); }, 7500);
+			setTimeout(function(){
+				$('.notification[data-id="' + variables.id + '"]').css({ opacity:0 });
+				setTimeout(function(){ $('.notification[data-id="' + variables.id + '"]').remove(); }, 2000);
+			}, 7500);
     }
   }
 });
