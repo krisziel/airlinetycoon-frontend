@@ -1,6 +1,7 @@
 var socket, host;
 var notificationList;
 var hideNotifications;
+var conversationList;
 
 function connect() {
 	host = 'ws://localhost:3001' + cookies.url;
@@ -117,4 +118,82 @@ function parseMessage(message) {
 	} else if(message.type === 'conversation') {
 
 	}
+}
+
+var Conversation = Backbone.Model.extend({
+});
+var ConversationList = Backbone.Collection.extend({
+	model:Conversation,
+	search: function(query, callback){
+		var collection = this;
+		var result;
+		collection.find(function(model) {
+			var key = Object.keys(query)[0];
+			if(model.get(key) === query[key]) {
+				result = model;
+			}
+		});
+		return result;
+	}
+});
+var ConversationView = Backbone.View.extend({
+	initialize:function(){
+		this.render();
+	},
+	render:function(){
+		var variables = this.model.attributes;
+		var template = _.template($('#conversationTemplate').html(),variables);
+		this.$el.html(template);
+		return this;
+	},
+	events:{
+		'click .aircraft:not(.flight)':'checkAircraft'
+	},
+	checkAircraft:function(e){
+		var el = $(e.currentTarget);
+		if(!el.hasClass('compressed')) {
+			e.stopPropagation();
+		}
+		if(el.hasClass('purchase')) {
+			this.loadAircraftPurchase();
+		} else if((el.hasClass('airport'))&&(el.hasClass('aircraft'))&&(!el.hasClass('flight'))) {
+			this.loadAircraftList();
+		} else if(el.hasClass('flight')) {
+			var id = el.data('flightid');
+			showFlight(flightList.get(id));
+		}
+	}
+});
+var ConversationListView = Backbone.View.extend({
+	initialize:function(){
+		this.render();
+		this.listenTo(aircraftList,'add',this.addOne);
+	},
+	render:function(){
+		this.addAll();
+	},
+	addOne:function(aircraft){
+		var view = new ConversationView({model:aircraft});
+    this.$el.append(view.$el);
+	},
+	addAll:function(){
+		this.$el.html('');
+		aircraftList.each(this.addOne,this);
+	}
+});
+function openMessages() {
+	$.getJSON(base + 'chat/conversations' + cookies.url).done(function(data){
+		createConversationList(data);
+		var template = _.template($('#conversationModalTemplate').html(),data);
+		$('body').append(template);
+		$('.conversationPanel').modal('show');
+	});
+}
+function createConversationList(data) {
+	var conversations = []
+	_.each(data, function(conversation){
+		conversations.push(new Conversation(conversation))
+	});
+	conversationList = new ConversationList(conversations);
+	conversationListView = new ConversationListView({el:'#conversationList'});
 }

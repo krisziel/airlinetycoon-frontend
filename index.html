@@ -262,8 +262,29 @@
 				<% }) %>
 			</div>
 		</script>
+		<script id="aircraftPurchaseModalTemplate" type="text/template">
+			<div class="route-panel shaded grid" id="aircraftPanel">
+			  <i class="icon remove"></i>
+			  <div class="fleet-info">
+			    <div class="ui unordered steps aircraft-list vertical">
+						<% _.each(aircraftList.models,function(aircraft){ %>
+							<% ac = aircraft.attributes %>
+				      <a class="step own" id="aircraft<%= ac.id %>" data-aircraftid="<%= ac.id %>">
+				        <div class="content">
+				          <div class="title"><%= ac.full_name %></div>
+				          <div class="description">Range: <%= comma(ac.range) %>mi // Capacity: <%= ac.capacity %></div>
+				        </div>
+							</a>
+						<% }) %>
+			    </div>
+			  </div>
+			  <div class="line" style="float:right;"></div>
+			  <div class="aircraft-info">
+			  </div>
+			</div>
+		</script>
 		<script id="aircraftPurchaseTemplate" type="text/template">
-		<div class="row-container">
+		  <div class="row-container">
 	      <h2 class="ui header"><%= full_name %></h2>
 	      <div class="row config-row"><span class="label">Capacity</span> <span><%= capacity %> passengers<span></div>
 	      <div class="row config-row"><span class="label">Range</span> <span><%= comma(range) %> miles<span></div>
@@ -274,7 +295,7 @@
 	        <div class="ui checkbox" style="opacity:0;"><input type="checkbox"><label></label></div>
 	        <div class="label">Quantity</div>
 	        <span>1</span><input type="range" value="1" min="1" max="<%= maxFlights %>">
-					</div>
+				</div>
 	      <h4 class="ui header">Configuration</h4>
 				<% if(user.configs.length > 0) { %>
 					<div class="ui selection dropdown" data-rowtype="configuration">
@@ -290,7 +311,7 @@
           <!-- ' -->
 				<% } else { %>
 					<input type="hidden" name="configuration_id" id="configurationId" value="">
-					<% } %>
+				<% } %>
 	      <div class="row config-row" data-cabintype="f">
 	        <div class="ui checkbox" style="opacity:0;"><input type="checkbox"><label></label></div>
 	        <div class="label">First</div>
@@ -312,7 +333,7 @@
 	        <span>69</span><input type="range" value="<%= config.def['y'] %>" min="0" max="<%= config.max['y'] %>">
 					</div>
 				<div class="ui action left input configuration">
-				<% if(user.configs.length > 0){ %>
+				  <% if(user.configs.length > 0){ %>
 					  <input type="text" placeholder="Configuration Name" id="configurationName" value="<%= user.configs[0].name %>">
 					<% } else { %>
 						<input type="text" placeholder="Configuration Name" id="configurationName">
@@ -322,25 +343,31 @@
 	      <div class="ui button positive" id="purchaseButton">Purchase Aircraft</div>
 			</div>
 		</script>
-		<script id="aircraftPurchaseModalTemplate" type="text/template">
-			<div class="route-panel shaded grid" id="aircraftPanel">
+		<script id="conversationModalTemplate" type="text/template">
+			<div class="route-panel shaded grid conversationPanel" id="aircraftPanel">
 			  <i class="icon remove"></i>
 			  <div class="fleet-info">
 			    <div class="ui unordered steps aircraft-list vertical">
-						<% _.each(aircraftList.models,function(aircraft){ %>
-							<% ac = aircraft.attributes %>
-				      <a class="step own" id="aircraft<%= ac.id %>" data-aircraftid="<%= ac.id %>">
+						<% _.each(conversationList.models, function(conversation){ %>
+              <% conversation = conversation.attributes %>
+				      <a class="step own conversation" id="conversation<%= conversation.id %>" data-conversationid="<%= conversation.id %>" data-read="<%= conversation.message.read %>">
 				        <div class="content">
-				          <div class="title"><%= ac.full_name %></div>
-				          <div class="description">Range: <%= comma(ac.range) %>mi // Capacity: <%= ac.capacity %></div>
+				          <div class="title"><%= conversation.recipient.name %></div>
+				          <div class="description"><%= conversation.message.body %></div>
 				        </div>
 							</a>
 						<% }) %>
 			    </div>
 			  </div>
 			  <div class="line" style="float:right;"></div>
-			  <div class="aircraft-info">
+			  <div class="conversation-info">
 			  </div>
+			</div>
+		</script>
+		<script id="conversationTemplate" type="text/template">
+		  <div class="row-container">
+	      <h2 class="ui header">Recipent</h2>
+	      <div class="ui button positive" id="purchaseButton">Purchase Aircraft</div>
 			</div>
 		</script>
 		<script id="airportInfoModalTemplate" type="text/template">

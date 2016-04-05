@@ -61,7 +61,7 @@ function loadSeats() {
 }
 
 var Aircraft = Backbone.Model.extend({
-	
+
 });
 var AircraftList = Backbone.Collection.extend({
 	model:Aircraft,
@@ -170,11 +170,11 @@ var AircraftListView = Backbone.View.extend({
 	}
 });
 var AircraftInfoView = Backbone.View.extend({
-	
+
 });
 
 var UserAircraft = Backbone.Model.extend({
-	
+
 });
 var UserAircraftList = Backbone.Collection.extend({
 	model:UserAircraft
@@ -216,7 +216,7 @@ var UserAircraftListView = Backbone.View.extend({
 function showPurchaseModal() {
 	var variables = selectedAircraft.attributes;
 	selectedAircraft.set('maxFlights',changeAircraftQuantity(1000).quantity);
-	if((selectedAircraft.get('iata').match(/CR2|ERJ/gi))) {
+	if((selectedAircraft.get('iata').match(/CR2|ERJ/gi))) { // Ballpark default percentage of seats by cabin for different aircraft types
 		selectedAircraft.set('config',getConfigSpecs({f:{p:0.0,i:6},j:{p:0.0,i:3},p:{p:0.0,i:1},y:{p:1.0,i:0}}));
 	} else if(selectedAircraft.get('iata').match(/73|31|32[01]|75|CR|E/gi)) {
 		selectedAircraft.set('config',getConfigSpecs({f:{p:0.0,i:7},j:{p:0.1,i:4},p:{p:0.2,i:1},y:{p:0.7,i:0}}));
@@ -371,10 +371,10 @@ function changeAircraftQuantity(quantity) {
 }
 function purchaseAircraft() {
 	if($('.ui.action.left.input.configuration .button').hasClass('gray')) {
-		
+
 	} else {
 		if(saveConfiguration()) {
-			
+
 		} else {
 			console.log('error purchasing aircraft');
 			return false;
@@ -401,7 +401,7 @@ function purchaseAircraft() {
 			new AircraftListView({el:'#aircraftList'});
 			setTimeout(function(){ $('.purchase-success').remove(); },3000);
 		} else {
-			
+
 		}
 	});
 }

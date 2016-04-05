@@ -87,3 +87,6 @@ textarea.message:focus {
 	-moz-border-radius: 3px !important;
 	border-radius: 3px !important;
 }
+.conversation[data-read="false"] * {
+	color: #238df5 !important;
+}
