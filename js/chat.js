@@ -145,23 +145,6 @@ var ConversationView = Backbone.View.extend({
 		var template = _.template($('#conversationTemplate').html(),variables);
 		this.$el.html(template);
 		return this;
-	},
-	events:{
-		'click .aircraft:not(.flight)':'checkAircraft'
-	},
-	checkAircraft:function(e){
-		var el = $(e.currentTarget);
-		if(!el.hasClass('compressed')) {
-			e.stopPropagation();
-		}
-		if(el.hasClass('purchase')) {
-			this.loadAircraftPurchase();
-		} else if((el.hasClass('airport'))&&(el.hasClass('aircraft'))&&(!el.hasClass('flight'))) {
-			this.loadAircraftList();
-		} else if(el.hasClass('flight')) {
-			var id = el.data('flightid');
-			showFlight(flightList.get(id));
-		}
 	}
 });
 var ConversationListView = Backbone.View.extend({
@@ -181,12 +164,52 @@ var ConversationListView = Backbone.View.extend({
 		aircraftList.each(this.addOne,this);
 	}
 });
-function openMessages() {
+function openMessages(id) {
 	$.getJSON(base + 'chat/conversations' + cookies.url).done(function(data){
-		createConversationList(data);
-		var template = _.template($('#conversationModalTemplate').html(),data);
-		$('body').append(template);
-		$('.conversationPanel').modal('show');
+		if($('.conversationPanel').length === 1) {
+			loadConversation(id);
+		} else {
+			createConversationList(data);
+			var template = _.template($('#conversationModalTemplate').html(),data);
+			$('body').append(template);
+			$('.conversationPanel').modal('show');
+			if(id) {
+				setTimeout(function(){
+					loadConversation(id);
+				},500);
+			}
+			$('.conversationPanel').on('click','.conversation',function(e){
+				var conversationId = $(e.currentTarget).data('conversationid');
+				loadConversation(conversationId);
+			});
+		}
+	});
+}
+function loadConversation(id) {
+	$.getJSON(base + 'chat/conversation/' + id + cookies.url).done(function(data){
+		console.log(data);
+		$('.conversation-info').html('');
+		var lastMessage = { sent:0 };
+		var messages = data.messages.reverse();
+		_.each(messages, function(message){
+			var messageClass = 'left';
+			var messageHeader = '';
+			var messageFooter = ''
+			if(message.sender === true) {
+				messageClass = 'right blue';
+			} else if(message.sender !== false) {
+				messageFooter = '<div class="name">' + message.sender.name + '</div>';
+			}
+			var	messageBody = '<div><div class="ui pointing label ' + messageClass + '" data-content="' + dateFromTimestamp(message.sent, 'long') + '">' + message.body + '</div></div>';
+			if ((lastMessage.sent + 1800) < message.sent) {
+				messageHeader = '<div class="time">' + dateFromTimestamp(message.sent, 'short') + '</div>';
+			}
+			var messageContent = messageHeader + messageBody + messageFooter;
+			lastMessage = message;
+			$('.conversation-info').append(messageContent);
+		});
+		// var chatMessages = '<div class="ui left pointing label">That name is taken!</div><div class="ui right blue pointing label">That name is taken!</div>';
+		// $('.conversation-info').html(chatMessages);
 	});
 }
 function createConversationList(data) {
@@ -196,4 +219,21 @@ function createConversationList(data) {
 	});
 	conversationList = new ConversationList(conversations);
 	conversationListView = new ConversationListView({el:'#conversationList'});
+}
+function dateFromTimestamp(timestamp, format) {
+	var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+	var date = new Date(timestamp*1000);
+	var hours = '0' + date.getHours();
+	var minutes = '0' + date.getMinutes();
+	var formattedTime = hours + ':' + minutes.substr(-2);
+	var formattedDate = '';
+	if(format === "short") {
+		months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+		formattedDate = months[date.getMonth()] + ' ' + date.getDate();
+	} else {
+		var seconds = '0' + date.getSeconds();
+		formattedTime += ':' + seconds.substr(-2);
+		formattedDate = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+	}
+	return formattedDate + ' ' + formattedTime
 }
