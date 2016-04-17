@@ -187,23 +187,22 @@ function openMessages(id) {
 }
 function loadConversation(id) {
 	$.getJSON(base + 'chat/conversation/' + id + cookies.url).done(function(data){
-		console.log(data);
 		$('.conversation-info').html('');
 		var lastMessage = { sent:0 };
-		var messages = data.messages.reverse();
+		var messages = data.messages;
 		_.each(messages, function(message){
 			var messageClass = 'left';
 			var messageHeader = '';
-			var messageFooter = ''
-			if(message.sender === true) {
-				messageClass = 'right blue';
-			} else if(message.sender !== false) {
-				messageFooter = '<div class="name">' + message.sender.name + '</div>';
-			}
-			var	messageBody = '<div><div class="ui pointing label ' + messageClass + '" data-content="' + dateFromTimestamp(message.sent, 'long') + '">' + message.body + '</div></div>';
+			var messageFooter = '';
 			if ((lastMessage.sent + 1800) < message.sent) {
 				messageHeader = '<div class="time">' + dateFromTimestamp(message.sent, 'short') + '</div>';
 			}
+			if(message.sender === true) {
+				messageClass = 'right blue';
+			} else if((message.sender !== false)&&(((lastMessage.sender)&&(message.sender.name !== lastMessage.sender.name))||(messageHeader !== ''))) {
+				messageHeader += '<div class="name">' + message.sender.name + '</div>';
+			}
+			var	messageBody = '<div><div class="ui pointing label ' + messageClass + '" title="' + dateFromTimestamp(message.sent, 'long') + '">' + message.body + '</div></div>';
 			var messageContent = messageHeader + messageBody + messageFooter;
 			lastMessage = message;
 			$('.conversation-info').append(messageContent);
@@ -223,9 +222,9 @@ function createConversationList(data) {
 function dateFromTimestamp(timestamp, format) {
 	var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 	var date = new Date(timestamp*1000);
-	var hours = '0' + date.getHours();
-	var minutes = '0' + date.getMinutes();
-	var formattedTime = hours + ':' + minutes.substr(-2);
+	var hours = ('0' + date.getHours()).substr(-2);
+	var minutes = ('0' + date.getMinutes()).substr(-2);
+	var formattedTime = hours + ':' + minutes;
 	var formattedDate = '';
 	if(format === "short") {
 		months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
