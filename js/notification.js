@@ -26,5 +26,11 @@ function openNotification(id) {
 	var model = notificationList.get(id).attributes;
 	if(model.type == "Route") {
 	  showRoute(model.typeId);
+	} else if(model.type == "Game") {
+		updateGameMessage(model);
+	} else if(model.type == "Alliance") {
+		updateAllianceMessage(model);
+	} else if(model.type == "Conversation") {
+		updateConversationMessage(model);
 	}
 }

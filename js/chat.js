@@ -32,19 +32,17 @@ function routeMessages(messages) {
 		hideNotifications = setTimeout(function(){
 			$('#notifications').css({ opacity:0 }).delay(2000).css({ display:'none' });
 		}, 9900);
-		// routeMessage();
 	});
 }
 function routeMessage(message) {
-	console.log(message);
 	if(message.notificationable_type == "Data") {
 		updateGameTurn(message.notificationable_id);
 	} else if(message.notificationable_type == "Game") {
-		displayGameMessage(message);
+		updateGameMessage(message);
 	} else if(message.notificationable_type == "Alliance") {
-		displayAllianceMessage(message);
+		updateAllianceMessage(message);
 	} else if(message.notificationable_type == "Conversation") {
-		displayConversationMessage(message);
+		openMessages(message);
 	} else if(message.notificationable_type == "Route") {
 		displayRouteNotification(message);
 	}
@@ -53,10 +51,10 @@ function updateGameTurn(gameId) {
 
 }
 function updateGameMessage(message) {
-
+	openMessages('game');
 }
 function updateAllianceMessage(message) {
-
+	openMessages('alliance');
 }
 function updateConversationMessage(message) {
 
@@ -91,34 +89,6 @@ function sendChatMessage() {
 $("#disconnect").click(function() {
 	socket.close()
 });
-function parseMessage(message) {
-	message = JSON.parse(message.data);
-	console.log(message);
-	if(message.type === 'alliance') {
-		if(message.sender.id === airline.id) {
-			var own = ' self';
-		} else {
-			var own = '';
-		}
-		if($('.chat.window[data-tab="alliance_chat"] .message.container').length > 0) {
-			var lastAirline = $('.chat.window[data-tab="alliance_chat"] .message.container').last().data('airline');
-		}
-		if(message.sender.id === lastAirline) {
-			var box = '<div class="message container continuation new' + own + '" data-airline="' + message.sender.id + '"><div class="message divider author">&nbsp;</div><div class="message content' + own + '">' + message.body + '</div></div>';
-		} else if(own === ' self') {
-			var box = '<div class="message container new' + own + '" data-airline="' + message.sender.id + '"><div class="message content' + own + '">' + message.body + '</div></div>';
-		} else {
-			var box = '<div class="message container new" data-airline="' + message.sender.id + '"><div class="message author">' + message.sender.name + '</div><div class="message airline"><div class="message content' + own + '">' + message.body + '</div></div>';
-		}
-		$('.chat.window[data-tab="alliance_chat"] .message.list').append(box);
-		$('.chat.window[data-tab="alliance_chat"] .message.list .new').removeClass('new');
-		$('.message.list').scrollTop(10000);
-	} else if(message.type === 'game') {
-
-	} else if(message.type === 'conversation') {
-
-	}
-}
 
 var Conversation = Backbone.Model.extend({
 });
@@ -195,14 +165,14 @@ function loadConversation(id) {
 			var messageHeader = '';
 			var messageFooter = '';
 			if ((lastMessage.sent + 1800) < message.sent) {
-				messageHeader = '<div class="time">' + dateFromTimestamp(message.sent, 'short') + '</div>';
+				messageHeader = '<div class="message date">' + dateFromTimestamp(message.sent) + '</div>';
 			}
 			if(message.sender === true) {
 				messageClass = 'right blue';
 			} else if((message.sender !== false)&&(((lastMessage.sender)&&(message.sender.name !== lastMessage.sender.name))||(messageHeader !== ''))) {
-				messageHeader += '<div class="name">' + message.sender.name + '</div>';
+				messageHeader += '<div class="message name">' + message.sender.name + '</div>';
 			}
-			var	messageBody = '<div><div class="ui pointing label ' + messageClass + '" title="' + dateFromTimestamp(message.sent, 'long') + '">' + message.body + '</div></div>';
+			var	messageBody = '<div class="message text"><div class="ui pointing label ' + messageClass + '" title="' + dateFromTimestamp(message.sent, 'long') + '">' + message.body + '</div></div>';
 			var messageContent = messageHeader + messageBody + messageFooter;
 			lastMessage = message;
 			$('.conversation-info').append(messageContent);
@@ -222,17 +192,22 @@ function createConversationList(data) {
 function dateFromTimestamp(timestamp, format) {
 	var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 	var date = new Date(timestamp*1000);
-	var hours = ('0' + date.getHours()).substr(-2);
+	var hoursInt = date.getHours();
+	var hourType = hoursInt >= 12 ? "PM" : "AM"
+	var hours = hoursInt > 12 ? (hoursInt - 12) : hoursInt;
+	hours = hours === 0 ? 12 : hours;
 	var minutes = ('0' + date.getMinutes()).substr(-2);
-	var formattedTime = hours + ':' + minutes;
+	var formattedTime = hours + ':' + minutes + hourType;
 	var formattedDate = '';
-	if(format === "short") {
+	if(format === 'short') {
 		months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 		formattedDate = months[date.getMonth()] + ' ' + date.getDate();
-	} else {
+	} else if(format === 'full') {
 		var seconds = '0' + date.getSeconds();
 		formattedTime += ':' + seconds.substr(-2);
 		formattedDate = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+	} else {
+		formattedDate = months[date.getMonth()] + ' ' + date.getDate();
 	}
 	return formattedDate + ' ' + formattedTime
 }

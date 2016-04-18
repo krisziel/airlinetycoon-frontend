@@ -90,3 +90,31 @@ textarea.message:focus {
 .conversation[data-read="false"] * {
 	color: #238df5 !important;
 }
+.conversation-info {
+	width: 340px;
+	padding-top: 20px;
+	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+.message {
+	margin: 2px;
+	width: 100%;
+	float: left;
+}
+.message.name {
+	text-align: left;
+	padding-left: 10px;
+	font-size: 13px;
+	font-weight: bold;
+}
+.message.date {
+	font-size: 13px;
+	font-weight: bold;
+}
+.message > .left {
+	float: left;
+}
+.message > .right {
+	float: right;
+}
